@@ -15,7 +15,7 @@
   <depend>image_transport</depend>
   <depend>rclcpp_components</depend>
   <depend>rcutils</depend>
-  <depend>qrb_ros_transport</depend>
+  <depend>qrb_ros_transport_image_type</depend>
 
   <test_depend>ament_lint_auto</test_depend>
   <test_depend>ament_lint_common</test_depend>

@@ -10,7 +10,7 @@
 #include "qmmf_ros2_pipeline.hpp"
 #include "qrb_ros_camera/camera_ros2_common.hpp"
 #include "qrb_ros_camera/camera_ros2_config.hpp"
-#include "qrb_ros_transport/type/image.hpp"
+#include "qrb_ros_transport_image_type/image.hpp"
 #include "rclcpp/rclcpp.hpp"
 
 #define CAMERA_ROS2_FRAME_ID "cam[%u_%u] id[%u]"

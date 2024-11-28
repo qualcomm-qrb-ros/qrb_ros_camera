@@ -89,6 +89,7 @@ sudo reboot
 Create workspace and clone source code from GitHub:
 
 ```bash
+sudo -i
 mkdir -p ~/ros2_ws/src && cd ~/ros2_ws/src
 git clone https://github.com/quic-qrb-ros/qrb_ros_imu.git
 git clone https://github.com/quic-qrb-ros/lib_mem_dmabuf.git
