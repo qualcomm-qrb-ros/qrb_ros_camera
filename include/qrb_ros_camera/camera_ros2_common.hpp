@@ -46,8 +46,6 @@
 
 #include <functional>
 // ROS2 headers
-#include <image_transport/image_transport.h>
-
 #include <sensor_msgs/image_encodings.hpp>
 #include <sensor_msgs/msg/image.hpp>
 #include <std_msgs/msg/string.hpp>

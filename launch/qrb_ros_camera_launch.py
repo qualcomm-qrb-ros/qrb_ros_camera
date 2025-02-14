@@ -31,7 +31,15 @@ def generate_launch_description():
             'width': 1920,
             'height': 1080,
             'cameraId': 0,
-            'publish_latency_type': 1,
+        }]
+        ),
+    ComposableNode(
+        package='qrb_ros_camera',
+        plugin='qrb_ros::camera::TestNode',
+        name='test',
+        parameters=[{
+            'dump': False,
+            'dump_camera_info_': False,
         }]
         )
     ],
