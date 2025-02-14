@@ -69,7 +69,7 @@ qmmfCameraFrame::~qmmfCameraFrame()
   status_t ret = NO_ERROR;
   // Return buffer back to recorder service.
   if (type_ == CAMERA_QMMF_TRACK_PREVIEW || type_ == CAMERA_QMMF_TRACK_VIDEO) {
-    ret = recorder_->ReturnTrackBuffer(this->session_id_, this->track_id_, this->buffers_);
+    ret = recorder_->ReturnTrackBuffer(this->track_id_, this->buffers_);
   } else if (type_ == CAMERA_QMMF_TRACK_PICTURE) {
     ret = recorder_->ReturnImageCaptureBuffer(this->camera_id_, this->buffer_);
   }
@@ -157,7 +157,7 @@ status_t release_all_frames()
   return EXIT_SUCCESS;
 }
 
-qmmfCAMERA::qmmfCAMERA() : is_preview_running_(false), is_session_enabled_(false) {}
+qmmfCAMERA::qmmfCAMERA() : is_preview_running_(false) {}
 
 int qmmfCAMERA::init(uint32_t idx)
 {
@@ -174,14 +174,9 @@ int qmmfCAMERA::init(uint32_t idx)
     RCLCPP_ERROR(rclcpp::get_logger("qrb_ros_camera"), "qmmf_start_camera failed - %d ", ret);
     goto bail;
   }
-  ret = qmmf_create_session();
-  if (ret != 0) {
-    RCLCPP_ERROR(rclcpp::get_logger("qrb_ros_camera"), "qmmf_start_camera failed - %d ", ret);
-    goto bail;
-  }
   for (uint32_t i = CAMERA_QMMF_TRACK_PREVIEW; i < CAMERA_QMMF_TRACK_MAX; i++) {
     qmmfTrackArray_[i].init(
-        this, &recorder_, camera_id_, session_id_, i, &(qmmf_camera_params_.track_params_ptr[i]));
+        this, &recorder_, camera_id_, i, &(qmmf_camera_params_.track_params_ptr[i]));
   }
 bail:
   return ret;
@@ -272,18 +267,11 @@ void qmmfCAMERA::stop_preview()
     RCLCPP_ERROR(rclcpp::get_logger("qrb_ros_camera"), "Preview not started");
     return;
   }
-  if (is_session_enabled_ == true) {
-    qmmf_stop_session();
-  } else {
-    RCLCPP_ERROR(rclcpp::get_logger("qrb_ros_camera"), "Session not enabled");
-    return;
-  }
   ret = qmmfTrackArray_[CAMERA_QMMF_TRACK_PREVIEW].delete_qmmf_track();
   if (ret != NO_ERROR) {
     RCLCPP_ERROR(rclcpp::get_logger("qrb_ros_camera"), "Delete qmmf track failed: %d ", ret);
   }
   is_preview_running_ = false;
-  qmmf_delete_session();
   qmmf_stop_camera();
   qmmf_recorder_disconnect();
   RCLCPP_DEBUG(rclcpp::get_logger("qrb_ros_camera"), "stop preview done");
@@ -404,37 +392,12 @@ status_t qmmfCAMERA::qmmf_stop_camera()
   return ret;
 }
 
-status_t qmmfCAMERA::qmmf_create_session()
-{
-  RCLCPP_DEBUG(rclcpp::get_logger("qrb_ros_camera"), "create session");
-  SessionCb session_status_cb;
-  session_status_cb.event_cb = [&](qmmf::recorder::EventType event_type, void * event_data,
-                                   size_t event_data_size) {
-    session_callback_handler(event_type, event_data, event_data_size);
-  };
-  auto ret = recorder_.CreateSession(session_status_cb, &session_id_);
-  RCLCPP_INFO(rclcpp::get_logger("qrb_ros_camera"), "sessions_id = %d", session_id_);
-  return ret;
-}
-
 status_t qmmfCAMERA::qmmf_start_track(FrameType trackType)
 {
   status_t ret = EXIT_SUCCESS;
-  if (is_session_enabled_ == true) {
-    ret = qmmf_stop_session();
-    if (ret != NO_ERROR) {
-      RCLCPP_ERROR(rclcpp::get_logger("qrb_ros_camera"), "StopSession failed - %d ", ret);
-      goto bail;
-    }
-  }
   ret = qmmfTrackArray_[trackType].create_qmmf_track();
   if (NO_ERROR != ret) {
     RCLCPP_ERROR(rclcpp::get_logger("qrb_ros_camera"), "create_qmmf_track failed\n");
-    goto bail;
-  };
-  ret = qmmf_start_session();
-  if (NO_ERROR != ret) {
-    RCLCPP_ERROR(rclcpp::get_logger("qrb_ros_camera"), "qmmf_start_session failed\n");
     goto bail;
   };
 bail:
@@ -444,6 +407,7 @@ bail:
 status_t QMMFTrack::create_qmmf_track()
 {
   status_t ret = EXIT_SUCCESS;
+  track_ids.emplace(track_id_);
   ::qmmf::recorder::TrackCb video_track_cb;
   ::qmmf::recorder::VideoExtraParam extraparam;
   video_track_cb.data_cb = [&](uint32_t track_id, std::vector<BufferDescriptor> buffers,
@@ -454,12 +418,12 @@ status_t QMMFTrack::create_qmmf_track()
                                 void * event_data, size_t data_size) {
     qmmf_camera_ptr_->qmmf_track_event_cb(track_id, event_type, event_data, data_size);
   };
-  ret = recorder_ptr_->CreateVideoTrack(
-      session_id_, track_id_, track_params_, extraparam, video_track_cb);
+  ret = recorder_ptr_->CreateVideoTrack(track_id_, track_params_, extraparam, video_track_cb);
   if (NO_ERROR != ret) {
     RCLCPP_ERROR(rclcpp::get_logger("qrb_ros_camera"), "CreateVideoTrack failed\n");
     goto bail;
   }
+  ret = recorder_ptr_->StartVideoTracks(track_ids);
 bail:
   return ret;
 }
@@ -467,76 +431,19 @@ bail:
 status_t QMMFTrack::delete_qmmf_track()
 {
   status_t ret = EXIT_SUCCESS;
-  ret = recorder_ptr_->DeleteVideoTrack(session_id_, track_id_);
+  ret = recorder_ptr_->StopVideoTracks(track_ids);
+  if (ret != NO_ERROR) {
+    RCLCPP_ERROR(rclcpp::get_logger("qrb_ros_camera"), "Stop video Track fail \n");
+    return ret;
+  }
+  ret = recorder_ptr_->DeleteVideoTrack(track_id_);
   if (ret != NO_ERROR) {
     RCLCPP_ERROR(rclcpp::get_logger("qrb_ros_camera"),
-        "Delete video track failed: %d, session id: %u, track id: %u \n", ret, session_id_,
-        track_id_);
+        "Delete video track failed: %d, track id: %u \n", ret, track_id_);
     return ret;
   } else {
     RCLCPP_INFO(rclcpp::get_logger("qrb_ros_camera"),
-        "Delete video track successful: %d, session id: %u, track id: %u \n", ret, session_id_,
-        track_id_);
-  }
-  return ret;
-}
-
-status_t qmmfCAMERA::qmmf_start_session()
-{
-  status_t ret = recorder_.StartSession(session_id_);
-  if (NO_ERROR != ret) {
-    RCLCPP_ERROR(rclcpp::get_logger("qrb_ros_camera"), "StartSession failed\n");
-    return ret;
-  }
-  is_session_enabled_ = true;
-  ret = recorder_.GetCameraParam(camera_id_, qmmf_camera_params_.static_session_meta_info);
-  if (NO_ERROR != ret) {
-    RCLCPP_ERROR(
-        rclcpp::get_logger("qrb_ros_camera"), "Unable to initialize static session parameters!\n");
-  }
-  return ret;
-}
-
-status_t qmmfCAMERA::qmmf_stop_session()
-{
-  is_session_enabled_ = false;
-  release_all_frames();
-  /* check if any latest buffer is getting released after disabling session */
-  while (release_new_frame_in_progress_flag_ == true) {
-    usleep(100);
-  }
-  status_t ret = recorder_.StopSession(session_id_, false);
-  if (ret != NO_ERROR) {
-    RCLCPP_ERROR(rclcpp::get_logger("qrb_ros_camera"), "StopSession failed - %d ", ret);
-  }
-  return ret;
-}
-
-status_t qmmfCAMERA::qmmf_pause_session()
-{
-  auto ret = recorder_.PauseSession(session_id_);
-  if (ret != NO_ERROR) {
-    RCLCPP_ERROR(rclcpp::get_logger("qrb_ros_camera"), "PauseSession failed - %d ", ret);
-  }
-  return NO_ERROR;
-}
-
-status_t qmmfCAMERA::qmmf_resume_session()
-{
-  auto ret = recorder_.ResumeSession(session_id_);
-  if (ret != NO_ERROR) {
-    RCLCPP_ERROR(rclcpp::get_logger("qrb_ros_camera"), "ResumeSession failed - %d ", ret);
-  }
-  return NO_ERROR;
-}
-
-status_t qmmfCAMERA::qmmf_delete_session()
-{
-  status_t ret;
-  // Once all tracks are deleted successfully delete session.
-  ret = recorder_.DeleteSession(session_id_);
-  if (ret != NO_ERROR) {
-    RCLCPP_ERROR(rclcpp::get_logger("qrb_ros_camera"), "DeleteSessionfailed - %d ", ret);
+        "Delete video track successful: %d, track id: %u \n", ret, track_id_);
   }
   return ret;
 }
@@ -555,7 +462,8 @@ void qmmfCAMERA::camera_metadata_cb(uint32_t camera_id, const CameraMetadata & r
     RCLCPP_ERROR(rclcpp::get_logger("qrb_ros_camera"),
         "Could not store result metadata : frame_ts = %d", meta_frame_index);
   } else {
-    // CAM_DBG("ResultCB : A_TS = %lld \n", result.find(ANDROID_SENSOR_TIMESTAMP).data.i64[0]);
+    // CAM_DBG("ResultCB : A_TS = %lld \n",
+    // result.find(ANDROID_SENSOR_TIMESTAMP).data.i64[0]);
   }
   result_metadata_cache_mutex_.unlock();
 }
@@ -588,21 +496,12 @@ void qmmfCAMERA::qmmf_track_data_cb(uint32_t track_id,
     std::vector<::qmmf::BufferDescriptor> buffers,
     std::vector<::qmmf::BufferMeta> meta_buffers)
 {
-  release_new_frame_in_progress_flag_ = true;
-  if (is_session_enabled_ == false) {
-    recorder_.ReturnTrackBuffer(session_id_, track_id, buffers);
-    release_new_frame_in_progress_flag_ = false;
-    return;
-  }
-  release_new_frame_in_progress_flag_ = false;
   // TODO: CameraMetada should associate with result_metadata_cache_.
   CameraMetadata result;
-  /* Here the assumption is that each callback returns only buffer in the BufferDescriptor*/
-  // qmmfCameraFrame::dispatch_frame(listeners_, &recorder_ , buffers, camera_id_, session_id_
-  // ,track_id); qmmfCameraFrame::dispatch_frame(this->listeners_, &recorder_ , buffers,
-  // meta_buffers, result, camera_id_, session_id_ ,track_id);
-  qmmfCameraFrame::dispatch_frame(this->listeners_, &recorder_, buffers, meta_buffers, result,
-      camera_id_, session_id_, track_id);
+  /* Here the assumption is that each callback returns only buffer in the
+   * BufferDescriptor*/
+  qmmfCameraFrame::dispatch_frame(
+      this->listeners_, &recorder_, buffers, meta_buffers, result, camera_id_, track_id);
 }
 
 void qmmfCameraFrame::dispatch_frame(std::vector<ICameraListener *> listeners,
@@ -611,7 +510,6 @@ void qmmfCameraFrame::dispatch_frame(std::vector<ICameraListener *> listeners,
     std::vector<::qmmf::BufferMeta> & meta_buffers,
     CameraMetadata & frameMetadata,
     uint32_t camera_id,
-    uint32_t session_id,
     uint32_t track_id)
 {
   RCLCPP_DEBUG(rclcpp::get_logger("qrb_ros_camera"), "Enter");
@@ -631,7 +529,6 @@ void qmmfCameraFrame::dispatch_frame(std::vector<ICameraListener *> listeners,
   // frame->frame_info_metadata_ = frameMetadata;
   frame->stride = meta_buffers.begin()->planes[0].stride;
   frame->slice = meta_buffers.begin()->planes[0].scanline;
-  frame->session_id_ = session_id;
   frame->camera_id_ = camera_id;
   frame->track_id_ = track_id;
   frame->buf_id_ = buffers.begin()->buf_id;
@@ -669,7 +566,6 @@ qmmfCameraFrame::qmmfCameraFrame(int fd, uint32_t size) : recorder_(nullptr)
 QMMFTrack::QMMFTrack()
 {
   track_id_ = CAMERA_QMMF_TRACK_PREVIEW;
-  session_id_ = 0;
   memset(&track_params_, 0x0, sizeof track_params_);
   track_params_.camera_id = 0;
   track_params_.width = DEFAULT_SENSOR_WIDTH;
@@ -682,7 +578,6 @@ QMMFTrack::QMMFTrack()
 int QMMFTrack::init(qmmfCAMERA * qmmf_camera_ptr,
     Recorder * recorder_ptr,
     uint32_t camera_id,
-    uint32_t session_id,
     uint32_t track_id,
     VideoTrackParam ** track_params_ptr)
 {
@@ -695,7 +590,6 @@ int QMMFTrack::init(qmmfCAMERA * qmmf_camera_ptr,
   }
   recorder_ptr_ = recorder_ptr;
   track_params_.camera_id = camera_id;
-  session_id_ = session_id;
   track_id_ = track_id;
   *(track_params_ptr) = &track_params_;
   if (track_params_ptr == nullptr) {
