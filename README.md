@@ -12,107 +12,92 @@ with a wide range of ROS nodes, empowering advanced image-based analysis and fun
 supports concurrent output from multiple cameras, enhancing system performance and scalability in real-time ROS 
 applications.
 
-## Getting Started
+## Quick Start
 
-<details><summary>Cross Compile with QCLINUX SDK</summary>
+> **Note：**
+> This document 's build & run is the latest.
+> If it conflict with the online document, please follow this.
 
-#### Cross Compile with QCLINUX SDK
+We provide two ways to use this package.
 
-Setup QCLINUX SDK environments:
-- Reference [QRB ROS Documents: Getting Started](https://quic-qrb-ros.github.io/getting_started/environment_setup.html)
+<details>
+<summary>Docker</summary>
 
-Create workspace in QCLINUX SDK environment and clone source code
+#### Setup
+1. Please follow this [steps](https://github.com/quic-qrb-ros/qrb_ros_docker?tab=readme-ov-file#quickstart) to setup docker env.
+2. Download qrb_ros_camera and dependencies
+    ```bash
+    cd ${QRB_ROS_WS}/src
 
+    git clone https://github.com/quic-qrb-ros/lib_mem_dmabuf.git
+    git clone https://github.com/quic-qrb-ros/qrb_ros_camera.git
+    git clone https://github.com/quic-qrb-ros/qrb_ros_transport.git
+    ```
+
+#### Build
 ```bash
-mkdir -p <qirp_decompressed_workspace>/qirp-sdk/ros_ws
-cd <qirp_decompressed_workspace>/qirp-sdk/ros_ws
-git clone https://github.com/quic-qrb-ros/qrb_ros_imu.git
-git clone https://github.com/quic-qrb-ros/lib_mem_dmabuf.git
-git clone https://github.com/quic-qrb-ros/qrb_ros_transport.git
-git clone https://github.com/quic-qrb-ros/qrb_ros_camera.git
+colcon build
 ```
 
-Build source code with QCLINUX SDK
-
+#### Run
 ```bash
-export AMENT_PREFIX_PATH="${OECORE_TARGET_SYSROOT}/usr;${OECORE_NATIVE_SYSROOT}/usr"
-export PYTHONPATH=${PYTHONPATH}:${OECORE_TARGET_SYSROOT}/usr/lib/python3.10/site-packages
+cd ${QRB_ROS_WS}/src
 
-colcon build --merge-install --cmake-args \
-    -DPython3_ROOT_DIR=${OECORE_TARGET_SYSROOT}/usr \
-    -DPython3_NumPy_INCLUDE_DIR=${OECORE_TARGET_SYSROOT}/usr/lib/python3.10/site-packages/numpy/core/include \
-    -DSYSROOT_LIBDIR=${OECORE_TARGET_SYSROOT}/usr/lib \
-    -DSYSROOT_INCDIR=${OECORE_TARGET_SYSROOT}/usr/include \
-    -DPYTHON_SOABI=cpython-310-aarch64-linux-gnu -DCMAKE_STAGING_PREFIX=$(pwd)/install \
-    -DCMAKE_PREFIX_PATH=$(pwd)/install/share \
-    -DBUILD_TESTING=OFF
+source install/local_setup.sh
+ros2 launch qrb_ros_camera qrb_ros_camera_launch.py
 ```
 
-Install ROS package to device
+</details>
+ 
 
+<details>
+<summary>QIRP-SDK</summary>
+
+#### Setup
+1. Please follow this [steps](https://quic-qrb-ros.github.io/getting_started/index.html) to setup qirp-sdk env.
+2. Download qrb_ros_imu and dependencies
+    ```bash
+    mkdir -p <qirp_decompressed_workspace>/qirp-sdk/ros_ws
+    cd <qirp_decompressed_workspace>/qirp-sdk/ros_ws
+
+    git clone https://github.com/quic-qrb-ros/qrb_ros_camera.git
+    ```
+
+#### Build
+1. Build the project
+    ```bash
+    export AMENT_PREFIX_PATH="${OECORE_NATIVE_SYSROOT}/usr:${OECORE_TARGET_SYSROOT}/usr"
+    export PYTHONPATH=${OECORE_NATIVE_SYSROOT}/usr/lib/python3.12/site-packages/:${OECORE_TARGET_SYSROOT}/usr/lib/python3.12/site-packages/
+
+    colcon build --continue-on-error --cmake-args \
+      -DCMAKE_TOOLCHAIN_FILE=${OE_CMAKE_TOOLCHAIN_FILE} \
+      -DPYTHON_EXECUTABLE=${OECORE_NATIVE_SYSROOT}/usr/bin/python3 \
+      -DPython3_NumPy_INCLUDE_DIR=${OECORE_NATIVE_SYSROOT}/usr/lib/python3.12/site-packages/numpy/core/include \
+      -DCMAKE_MAKE_PROGRAM=/usr/bin/make \
+      -DBUILD_TESTING=OFF
+    ```
+2. Install the package
+    ```bash
+    cd <qirp_decompressed_workspace>/qirp-sdk/ros_ws/install/qrb_ros_camera
+    tar -czvf qrb_ros_camera.tar.gz include lib share
+    scp qrb_ros_camera.tar.gz root@[ip-addr]:/home/
+    (ssh) mount -o remount rw /
+    (ssh) tar --no-overwrite-dir --no-same-owner -zxf /home/qrb_ros_camera.tar.gz -C /usr/
+    ```
+
+#### Run
 ```bash
-cd <qirp_decompressed_workspace>/qirp-sdk/ros_ws/install
-tar czvf qrb_ros_camera.tar.gz include lib share
-scp qrb_ros_camera.tar.gz root@[ip-addr]:/opt/
-ssh ssh root@[ip-addr]
-(ssh) tar -zxf /opt/qrb_ros_camera.tar.gz -C /opt/qcom/qirp-sdk/usr/
-```
-
-Login to device and run
-
-```bash
-ssh root@[ip-addr]
-(ssh) export HOME=/opt
-(ssh) source /usr/bin/ros_setup.bash
-(ssh) source /opt/qcom/qirp-sdk/qirp-setup.sh
+(ssh) export HOME=/home
+(ssh) setenforce 0
+(ssh) source /usr/bin/ros_setup.sh && source /usr/share/qirp-setup.sh
 (ssh) ros2 launch qrb_ros_camera qrb_ros_camera_launch.py
 ```
 
 </details>
 
-<details open><summary>Native Build on Ubuntu</summary>
+<br>
 
-#### Native Build on Ubuntu
-
-Prerequisites
-
-- ROS 2: [Install ROS2 on Ubuntu](https://docs.ros.org/en/humble/Installation/Ubuntu-Install-Debs.html)
-- camera-server environment install:
-```bash
-sudo apt install libimage-transport-dev
-sudo add-apt-repository ppa:carmel-team/jammy-release --login
-sudo apt upgrade
-sudo apt install weston-qcom gstreamer1.0-plugins-qcom gstreamer1.0-tools camxapi-kt libqmmf-dev syslog-plumber-dev
-sudo cp /usr/include/log/log.h /usr/include/log.h
-sudo reboot
-```
-Create workspace and clone source code from GitHub:
-
-```bash
-sudo -i
-mkdir -p ~/ros2_ws/src && cd ~/ros2_ws/src
-git clone https://github.com/quic-qrb-ros/qrb_ros_imu.git
-git clone https://github.com/quic-qrb-ros/lib_mem_dmabuf.git
-git clone https://github.com/quic-qrb-ros/qrb_ros_transport.git
-git clone https://github.com/quic-qrb-ros/qrb_ros_camera.git
-```
-Build source code
-
-```bash
-cd ~/ros2_ws
-source /opt/ros/${ROS_DISTRO}/setup.bash
-colcon build
-```
-
-Run qrb_ros_camera
-
-```bash
-cd ~/ros2_ws
-source install/setup.bash
-ros2 launch qrb_ros_camera qrb_ros_camera_launch.py
-```
-
-</details>
+You can get more details from [here](https://quic-qrb-ros.github.io/main/index.html).
 
 ## Supported Platforms
 
