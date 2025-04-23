@@ -24,14 +24,14 @@ We provide two ways to use this package.
 <summary>Docker</summary>
 
 #### Setup
-1. Please follow this [steps](https://github.com/quic-qrb-ros/qrb_ros_docker?tab=readme-ov-file#quickstart) to setup docker env.
+1. Please follow this [steps](https://github.com/qualcomm-qrb-ros/qrb_ros_docker?tab=readme-ov-file#quickstart) to setup docker env.
 2. Download qrb_ros_camera and dependencies
     ```bash
     cd ${QRB_ROS_WS}/src
 
-    git clone https://github.com/quic-qrb-ros/lib_mem_dmabuf.git
-    git clone https://github.com/quic-qrb-ros/qrb_ros_camera.git
-    git clone https://github.com/quic-qrb-ros/qrb_ros_transport.git
+    git clone https://github.com/qualcomm-qrb-ros/lib_mem_dmabuf.git
+    git clone https://github.com/qualcomm-qrb-ros/qrb_ros_camera.git
+    git clone https://github.com/qualcomm-qrb-ros/qrb_ros_transport.git
     ```
 
 #### Build
@@ -54,13 +54,13 @@ ros2 launch qrb_ros_camera qrb_ros_camera_launch.py
 <summary>QIRP-SDK</summary>
 
 #### Setup
-1. Please follow this [steps](https://quic-qrb-ros.github.io/getting_started/index.html) to setup qirp-sdk env.
+1. Please follow this [steps](https://qualcomm-qrb-ros.github.io/getting_started/index.html) to setup qirp-sdk env.
 2. Download qrb_ros_imu and dependencies
     ```bash
     mkdir -p <qirp_decompressed_workspace>/qirp-sdk/ros_ws
     cd <qirp_decompressed_workspace>/qirp-sdk/ros_ws
 
-    git clone https://github.com/quic-qrb-ros/qrb_ros_camera.git
+    git clone https://github.com/qualcomm-qrb-ros/qrb_ros_camera.git
     ```
 
 #### Build
@@ -97,7 +97,7 @@ ros2 launch qrb_ros_camera qrb_ros_camera_launch.py
 
 <br>
 
-You can get more details from [here](https://quic-qrb-ros.github.io/main/index.html).
+You can get more details from [here](https://qualcomm-qrb-ros.github.io/main/index.html).
 
 ## Supported Platforms
 
