@@ -19,17 +19,17 @@ applications.
 #### Cross Compile with QCLINUX SDK
 
 Setup QCLINUX SDK environments:
-- Reference [QRB ROS Documents: Getting Started](https://quic-qrb-ros.github.io/getting_started/environment_setup.html)
+- Reference [QRB ROS Documents: Getting Started](https://qualcomm-qrb-ros.github.io/getting_started/environment_setup.html)
 
 Create workspace in QCLINUX SDK environment and clone source code
 
 ```bash
 mkdir -p <qirp_decompressed_workspace>/qirp-sdk/ros_ws
 cd <qirp_decompressed_workspace>/qirp-sdk/ros_ws
-git clone https://github.com/quic-qrb-ros/qrb_ros_imu.git
-git clone https://github.com/quic-qrb-ros/lib_mem_dmabuf.git
-git clone https://github.com/quic-qrb-ros/qrb_ros_transport.git
-git clone https://github.com/quic-qrb-ros/qrb_ros_camera.git
+git clone https://github.com/qualcomm-qrb-ros/qrb_ros_imu.git
+git clone https://github.com/qualcomm-qrb-ros/lib_mem_dmabuf.git
+git clone https://github.com/qualcomm-qrb-ros/qrb_ros_transport.git
+git clone https://github.com/qualcomm-qrb-ros/qrb_ros_camera.git
 ```
 
 Build source code with QCLINUX SDK
@@ -91,10 +91,10 @@ Create workspace and clone source code from GitHub:
 ```bash
 sudo -i
 mkdir -p ~/ros2_ws/src && cd ~/ros2_ws/src
-git clone https://github.com/quic-qrb-ros/qrb_ros_imu.git
-git clone https://github.com/quic-qrb-ros/lib_mem_dmabuf.git
-git clone https://github.com/quic-qrb-ros/qrb_ros_transport.git
-git clone https://github.com/quic-qrb-ros/qrb_ros_camera.git
+git clone https://github.com/qualcomm-qrb-ros/qrb_ros_imu.git
+git clone https://github.com/qualcomm-qrb-ros/lib_mem_dmabuf.git
+git clone https://github.com/qualcomm-qrb-ros/qrb_ros_transport.git
+git clone https://github.com/qualcomm-qrb-ros/qrb_ros_camera.git
 ```
 Build source code
 
