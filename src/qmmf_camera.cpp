@@ -457,14 +457,11 @@ void qmmfCAMERA::camera_metadata_cb(uint32_t camera_id, const CameraMetadata & r
   if (result_metadata_cache_.size() >= 120) {
     result_metadata_cache_.erase(result_metadata_cache_.begin());
   }
-  auto ret = result_metadata_cache_.insert((result_metadata_cache_.end())--,
-      std::pair<const uint64_t, CameraMetadata>(meta_frame_index, result));
-  if (ret == result_metadata_cache_.end()) {
-    RCLCPP_ERROR(rclcpp::get_logger("qrb_ros_camera"),
-        "Could not store result metadata : frame_ts = %d", meta_frame_index);
+  auto it = result_metadata_cache_.find(meta_frame_index);
+  if (it != result_metadata_cache_.end()) {
+    it->second = result;
   } else {
-    // CAM_DBG("ResultCB : A_TS = %lld \n",
-    // result.find(ANDROID_SENSOR_TIMESTAMP).data.i64[0]);
+    result_metadata_cache_.emplace(std::make_pair(meta_frame_index, result));
   }
   result_metadata_cache_mutex_.unlock();
 }
