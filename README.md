@@ -66,30 +66,21 @@ ros2 launch qrb_ros_camera qrb_ros_camera_launch.py
 #### Build
 1. Build the project
     ```bash
-    export AMENT_PREFIX_PATH="${OECORE_NATIVE_SYSROOT}/usr:${OECORE_TARGET_SYSROOT}/usr"
-    export PYTHONPATH=${OECORE_NATIVE_SYSROOT}/usr/lib/python3.12/site-packages/:${OECORE_TARGET_SYSROOT}/usr/lib/python3.12/site-packages/
-
-    colcon build --continue-on-error --cmake-args \
-      -DCMAKE_TOOLCHAIN_FILE=${OE_CMAKE_TOOLCHAIN_FILE} \
-      -DPYTHON_EXECUTABLE=${OECORE_NATIVE_SYSROOT}/usr/bin/python3 \
-      -DPython3_NumPy_INCLUDE_DIR=${OECORE_NATIVE_SYSROOT}/usr/lib/python3.12/site-packages/numpy/core/include \
-      -DCMAKE_MAKE_PROGRAM=/usr/bin/make \
-      -DBUILD_TESTING=OFF
+    colcon build --continue-on-error --cmake-args ${CMAKE_ARGS}
     ```
 2. Install the package
     ```bash
     cd <qirp_decompressed_workspace>/qirp-sdk/ros_ws/install/qrb_ros_camera
     tar -czvf qrb_ros_camera.tar.gz include lib share
     scp qrb_ros_camera.tar.gz root@[ip-addr]:/home/
-    (ssh) mount -o remount rw /
+    (ssh) mount -o remount rw /usr
     (ssh) tar --no-overwrite-dir --no-same-owner -zxf /home/qrb_ros_camera.tar.gz -C /usr/
     ```
 
 #### Run
 ```bash
-(ssh) export HOME=/home
+(ssh) source /usr/share/qirp-setup.sh
 (ssh) setenforce 0
-(ssh) source /usr/bin/ros_setup.sh && source /usr/share/qirp-setup.sh
 (ssh) ros2 launch qrb_ros_camera qrb_ros_camera_launch.py
 ```
 
