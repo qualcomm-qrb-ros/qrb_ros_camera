@@ -36,7 +36,7 @@ We provide two ways to use this package.
 
 #### Build
 ```bash
-colcon build
+colcon build --packages-up-to qrb_ros_camera
 ```
 
 #### Run
@@ -54,7 +54,7 @@ ros2 launch qrb_ros_camera qrb_ros_camera_launch.py
 <summary>QIRP-SDK</summary>
 
 #### Setup
-1. Please follow this [steps](https://qualcomm-qrb-ros.github.io/getting_started/index.html) to setup qirp-sdk env.
+1. Please follow this [steps](https://qualcomm-qrb-ros.github.io/main/getting_started/environment_setup.html) to setup qirp-sdk env.
 2. Download qrb_ros_imu and dependencies
     ```bash
     mkdir -p <qirp_decompressed_workspace>/qirp-sdk/ros_ws
@@ -73,7 +73,11 @@ ros2 launch qrb_ros_camera qrb_ros_camera_launch.py
     cd <qirp_decompressed_workspace>/qirp-sdk/ros_ws/install/qrb_ros_camera
     tar -czvf qrb_ros_camera.tar.gz include lib share
     scp qrb_ros_camera.tar.gz root@[ip-addr]:/home/
+    cd <qirp_decompressed_workspace>/qirp-sdk/ros_ws/install/qrb_camera
+    tar -czvf qrb_camera.tar.gz include lib share
+    scp qrb_camera.tar.gz root@[ip-addr]:/home/
     (ssh) mount -o remount rw /usr
+    (ssh) tar --no-overwrite-dir --no-same-owner -zxf /home/qrb_camera.tar.gz -C /usr/
     (ssh) tar --no-overwrite-dir --no-same-owner -zxf /home/qrb_ros_camera.tar.gz -C /usr/
     ```
 
@@ -108,6 +112,7 @@ We would love to have you as a part of the QRB ROS community. Whether you are he
 ## Authors
 
 * **Tian Ding** - *Initial work* - [dingtian777](https://github.com/dingtian777)
+* **Zhanye Lin** - *Second version work* - [zhanlin](https://github.com/quic-zhanlin)
 
 See also the list of [contributors](https://github.com/your/project/contributors) who participated in this project.
 

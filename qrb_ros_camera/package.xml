@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+<?xml-model href="http://download.ros.org/schema/package_format3.xsd" schematypens="http://www.w3.org/2001/XMLSchema"?>
+<package format="3">
+  <name>qrb_ros_camera</name>
+  <version>2.0.0</version>
+  <description>camera ros2node</description>
+  <maintainer email="quic_tlnu@quicinc.com">Tian Ding</maintainer>
+  <license>BSD-3-Clause-Clear</license>
+  <buildtool_depend>ament_cmake_auto</buildtool_depend>
+
+  <depend>rclcpp_components</depend>
+  <depend>rclcpp</depend>
+  <depend>rclcpp_lifecycle</depend>
+  <depend>sensor_msgs</depend>
+  <depend>lifecycle_msgs</depend>
+
+  <depend>qrb_camera</depend>
+  <depend>qrb_ros_transport_image_type</depend>
+  <depend>yaml-cpp</depend>
+
+  <test_depend>ament_lint_auto</test_depend>
+  <test_depend>ament_lint_common</test_depend>
+
+  <export>
+    <build_type>ament_cmake</build_type>
+  </export>
+</package>

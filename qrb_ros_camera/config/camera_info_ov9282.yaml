@@ -1,0 +1,28 @@
+# Copyright (c) 2024 Qualcomm Innovation Center, Inc. All rights reserved.
+# SPDX-License-Identifier: BSD-3-Clause-Clear
+image_width: 1280
+image_height: 720
+camera_name: ov9282
+camera_matrix:
+  rows: 3
+  cols: 3
+  data: [ 563.33333,     0.    ,    640   ,
+             0.    , 563.33333 ,    400   ,
+             0.    ,     0.    ,     1.   ]
+distortion_model: none
+distortion_coefficients:
+  rows: 1
+  cols: 4
+  data: [    0.    ,    0.    ,    0.    ,    0.    ]
+rectification_matrix:
+  rows: 3
+  cols: 3
+  data: [1., 0., 0.,
+         0., 1., 0.,
+         0., 0., 1.]
+projection_matrix:
+  rows: 3
+  cols: 4
+  data: [ 563.33333 ,      0.    ,   640    ,    0.     ,
+             0.     ,  563.33333 ,   400    ,    0.     ,
+             0.     ,     0.     ,    1.    ,    0.     ]
