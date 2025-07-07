@@ -9,7 +9,7 @@ camera_matrix:
   data: [   720    ,     0.    ,   960    ,
              0.    ,    720    ,   540    ,
              0.    ,     0.    ,    1.    ]
-distortion_model: equidistant
+distortion_model: none
 distortion_coefficients:
   rows: 1
   cols: 4

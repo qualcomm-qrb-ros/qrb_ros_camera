@@ -1,12 +1,12 @@
 Source: ros-jazzy-qrb-ros-camera
 Section: misc
 Priority: optional
-Maintainer: Tian Ding <quic_tlnu@quicinc.com>
-Build-Depends: debhelper (>= 9.0.0), ros-jazzy-ament-cmake-auto, ros-jazzy-ament-lint-auto <!nocheck>, ros-jazzy-ament-lint-common <!nocheck>, ros-jazzy-camera-info-manager, ros-jazzy-cv-bridge, ros-jazzy-image-transport, ros-jazzy-qrb-ros-transport-image-type, ros-jazzy-rclcpp, ros-jazzy-rclcpp-components, ros-jazzy-rcutils, ros-jazzy-sensor-msgs
-Homepage: 
+Maintainer: Zhanye Lin <zhanlin@qti.qualcomm.com>
+Build-Depends: debhelper-compat(=13), libyaml-cpp-dev, ros-jazzy-ament-cmake-auto, ros-jazzy-ament-lint-auto <!nocheck>, ros-jazzy-ament-lint-common <!nocheck>, ros-jazzy-qrb-camera, ros-jazzy-qrb-ros-transport-image-type, ros-jazzy-rclcpp, ros-jazzy-rclcpp-components, ros-jazzy-sensor-msgs
+Homepage: https://github.com/qualcomm-qrb-ros/qrb_ros_camera
 Standards-Version: 3.9.2
 
 Package: ros-jazzy-qrb-ros-camera
 Architecture: any
-Depends: ${shlibs:Depends}, ${misc:Depends}, ros-jazzy-camera-info-manager, ros-jazzy-cv-bridge, ros-jazzy-image-transport, ros-jazzy-qrb-ros-transport-image-type, ros-jazzy-rclcpp, ros-jazzy-rclcpp-components, ros-jazzy-rcutils, ros-jazzy-sensor-msgs
+Depends: ${shlibs:Depends}, ${misc:Depends}, libyaml-cpp-dev, ros-jazzy-qrb-camera, ros-jazzy-qrb-ros-transport-image-type, ros-jazzy-rclcpp, ros-jazzy-rclcpp-components, ros-jazzy-sensor-msgs
 Description: camera ros2node

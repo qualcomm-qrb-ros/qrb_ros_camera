@@ -18,48 +18,36 @@ if(CMAKE_COMPILER_IS_GNUCXX OR CMAKE_CXX_COMPILER_ID MATCHES "Clang")
   add_compile_options(-Wall -Wextra -Wpedantic -g)
 endif()
 
-include_directories (./include)
-
-include_directories (${SYSROOT_INCDIR}/qmmf-sdk/common/utils PRIVATE)
-include_directories (${SYSROOT_INCDIR}/qmmf-sdk/include PRIVATE)
-include_directories (${SYSROOT_INCDIR}/qmmf-sdk PRIVATE)
-include_directories (${SYSROOT_INCDIR}/opencv4)
-include_directories (${SYSROOT_INCDIR}/camx-api/camx/service)
-
 find_package(ament_cmake_auto REQUIRED)
 ament_auto_find_build_dependencies()
 
-ament_auto_add_executable(qrb_ros_camera src/main.cpp)
+find_package(PkgConfig REQUIRED)
+pkg_check_modules(YAML_CPP REQUIRED yaml-cpp)
 
-ament_auto_add_library(camera_component SHARED
-  src/camera_ros2_config.cpp
-  src/camera_ros2_node.cpp
-  src/qmmf_camera_parameters.cpp
-  src/qmmf_camera.cpp
-  src/qmmf_ros2_pipeline.cpp
+include_directories(include)
+include_directories(${YAML_CPP_INCLUDE_DIRS})
+
+ament_auto_add_library(camera_node SHARED
+  src/camera_node.cpp
+  src/configure_parser.cpp
+)
+
+target_link_libraries(camera_node
+  ${YAML_CPP_LIBRARIES}
+)
+
+rclcpp_components_register_nodes(camera_node "qrb_ros::camera::CameraNode")
+
+if(BUILD_TESTING)
+
+  ament_auto_add_library(${PROJECT_NAME}_test SHARED
+    test/src/camera_test.cpp
   )
 
-  ament_auto_add_library(test_component SHARED
-  src/camera_ros2_config.cpp
-  src/test_ros2_node.cpp
-  src/test_ros2_out_node.cpp)
+  rclcpp_components_register_nodes(${PROJECT_NAME}_test
+    PLUGIN "qrb_ros::camera::TestNode"
+  )
 
-rclcpp_components_register_nodes(camera_component "qrb_ros::camera::CameraNode")
-rclcpp_components_register_nodes(test_component "qrb_ros::camera::TestNode")
-rclcpp_components_register_nodes(test_component "qrb_ros::camera::TestOutNode")
-
-target_link_libraries(camera_component dl pthread camera_metadata)
-
-target_link_libraries( camera_component
-  camera_metadata
-  qmmf_recorder_client
-  qmmf_utils
-  yaml-cpp
-)
-
-target_link_libraries(qrb_ros_camera
-  camera_component
-  test_component
-)
+endif()
 
 ament_auto_package(INSTALL_TO_SHARE config launch)

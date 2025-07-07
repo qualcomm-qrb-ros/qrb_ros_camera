@@ -26,17 +26,23 @@ def generate_launch_description():
         plugin='qrb_ros::camera::CameraNode',
         name='camera_node',
         parameters=[{
+            'camera_id': 0,
+            'stream_size': 1,
+            'stream_name': ["stream1"],
+            'stream1':{
+                'height':720,
+                'width':1280,
+                'fps':30,
+            },
             'camera_info_path': camera_info_path,
-            'fps': 30,
-            'width': 1920,
-            'height': 1080,
-            'cameraId': 0,
         }]
         ),
     ComposableNode(
         package='qrb_ros_camera',
         plugin='qrb_ros::camera::TestNode',
         name='test',
+        remappings=[('/camera_info', '/cam0_stream1_camera_info'),
+                    ('/image', '/cam0_stream1')],
         parameters=[{
             'dump': False,
             'dump_camera_info_': False,
