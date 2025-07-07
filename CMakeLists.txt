@@ -33,7 +33,6 @@ ament_auto_add_library(camera_node SHARED
 )
 
 target_link_libraries(camera_node
-  qrb_camera
   ${YAML_CPP_LIBRARIES}
 )
 

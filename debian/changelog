@@ -1,0 +1,7 @@
+ros-jazzy-qrb-ros-camera (2.0.0) noble; urgency=high
+
+  * First debian release.
+
+ -- Zhanye Lin <zhanlin@qti.qualcomm.com>  Thu, 03 Jul 2025 08:17:23 -0000
+
+

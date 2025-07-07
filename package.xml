@@ -10,9 +10,7 @@
 
   <depend>rclcpp_components</depend>
   <depend>rclcpp</depend>
-  <depend>rclcpp_lifecycle</depend>
   <depend>sensor_msgs</depend>
-  <depend>lifecycle_msgs</depend>
 
   <depend>qrb_camera</depend>
   <depend>qrb_ros_transport_image_type</depend>
