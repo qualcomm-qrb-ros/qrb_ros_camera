@@ -345,12 +345,15 @@ def generate_launch_description():
 
 ## 👨‍💻 Build from source
 
-Install dependencies
+### Dependencies
+Install dependencies `ros-dev-tools`
 
 ```bash
-sudo apt install ros-jazzy-qrb-ros-transport-image-type
+sudo apt install ros-jazzy-qrb-ros-transport-image-type \
+  ros-dev-tools
 ```
 
+### Build
 Download the source code and build with colcon
 ```bash
 source /opt/ros/jazzy/setup.bash
@@ -358,12 +361,6 @@ git clone https://github.com/qualcomm-qrb-ros/qrb_ros_camera.git
 colcon build
 ```
 
-Run and debug
-
-```bash
-source install/setup.bash
-ros2 launch qrb_ros_camera qrb_ros_camera_launch.py
-```
 
 ## 🤝 Contributing
 

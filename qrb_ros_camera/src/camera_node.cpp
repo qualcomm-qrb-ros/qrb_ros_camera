@@ -11,7 +11,7 @@ namespace camera
 {
 CameraNode::CameraNode(const rclcpp::NodeOptions & options) : rclcpp::Node("camera_node", options)
 {
-  RCLCPP_INFO(this->get_logger(), "QRB Camera Node statrt");
+  RCLCPP_INFO(this->get_logger(), "QRB Camera Node start");
   camera_index_ = -1;
   init();
   calculate_offset();
