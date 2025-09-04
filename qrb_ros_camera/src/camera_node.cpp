@@ -11,7 +11,7 @@ namespace camera
 {
 CameraNode::CameraNode(const rclcpp::NodeOptions & options) : rclcpp::Node("camera_node", options)
 {
-  RCLCPP_INFO(this->get_logger(), "QRB Camera Node statrt");
+  RCLCPP_INFO(this->get_logger(), "QRB Camera Node start");
   camera_index_ = -1;
   init();
   calculate_offset();
@@ -163,7 +163,8 @@ std::unique_ptr<qrb_ros::transport::type::Image> CameraNode::convert_camera_fram
   auto timestamp = frame->timestamp + time_offset_;
   image_handler->header.stamp.sec = timestamp / 1000000000LL;
   image_handler->header.stamp.nanosec = timestamp % 1000000000LL;
-  image_handler->header.frame_id = frame->stream_name + "_" + std::to_string(frame->frame_id);
+  image_handler->header.frame_id =
+      "cam" + std::to_string(configure_->get_camera_param().camera_id) + "_" + frame->stream_name;
   image_handler->width = frame->width;
   image_handler->height = frame->height;
   image_handler->encoding = frame->format;

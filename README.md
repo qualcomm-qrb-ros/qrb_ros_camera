@@ -345,10 +345,20 @@ def generate_launch_description():
 
 ## 👨‍💻 Build from source
 
+### Dependencies
 Install dependencies
 
 ```bash
-sudo apt install ros-jazzy-qrb-ros-transport-image-type
+sudo add-apt-repository ppa:ubuntu-qcom-iot/qcom-noble-ppa
+sudo add-apt-repository ppa:ubuntu-qcom-iot/qirp
+sudo apt update
+
+sudo apt install ros-jazzy-qrb-ros-transport-image-type \
+  ros-dev-tools \
+  qcom-camera-server \
+  qcom-syslog-plumber-dev \
+  libqmmf-dev \
+  qcom-camxapi-dev
 ```
 
 Download the source code and build with colcon

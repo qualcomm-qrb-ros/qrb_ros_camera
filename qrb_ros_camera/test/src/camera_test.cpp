@@ -42,7 +42,9 @@ private:
   uint64_t g_receive_frame_count[2];   // only add this for test fps
   bool dump_ = false;
   bool dump_camera_info_ = false;
-  bool enable_depth = false;
+  bool enable_depth_ = false;
+  int handler_frame_id_ = 0;
+  int depth_frame_id_ = 0;
 };
 
 // Constructor must be with parameter NodeOptions (component 's requirement)
@@ -51,7 +53,7 @@ TestNode::TestNode(const rclcpp::NodeOptions & options) : TestNode("test_node", 
 TestNode::TestNode(const std::string & name, const rclcpp::NodeOptions & options)
   : rclcpp::Node(name, options)
 {
-  enable_depth = this->declare_parameter("subscirbe_depth", false);
+  enable_depth_ = this->declare_parameter("subscirbe_depth", false);
   dump_ = this->declare_parameter("dump", false);
   dump_camera_info_ = this->declare_parameter("dump_camera_info", false);
   rclcpp::SubscriptionOptions sub_options;
@@ -63,7 +65,7 @@ TestNode::TestNode(const std::string & name, const rclcpp::NodeOptions & options
       std::bind(&TestNode::handler_callback, this, std::placeholders::_1), sub_options);
   camera_info_sub_ = this->create_subscription<CAMERA_INFO_TOPIC_TYPE>(CAMERA_INFO_TOPIC_NAME, 10,
       std::bind(&TestNode::camera_info_callback, this, std::placeholders::_1), sub_options);
-  if (enable_depth) {
+  if (enable_depth_) {
     image_sub_ = this->create_subscription<sensor_msgs::msg::Image>("depth_image", 10,
         std::bind(&TestNode::image_callback, this, std::placeholders::_1), sub_options);
   }
@@ -122,16 +124,10 @@ void TestNode::image_callback(const sensor_msgs::msg::Image::ConstSharedPtr & ha
 
   this->get_parameter("dump", dump_);
   std::string name;
-  int frame_id;
+  depth_frame_id_++;
   uint64_t timestamp = handler->header.stamp.sec * 1000000000ULL + handler->header.stamp.nanosec;
 
-  size_t pos = handler->header.frame_id.find('_');
-  if (pos != std::string::npos) {
-    name = handler->header.frame_id.substr(0, pos);
-    frame_id = std::stoi(handler->header.frame_id.substr(pos + 1));
-  }
-
-  show_fps(name, handler->encoding, timestamp, handler->height, handler->width, frame_id, 1);
+  show_fps(name, handler->encoding, timestamp, handler->height, handler->width, depth_frame_id_, 1);
   if (dump_) {
     int size = handler->height * handler->step;
     auto bufData = &handler->data[0];
@@ -139,8 +135,8 @@ void TestNode::image_callback(const sensor_msgs::msg::Image::ConstSharedPtr & ha
     const char * prefix_name = "test";
     std::string node_name = this->get_name();
     snprintf(fname, sizeof(fname), "%s/%s-%s_wh[%dx%d]_%s-%d-%s.raw", CAMERAROS2_WORKDIR,
-        prefix_name, node_name.c_str(), handler->width, handler->height, name.c_str(), frame_id,
-        handler->encoding.c_str());
+        prefix_name, node_name.c_str(), handler->width, handler->height, name.c_str(),
+        depth_frame_id_, handler->encoding.c_str());
     FILE * fd = fopen(fname, "wb");
     if (fd == NULL) {
       RCLCPP_ERROR(this->get_logger(),
@@ -162,16 +158,10 @@ void TestNode::handler_callback(
 
   this->get_parameter("dump", dump_);
   std::string name;
-  int frame_id;
+  handler_frame_id_++;
   uint64_t timestamp = handler->header.stamp.sec * 1000000000ULL + handler->header.stamp.nanosec;
 
-  size_t pos = handler->header.frame_id.find('_');
-  if (pos != std::string::npos) {
-    name = handler->header.frame_id.substr(0, pos);
-    frame_id = std::stoi(handler->header.frame_id.substr(pos + 1));
-  }
-
-  show_fps(name, handler->encoding, timestamp, handler->height, handler->width, frame_id);
+  show_fps(name, handler->encoding, timestamp, handler->height, handler->width, handler_frame_id_);
   if (dump_) {
     std::shared_ptr<lib_mem_dmabuf::DmaBuffer> buffer = handler->dmabuf;
     buffer->map();
@@ -182,7 +172,7 @@ void TestNode::handler_callback(
     const char * prefix_name = "test";
     std::string node_name = this->get_name();
     snprintf(fname, sizeof(fname), "%s/%s-%s_wh[%dx%d]_%s-%d.%s", CAMERAROS2_WORKDIR, prefix_name,
-        node_name.c_str(), handler->width, handler->height, name.c_str(), frame_id,
+        node_name.c_str(), handler->width, handler->height, name.c_str(), handler_frame_id_,
         handler->encoding.c_str());
     FILE * fd = fopen(fname, "wb");
     if (fd == NULL) {
