@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.8.2)
-project(qrb_camera VERSION 2.0.0)
+project(qrb_camera VERSION 2.0.1)
 
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
 
