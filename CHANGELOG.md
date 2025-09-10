@@ -1,5 +1,12 @@
 # Changelog for package qrb_ros_camera
 
+## 2.0.1 (2025-09-5)
+
+- Fix msg frame_id error issue
+- Add OX03F10 camera config file
+- update document to support ubuntu as tier 1 platform
+- Contributors: Zhanye Lin, Peng Wang
+
 ## 2.0.0 (2025-05-30)
 
 - First version for jazzy
