@@ -15,6 +15,7 @@
   <depend>libqmmf-dev</depend>
   <depend>syslog-plumber-dev</depend>
   <depend>camxapi-dev</depend>
+  <depend>camera-server</depend>
 
   <export>
     <build_type>ament_cmake</build_type>
