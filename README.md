@@ -215,7 +215,7 @@ The `CamX` provides the foundation for image capture, processing, and management
 Add Qualcomm IOT PPA for Ubuntu:
 
 ```bash
-sudo add-apt-repository ppa:ubuntu-qcom-iot/qcom-noble-ppa
+sudo add-apt-repository ppa:ubuntu-qcom-iot/qcom-ppa
 sudo add-apt-repository ppa:ubuntu-qcom-iot/qirp
 sudo apt update
 ```
