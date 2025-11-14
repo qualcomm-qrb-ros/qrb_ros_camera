@@ -131,6 +131,9 @@ int QMMFCamera::start_camera()
 
 int QMMFCamera::stop_camera()
 {
+  if (!is_working_) {
+    return 0;
+  }
   std::cout << "[INFO] [" << logger_ << "]: stop camera" << std::endl;
   status_t ret;
   if (snap_ids_.size() != 0) {
@@ -151,6 +154,15 @@ int QMMFCamera::stop_camera()
   if (0 != ret) {
     std::cout << "[ERROR] [" << logger_ << "]: stop track failed" << std::endl;
     return -1;
+  }
+
+  if (frames_.size() != 0) {
+    std::unique_lock<std::mutex> lck(frame_mutex_);
+    std::cout << "[INFO] [" << logger_ << "]: return buffer" << std::endl;
+    for (auto frame : frames_) {
+      delete frame;
+    }
+    frames_.clear();
   }
 
   for (auto it = track_streams_.begin(); it != track_streams_.end(); it++) {
@@ -217,17 +229,18 @@ void QMMFCamera::track_data_cb(uint32_t track_id,
   using namespace std::placeholders;
   auto cb = std::bind(&QMMFCamera::remove_frame, this, _1);
   auto frame = new QMMFFrame(cb, track_id, camera_id_);
-  {
-    std::unique_lock<std::mutex> lck(frame_mutex_);
-    frames_.push_back(frame);
-  }
   // std::cout << "push frame address: " << frame << std::endl;
   CameraMetadata result;
   frame->orientation = orientation;
   std::unique_lock<std::mutex> lck(listener_mutex_);
   if (listeners_.empty()) {
     std::cout << "[WARNING] [" << logger_ << "]: track data listener is empty" << std::endl;
+    recorder_.ReturnTrackBuffer(track_id, buffers);
     return;
+  }
+  {
+    std::unique_lock<std::mutex> lck(frame_mutex_);
+    frames_.push_back(frame);
   }
   frame->dispatch_track_frame(listeners_, &recorder_, buffers, meta_buffers, result, camera_id_,
       frame_index, stream_name, param.format, param.width, param.height);
@@ -266,14 +279,16 @@ void QMMFCamera::snapshot_cb(uint32_t camera_id,
   using namespace std::placeholders;
   auto cb = std::bind(&QMMFCamera::remove_frame, this, _1);
   auto frame = new QMMFFrame(cb, 0, camera_id_);
-  {
-    std::unique_lock<std::mutex> lck(frame_mutex_);
-    frames_.push_back(frame);
-  }
   CameraMetadata result;
   std::unique_lock<std::mutex> lck(listener_mutex_);
   if (listeners_.empty()) {
+    std::cout << "[WARNING] [" << logger_ << "]: snapshot data listener is empty" << std::endl;
+    recorder_.ReturnImageCaptureBuffer(camera_id, buffer);
     return;
+  }
+  {
+    std::unique_lock<std::mutex> lck(frame_mutex_);
+    frames_.push_back(frame);
   }
   frame->dispatch_snapshot_frame(listeners_, &recorder_, buffer, meta, result, camera_id_,
       image_count, stream_name, param.width, param.height);
