@@ -1,0 +1,13 @@
+Package: ros-jazzy-qrb-ros-camera-dbgsym
+Package-Type: ddeb
+Source: ros-jazzy-qrb-ros-camera
+Version: 2.0.2
+Auto-Built-Package: debug-symbols
+Architecture: arm64
+Maintainer: Zhanye Lin <zhanlin@qti.qualcomm.com>
+Installed-Size: 5375
+Depends: ros-jazzy-qrb-ros-camera (= 2.0.2)
+Section: debug
+Priority: optional
+Description: debug symbols for ros-jazzy-qrb-ros-camera
+Build-Ids: 262caccb42ac5f1cd06b2380b392d5370bbe4ea2 4eef05ce12e179a01859f9ec4357dd0008fa79cb

@@ -24,6 +24,7 @@ ament_auto_find_build_dependencies()
 find_package(PkgConfig REQUIRED)
 pkg_check_modules(YAML_CPP REQUIRED yaml-cpp)
 
+include_directories(ubuntu@ubuntu:~/project/qrb_camera_debian$ cd qrb_ros_camera/include/)
 include_directories(include)
 include_directories(${YAML_CPP_INCLUDE_DIRS})
 
