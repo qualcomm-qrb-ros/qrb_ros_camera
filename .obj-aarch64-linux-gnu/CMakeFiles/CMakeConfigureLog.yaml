@@ -1,0 +1,633 @@
+
+---
+events:
+  -
+    kind: "message-v1"
+    backtrace:
+      - "/usr/share/cmake-3.28/Modules/CMakeDetermineSystem.cmake:233 (message)"
+      - "CMakeLists.txt:2 (project)"
+    message: |
+      The system is: Linux - 6.8.0-1056-qcom - aarch64
+  -
+    kind: "message-v1"
+    backtrace:
+      - "/usr/share/cmake-3.28/Modules/CMakeDetermineCompilerId.cmake:17 (message)"
+      - "/usr/share/cmake-3.28/Modules/CMakeDetermineCompilerId.cmake:64 (__determine_compiler_id_test)"
+      - "/usr/share/cmake-3.28/Modules/CMakeDetermineCCompiler.cmake:123 (CMAKE_DETERMINE_COMPILER_ID)"
+      - "CMakeLists.txt:2 (project)"
+    message: |
+      Compiling the C compiler identification source file "CMakeCCompilerId.c" succeeded.
+      Compiler: /usr/bin/cc 
+      Build flags: -g;-O2;-fno-omit-frame-pointer;-mno-omit-leaf-frame-pointer;-ffile-prefix-map=/home/ubuntu/project/qrb_ros_camera_ws/src/qrb_camera_debian/qrb_ros_camera=.;-flto=auto;-ffat-lto-objects;-fstack-protector-strong;-fstack-clash-protection;-Wformat;-Werror=format-security;-mbranch-protection=standard;-fdebug-prefix-map=/home/ubuntu/project/qrb_ros_camera_ws/src/qrb_camera_debian/qrb_ros_camera=/usr/src/ros-jazzy-qrb-camera-2.0.2;-Wdate-time;-D_FORTIFY_SOURCE=3
+      Id flags:  
+      
+      The output was:
+      0
+      
+      
+      Compilation of the C compiler identification source "CMakeCCompilerId.c" produced "a.out"
+      
+      The C compiler identification is GNU, found in:
+        /home/ubuntu/project/qrb_ros_camera_ws/src/qrb_camera_debian/qrb_ros_camera/.obj-aarch64-linux-gnu/CMakeFiles/3.28.3/CompilerIdC/a.out
+      
+  -
+    kind: "message-v1"
+    backtrace:
+      - "/usr/share/cmake-3.28/Modules/CMakeDetermineCompilerId.cmake:17 (message)"
+      - "/usr/share/cmake-3.28/Modules/CMakeDetermineCompilerId.cmake:64 (__determine_compiler_id_test)"
+      - "/usr/share/cmake-3.28/Modules/CMakeDetermineCXXCompiler.cmake:126 (CMAKE_DETERMINE_COMPILER_ID)"
+      - "CMakeLists.txt:2 (project)"
+    message: |
+      Compiling the CXX compiler identification source file "CMakeCXXCompilerId.cpp" succeeded.
+      Compiler: /usr/bin/c++ 
+      Build flags: -g;-O2;-fno-omit-frame-pointer;-mno-omit-leaf-frame-pointer;-ffile-prefix-map=/home/ubuntu/project/qrb_ros_camera_ws/src/qrb_camera_debian/qrb_ros_camera=.;-flto=auto;-ffat-lto-objects;-fstack-protector-strong;-fstack-clash-protection;-Wformat;-Werror=format-security;-mbranch-protection=standard;-fdebug-prefix-map=/home/ubuntu/project/qrb_ros_camera_ws/src/qrb_camera_debian/qrb_ros_camera=/usr/src/ros-jazzy-qrb-camera-2.0.2;-DNDEBUG;-Wdate-time;-D_FORTIFY_SOURCE=3
+      Id flags:  
+      
+      The output was:
+      0
+      
+      
+      Compilation of the CXX compiler identification source "CMakeCXXCompilerId.cpp" produced "a.out"
+      
+      The CXX compiler identification is GNU, found in:
+        /home/ubuntu/project/qrb_ros_camera_ws/src/qrb_camera_debian/qrb_ros_camera/.obj-aarch64-linux-gnu/CMakeFiles/3.28.3/CompilerIdCXX/a.out
+      
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "/usr/share/cmake-3.28/Modules/CMakeDetermineCompilerABI.cmake:57 (try_compile)"
+      - "/usr/share/cmake-3.28/Modules/CMakeTestCCompiler.cmake:26 (CMAKE_DETERMINE_COMPILER_ABI)"
+      - "CMakeLists.txt:2 (project)"
+    checks:
+      - "Detecting C compiler ABI info"
+    directories:
+      source: "/home/ubuntu/project/qrb_ros_camera_ws/src/qrb_camera_debian/qrb_ros_camera/.obj-aarch64-linux-gnu/CMakeFiles/CMakeScratch/TryCompile-YFoeIH"
+      binary: "/home/ubuntu/project/qrb_ros_camera_ws/src/qrb_camera_debian/qrb_ros_camera/.obj-aarch64-linux-gnu/CMakeFiles/CMakeScratch/TryCompile-YFoeIH"
+    cmakeVariables:
+      CMAKE_C_FLAGS: "-g -O2 -fno-omit-frame-pointer -mno-omit-leaf-frame-pointer -ffile-prefix-map=/home/ubuntu/project/qrb_ros_camera_ws/src/qrb_camera_debian/qrb_ros_camera=. -flto=auto -ffat-lto-objects -fstack-protector-strong -fstack-clash-protection -Wformat -mbranch-protection=standard -fdebug-prefix-map=/home/ubuntu/project/qrb_ros_camera_ws/src/qrb_camera_debian/qrb_ros_camera=/usr/src/ros-jazzy-qrb-camera-2.0.2 -Wdate-time -D_FORTIFY_SOURCE=3"
+      CMAKE_C_FLAGS_DEBUG: "-g"
+      CMAKE_EXE_LINKER_FLAGS: ""
+    buildResult:
+      variable: "CMAKE_C_ABI_COMPILED"
+      cached: true
+      stdout: |
+        Change Dir: '/home/ubuntu/project/qrb_ros_camera_ws/src/qrb_camera_debian/qrb_ros_camera/.obj-aarch64-linux-gnu/CMakeFiles/CMakeScratch/TryCompile-YFoeIH'
+        
+        Run Build Command(s): /usr/bin/cmake -E env VERBOSE=1 /usr/bin/gmake -f Makefile cmTC_b25db/fast
+        gmake[2]: Entering directory '/home/ubuntu/project/qrb_ros_camera_ws/src/qrb_camera_debian/qrb_ros_camera/.obj-aarch64-linux-gnu/CMakeFiles/CMakeScratch/TryCompile-YFoeIH'
+        /usr/bin/gmake  -f CMakeFiles/cmTC_b25db.dir/build.make CMakeFiles/cmTC_b25db.dir/build
+        gmake[3]: Entering directory '/home/ubuntu/project/qrb_ros_camera_ws/src/qrb_camera_debian/qrb_ros_camera/.obj-aarch64-linux-gnu/CMakeFiles/CMakeScratch/TryCompile-YFoeIH'
+        Building C object CMakeFiles/cmTC_b25db.dir/CMakeCCompilerABI.c.o
+        /usr/bin/cc   -g -O2 -fno-omit-frame-pointer -mno-omit-leaf-frame-pointer -ffile-prefix-map=/home/ubuntu/project/qrb_ros_camera_ws/src/qrb_camera_debian/qrb_ros_camera=. -flto=auto -ffat-lto-objects -fstack-protector-strong -fstack-clash-protection -Wformat -mbranch-protection=standard -fdebug-prefix-map=/home/ubuntu/project/qrb_ros_camera_ws/src/qrb_camera_debian/qrb_ros_camera=/usr/src/ros-jazzy-qrb-camera-2.0.2 -Wdate-time -D_FORTIFY_SOURCE=3    -v -o CMakeFiles/cmTC_b25db.dir/CMakeCCompilerABI.c.o -c /usr/share/cmake-3.28/Modules/CMakeCCompilerABI.c
+        Using built-in specs.
+        COLLECT_GCC=/usr/bin/cc
+        OFFLOAD_TARGET_NAMES=nvptx-none
+        OFFLOAD_TARGET_DEFAULT=1
+        Target: aarch64-linux-gnu
+        Configured with: ../src/configure -v --with-pkgversion='Ubuntu 13.3.0-6ubuntu2~24.04' --with-bugurl=file:///usr/share/doc/gcc-13/README.Bugs --enable-languages=c,ada,c++,go,d,fortran,objc,obj-c++,m2 --prefix=/usr --with-gcc-major-version-only --program-suffix=-13 --program-prefix=aarch64-linux-gnu- --enable-shared --enable-linker-build-id --libexecdir=/usr/libexec --without-included-gettext --enable-threads=posix --libdir=/usr/lib --enable-nls --enable-bootstrap --enable-clocale=gnu --enable-libstdcxx-debug --enable-libstdcxx-time=yes --with-default-libstdcxx-abi=new --enable-libstdcxx-backtrace --enable-gnu-unique-object --disable-libquadmath --disable-libquadmath-support --enable-plugin --enable-default-pie --with-system-zlib --enable-libphobos-checking=release --with-target-system-zlib=auto --enable-objc-gc=auto --enable-multiarch --enable-fix-cortex-a53-843419 --disable-werror --enable-offload-targets=nvptx-none=/build/gcc-13-Nz4ro4/gcc-13-13.3.0/debian/tmp-nvptx/usr --enable-offload-defaulted --without-cuda-driver --enable-checking=release --build=aarch64-linux-gnu --host=aarch64-linux-gnu --target=aarch64-linux-gnu --with-build-config=bootstrap-lto-lean --enable-link-serialization=2
+        Thread model: posix
+        Supported LTO compression algorithms: zlib zstd
+        gcc version 13.3.0 (Ubuntu 13.3.0-6ubuntu2~24.04) 
+        COLLECT_GCC_OPTIONS='-g' '-O2' '-fno-omit-frame-pointer' '-mno-omit-leaf-frame-pointer' '-ffile-prefix-map=/home/ubuntu/project/qrb_ros_camera_ws/src/qrb_camera_debian/qrb_ros_camera=.' '-flto=auto' '-ffat-lto-objects' '-fstack-protector-strong' '-fstack-clash-protection' '-Wformat=1' '-mbranch-protection=standard' '-fdebug-prefix-map=/home/ubuntu/project/qrb_ros_camera_ws/src/qrb_camera_debian/qrb_ros_camera=/usr/src/ros-jazzy-qrb-camera-2.0.2' '-Wdate-time' '-D' '_FORTIFY_SOURCE=3' '-v' '-o' 'CMakeFiles/cmTC_b25db.dir/CMakeCCompilerABI.c.o' '-c' '-mlittle-endian' '-mabi=lp64' '-dumpdir' 'CMakeFiles/cmTC_b25db.dir/'
+         /usr/libexec/gcc/aarch64-linux-gnu/13/cc1 -quiet -v -imultiarch aarch64-linux-gnu -D _FORTIFY_SOURCE=3 /usr/share/cmake-3.28/Modules/CMakeCCompilerABI.c -quiet -dumpdir CMakeFiles/cmTC_b25db.dir/ -dumpbase CMakeCCompilerABI.c.c -dumpbase-ext .c -mno-omit-leaf-frame-pointer -mbranch-protection=standard -mlittle-endian -mabi=lp64 -g -O2 -Wformat=1 -Wdate-time -version -fno-omit-frame-pointer -ffile-prefix-map=/home/ubuntu/project/qrb_ros_camera_ws/src/qrb_camera_debian/qrb_ros_camera=. -flto=auto -ffat-lto-objects -fstack-protector-strong -fstack-clash-protection -fdebug-prefix-map=/home/ubuntu/project/qrb_ros_camera_ws/src/qrb_camera_debian/qrb_ros_camera=/usr/src/ros-jazzy-qrb-camera-2.0.2 -fasynchronous-unwind-tables -fstack-protector-strong -Wformat -Wformat-security -fstack-clash-protection -o /tmp/cc9jkOyQ.s
+        GNU C17 (Ubuntu 13.3.0-6ubuntu2~24.04) version 13.3.0 (aarch64-linux-gnu)
+        	compiled by GNU C version 13.3.0, GMP version 6.3.0, MPFR version 4.2.1, MPC version 1.3.1, isl version isl-0.26-GMP
+        
+        GGC heuristics: --param ggc-min-expand=100 --param ggc-min-heapsize=131072
+        ignoring nonexistent directory "/usr/local/include/aarch64-linux-gnu"
+        ignoring nonexistent directory "/usr/lib/gcc/aarch64-linux-gnu/13/include-fixed/aarch64-linux-gnu"
+        ignoring nonexistent directory "/usr/lib/gcc/aarch64-linux-gnu/13/include-fixed"
+        ignoring nonexistent directory "/usr/lib/gcc/aarch64-linux-gnu/13/../../../../aarch64-linux-gnu/include"
+        #include "..." search starts here:
+        #include <...> search starts here:
+         /usr/lib/gcc/aarch64-linux-gnu/13/include
+         /usr/local/include
+         /usr/include/aarch64-linux-gnu
+         /usr/include
+        End of search list.
+        Compiler executable checksum: 4641e2542d7b0fa864451cdc7c3485d3
+        COLLECT_GCC_OPTIONS='-g' '-O2' '-fno-omit-frame-pointer' '-mno-omit-leaf-frame-pointer' '-ffile-prefix-map=/home/ubuntu/project/qrb_ros_camera_ws/src/qrb_camera_debian/qrb_ros_camera=.' '-flto=auto' '-ffat-lto-objects' '-fstack-protector-strong' '-fstack-clash-protection' '-Wformat=1' '-mbranch-protection=standard' '-fdebug-prefix-map=/home/ubuntu/project/qrb_ros_camera_ws/src/qrb_camera_debian/qrb_ros_camera=/usr/src/ros-jazzy-qrb-camera-2.0.2' '-Wdate-time' '-D' '_FORTIFY_SOURCE=3' '-v' '-o' 'CMakeFiles/cmTC_b25db.dir/CMakeCCompilerABI.c.o' '-c' '-mlittle-endian' '-mabi=lp64' '-dumpdir' 'CMakeFiles/cmTC_b25db.dir/'
+         as -v --gdwarf-5 -EL -mabi=lp64 -o CMakeFiles/cmTC_b25db.dir/CMakeCCompilerABI.c.o /tmp/cc9jkOyQ.s
+        GNU assembler version 2.42 (aarch64-linux-gnu) using BFD version (GNU Binutils for Ubuntu) 2.42
+        COMPILER_PATH=/usr/libexec/gcc/aarch64-linux-gnu/13/:/usr/libexec/gcc/aarch64-linux-gnu/13/:/usr/libexec/gcc/aarch64-linux-gnu/:/usr/lib/gcc/aarch64-linux-gnu/13/:/usr/lib/gcc/aarch64-linux-gnu/
+        LIBRARY_PATH=/usr/lib/gcc/aarch64-linux-gnu/13/:/usr/lib/gcc/aarch64-linux-gnu/13/../../../aarch64-linux-gnu/:/usr/lib/gcc/aarch64-linux-gnu/13/../../../../lib/:/lib/aarch64-linux-gnu/:/lib/../lib/:/usr/lib/aarch64-linux-gnu/:/usr/lib/../lib/:/usr/lib/gcc/aarch64-linux-gnu/13/../../../:/lib/:/usr/lib/
+        COLLECT_GCC_OPTIONS='-g' '-O2' '-fno-omit-frame-pointer' '-mno-omit-leaf-frame-pointer' '-ffile-prefix-map=/home/ubuntu/project/qrb_ros_camera_ws/src/qrb_camera_debian/qrb_ros_camera=.' '-flto=auto' '-ffat-lto-objects' '-fstack-protector-strong' '-fstack-clash-protection' '-Wformat=1' '-mbranch-protection=standard' '-fdebug-prefix-map=/home/ubuntu/project/qrb_ros_camera_ws/src/qrb_camera_debian/qrb_ros_camera=/usr/src/ros-jazzy-qrb-camera-2.0.2' '-Wdate-time' '-D' '_FORTIFY_SOURCE=3' '-v' '-o' 'CMakeFiles/cmTC_b25db.dir/CMakeCCompilerABI.c.o' '-c' '-mlittle-endian' '-mabi=lp64' '-dumpdir' 'CMakeFiles/cmTC_b25db.dir/CMakeCCompilerABI.c.'
+        Linking C executable cmTC_b25db
+        /usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_b25db.dir/link.txt --verbose=1
+        /usr/bin/cc -g -O2 -fno-omit-frame-pointer -mno-omit-leaf-frame-pointer -ffile-prefix-map=/home/ubuntu/project/qrb_ros_camera_ws/src/qrb_camera_debian/qrb_ros_camera=. -flto=auto -ffat-lto-objects -fstack-protector-strong -fstack-clash-protection -Wformat -mbranch-protection=standard -fdebug-prefix-map=/home/ubuntu/project/qrb_ros_camera_ws/src/qrb_camera_debian/qrb_ros_camera=/usr/src/ros-jazzy-qrb-camera-2.0.2 -Wdate-time -D_FORTIFY_SOURCE=3   -v CMakeFiles/cmTC_b25db.dir/CMakeCCompilerABI.c.o -o cmTC_b25db 
+        Using built-in specs.
+        COLLECT_GCC=/usr/bin/cc
+        COLLECT_LTO_WRAPPER=/usr/libexec/gcc/aarch64-linux-gnu/13/lto-wrapper
+        OFFLOAD_TARGET_NAMES=nvptx-none
+        OFFLOAD_TARGET_DEFAULT=1
+        Target: aarch64-linux-gnu
+        Configured with: ../src/configure -v --with-pkgversion='Ubuntu 13.3.0-6ubuntu2~24.04' --with-bugurl=file:///usr/share/doc/gcc-13/README.Bugs --enable-languages=c,ada,c++,go,d,fortran,objc,obj-c++,m2 --prefix=/usr --with-gcc-major-version-only --program-suffix=-13 --program-prefix=aarch64-linux-gnu- --enable-shared --enable-linker-build-id --libexecdir=/usr/libexec --without-included-gettext --enable-threads=posix --libdir=/usr/lib --enable-nls --enable-bootstrap --enable-clocale=gnu --enable-libstdcxx-debug --enable-libstdcxx-time=yes --with-default-libstdcxx-abi=new --enable-libstdcxx-backtrace --enable-gnu-unique-object --disable-libquadmath --disable-libquadmath-support --enable-plugin --enable-default-pie --with-system-zlib --enable-libphobos-checking=release --with-target-system-zlib=auto --enable-objc-gc=auto --enable-multiarch --enable-fix-cortex-a53-843419 --disable-werror --enable-offload-targets=nvptx-none=/build/gcc-13-Nz4ro4/gcc-13-13.3.0/debian/tmp-nvptx/usr --enable-offload-defaulted --without-cuda-driver --enable-checking=release --build=aarch64-linux-gnu --host=aarch64-linux-gnu --target=aarch64-linux-gnu --with-build-config=bootstrap-lto-lean --enable-link-serialization=2
+        Thread model: posix
+        Supported LTO compression algorithms: zlib zstd
+        gcc version 13.3.0 (Ubuntu 13.3.0-6ubuntu2~24.04) 
+        COMPILER_PATH=/usr/libexec/gcc/aarch64-linux-gnu/13/:/usr/libexec/gcc/aarch64-linux-gnu/13/:/usr/libexec/gcc/aarch64-linux-gnu/:/usr/lib/gcc/aarch64-linux-gnu/13/:/usr/lib/gcc/aarch64-linux-gnu/
+        LIBRARY_PATH=/usr/lib/gcc/aarch64-linux-gnu/13/:/usr/lib/gcc/aarch64-linux-gnu/13/../../../aarch64-linux-gnu/:/usr/lib/gcc/aarch64-linux-gnu/13/../../../../lib/:/lib/aarch64-linux-gnu/:/lib/../lib/:/usr/lib/aarch64-linux-gnu/:/usr/lib/../lib/:/usr/lib/gcc/aarch64-linux-gnu/13/../../../:/lib/:/usr/lib/
+        COLLECT_GCC_OPTIONS='-g' '-O2' '-fno-omit-frame-pointer' '-mno-omit-leaf-frame-pointer' '-ffile-prefix-map=/home/ubuntu/project/qrb_ros_camera_ws/src/qrb_camera_debian/qrb_ros_camera=.' '-flto=auto' '-ffat-lto-objects' '-fstack-protector-strong' '-fstack-clash-protection' '-Wformat=1' '-mbranch-protection=standard' '-fdebug-prefix-map=/home/ubuntu/project/qrb_ros_camera_ws/src/qrb_camera_debian/qrb_ros_camera=/usr/src/ros-jazzy-qrb-camera-2.0.2' '-Wdate-time' '-D' '_FORTIFY_SOURCE=3' '-v' '-o' 'cmTC_b25db' '-mlittle-endian' '-mabi=lp64' '-dumpdir' 'cmTC_b25db.'
+         /usr/libexec/gcc/aarch64-linux-gnu/13/collect2 -plugin /usr/libexec/gcc/aarch64-linux-gnu/13/liblto_plugin.so -plugin-opt=/usr/libexec/gcc/aarch64-linux-gnu/13/lto-wrapper -plugin-opt=-fresolution=/tmp/cc4YidFd.res -plugin-opt=-pass-through=-lgcc -plugin-opt=-pass-through=-lgcc_s -plugin-opt=-pass-through=-lc -plugin-opt=-pass-through=-lgcc -plugin-opt=-pass-through=-lgcc_s -flto=auto --build-id --eh-frame-hdr --hash-style=gnu --as-needed -dynamic-linker /lib/ld-linux-aarch64.so.1 -X -EL -maarch64linux --fix-cortex-a53-843419 -pie -z now -z relro -o cmTC_b25db /usr/lib/gcc/aarch64-linux-gnu/13/../../../aarch64-linux-gnu/Scrt1.o /usr/lib/gcc/aarch64-linux-gnu/13/../../../aarch64-linux-gnu/crti.o /usr/lib/gcc/aarch64-linux-gnu/13/crtbeginS.o -L/usr/lib/gcc/aarch64-linux-gnu/13 -L/usr/lib/gcc/aarch64-linux-gnu/13/../../../aarch64-linux-gnu -L/usr/lib/gcc/aarch64-linux-gnu/13/../../../../lib -L/lib/aarch64-linux-gnu -L/lib/../lib -L/usr/lib/aarch64-linux-gnu -L/usr/lib/../lib -L/usr/lib/gcc/aarch64-linux-gnu/13/../../.. CMakeFiles/cmTC_b25db.dir/CMakeCCompilerABI.c.o -lgcc --push-state --as-needed -lgcc_s --pop-state -lc -lgcc --push-state --as-needed -lgcc_s --pop-state /usr/lib/gcc/aarch64-linux-gnu/13/crtendS.o /usr/lib/gcc/aarch64-linux-gnu/13/../../../aarch64-linux-gnu/crtn.o
+        /usr/libexec/gcc/aarch64-linux-gnu/13/lto-wrapper -fresolution=/tmp/cc4YidFd.res -flinker-output=pie CMakeFiles/cmTC_b25db.dir/CMakeCCompilerABI.c.o 
+        /usr/libexec/gcc/aarch64-linux-gnu/13/lto-wrapper -fresolution=/tmp/cc4YidFd.res -flinker-output=pie CMakeFiles/cmTC_b25db.dir/CMakeCCompilerABI.c.o 
+        LTO parallelism level set to 8
+        /usr/bin/cc @/tmp/cc679LlQ
+        Using built-in specs.
+        COLLECT_GCC=/usr/bin/cc
+        OFFLOAD_TARGET_NAMES=nvptx-none
+        OFFLOAD_TARGET_DEFAULT=1
+        Target: aarch64-linux-gnu
+        Configured with: ../src/configure -v --with-pkgversion='Ubuntu 13.3.0-6ubuntu2~24.04' --with-bugurl=file:///usr/share/doc/gcc-13/README.Bugs --enable-languages=c,ada,c++,go,d,fortran,objc,obj-c++,m2 --prefix=/usr --with-gcc-major-version-only --program-suffix=-13 --program-prefix=aarch64-linux-gnu- --enable-shared --enable-linker-build-id --libexecdir=/usr/libexec --without-included-gettext --enable-threads=posix --libdir=/usr/lib --enable-nls --enable-bootstrap --enable-clocale=gnu --enable-libstdcxx-debug --enable-libstdcxx-time=yes --with-default-libstdcxx-abi=new --enable-libstdcxx-backtrace --enable-gnu-unique-object --disable-libquadmath --disable-libquadmath-support --enable-plugin --enable-default-pie --with-system-zlib --enable-libphobos-checking=release --with-target-system-zlib=auto --enable-objc-gc=auto --enable-multiarch --enable-fix-cortex-a53-843419 --disable-werror --enable-offload-targets=nvptx-none=/build/gcc-13-Nz4ro4/gcc-13-13.3.0/debian/tmp-nvptx/usr --enable-offload-defaulted --without-cuda-driver --enable-checking=release --build=aarch64-linux-gnu --host=aarch64-linux-gnu --target=aarch64-linux-gnu --with-build-config=bootstrap-lto-lean --enable-link-serialization=2
+        Thread model: posix
+        Supported LTO compression algorithms: zlib zstd
+        gcc version 13.3.0 (Ubuntu 13.3.0-6ubuntu2~24.04) 
+        COLLECT_GCC_OPTIONS='-c' '-fno-openmp' '-fno-openacc' '-fPIC' '-fcf-protection=none' '-g' '-mbranch-protection=standard' '-mlittle-endian' '-mabi=lp64' '-O2' '-fasynchronous-unwind-tables' '-g' '-O2' '-fno-omit-frame-pointer' '-mno-omit-leaf-frame-pointer' '-ffile-prefix-map=/home/ubuntu/project/qrb_ros_camera_ws/src/qrb_camera_debian/qrb_ros_camera=.' '-ffat-lto-objects' '-fstack-protector-strong' '-fstack-clash-protection' '-mbranch-protection=standard' '-fdebug-prefix-map=/home/ubuntu/project/qrb_ros_camera_ws/src/qrb_camera_debian/qrb_ros_camera=/usr/src/ros-jazzy-qrb-camera-2.0.2' '-v' '-mlittle-endian' '-mabi=lp64'   '-fltrans-output-list=/tmp/ccQFCaxh.ltrans.out' '-fwpa=8' '-fresolution=/tmp/cc4YidFd.res' '-flinker-output=pie'
+         /usr/libexec/gcc/aarch64-linux-gnu/13/lto1 -quiet -dumpbase ./cmTC_b25db.wpa -mbranch-protection=standard -mlittle-endian -mabi=lp64 -mno-omit-leaf-frame-pointer -mbranch-protection=standard -mlittle-endian -mabi=lp64 -g -g -O2 -O2 -version -fno-openmp -fno-openacc -fPIC -fcf-protection=none -fasynchronous-unwind-tables -fno-omit-frame-pointer -ffile-prefix-map=/home/ubuntu/project/qrb_ros_camera_ws/src/qrb_camera_debian/qrb_ros_camera=. -ffat-lto-objects -fstack-protector-strong -fstack-clash-protection -fdebug-prefix-map=/home/ubuntu/project/qrb_ros_camera_ws/src/qrb_camera_debian/qrb_ros_camera=/usr/src/ros-jazzy-qrb-camera-2.0.2 -fltrans-output-list=/tmp/ccQFCaxh.ltrans.out -fwpa=8 -fresolution=/tmp/cc4YidFd.res -flinker-output=pie @/tmp/ccqCWksh
+        GNU GIMPLE (Ubuntu 13.3.0-6ubuntu2~24.04) version 13.3.0 (aarch64-linux-gnu)
+        	compiled by GNU C version 13.3.0, GMP version 6.3.0, MPFR version 4.2.1, MPC version 1.3.1, isl version isl-0.26-GMP
+        
+        GGC heuristics: --param ggc-min-expand=100 --param ggc-min-heapsize=131072
+        COMPILER_PATH=/usr/libexec/gcc/aarch64-linux-gnu/13/:/usr/libexec/gcc/aarch64-linux-gnu/13/:/usr/libexec/gcc/aarch64-linux-gnu/:/usr/lib/gcc/aarch64-linux-gnu/13/:/usr/lib/gcc/aarch64-linux-gnu/:/usr/libexec/gcc/aarch64-linux-gnu/13/:/usr/libexec/gcc/aarch64-linux-gnu/13/:/usr/libexec/gcc/aarch64-linux-gnu/:/usr/lib/gcc/aarch64-linux-gnu/13/:/usr/lib/gcc/aarch64-linux-gnu/
+        LIBRARY_PATH=/usr/lib/gcc/aarch64-linux-gnu/13/../../../../lib/aarch64-linux-gnu/:/usr/lib/gcc/aarch64-linux-gnu/13/../../../../lib/../lib/:/lib/../lib/aarch64-linux-gnu/:/lib/../lib/../lib/:/usr/lib/../lib/aarch64-linux-gnu/:/usr/lib/../lib/../lib/:/usr/lib/gcc/aarch64-linux-gnu/13/../../../aarch64-linux-gnu/:/usr/lib/gcc/aarch64-linux-gnu/13/../../../../lib/:/lib/aarch64-linux-gnu/:/lib/../lib/:/usr/lib/aarch64-linux-gnu/:/usr/lib/../lib/:/usr/lib/gcc/aarch64-linux-gnu/13/:/usr/lib/gcc/aarch64-linux-gnu/13/../../../aarch64-linux-gnu/:/usr/lib/gcc/aarch64-linux-gnu/13/../../../../lib/:/lib/aarch64-linux-gnu/:/lib/../lib/:/usr/lib/aarch64-linux-gnu/:/usr/lib/../lib/:/usr/lib/gcc/aarch64-linux-gnu/13/:/usr/lib/gcc/aarch64-linux-gnu/13/../../../aarch64-linux-gnu/:/usr/lib/gcc/aarch64-linux-gnu/13/../../../../lib/:/lib/aarch64-linux-gnu/:/lib/../lib/:/usr/lib/aarch64-linux-gnu/:/usr/lib/../lib/:/usr/lib/gcc/aarch64-linux-gnu/13/../../../:/lib/:/usr/lib/:/usr/lib/gcc/aarch64-linux-gnu/13/../../../:/lib/:/usr/lib/
+        COLLECT_GCC_OPTIONS='-c' '-fno-openmp' '-fno-openacc' '-fPIC' '-fcf-protection=none' '-g' '-mbranch-protection=standard' '-mlittle-endian' '-mabi=lp64' '-O2' '-fasynchronous-unwind-tables' '-g' '-O2' '-fno-omit-frame-pointer' '-mno-omit-leaf-frame-pointer' '-ffile-prefix-map=/home/ubuntu/project/qrb_ros_camera_ws/src/qrb_camera_debian/qrb_ros_camera=.' '-ffat-lto-objects' '-fstack-protector-strong' '-fstack-clash-protection' '-mbranch-protection=standard' '-fdebug-prefix-map=/home/ubuntu/project/qrb_ros_camera_ws/src/qrb_camera_debian/qrb_ros_camera=/usr/src/ros-jazzy-qrb-camera-2.0.2' '-v' '-mlittle-endian' '-mabi=lp64'   '-fltrans-output-list=/tmp/ccQFCaxh.ltrans.out' '-fwpa=8' '-fresolution=/tmp/cc4YidFd.res' '-flinker-output=pie' '-dumpdir' './cmTC_b25db.wpa.'
+        make -f /tmp/ccnxhxyZ.mk -j8 all
+        Using built-in specs.
+        COLLECT_GCC=/usr/bin/cc
+        OFFLOAD_TARGET_NAMES=nvptx-none
+        OFFLOAD_TARGET_DEFAULT=1
+        Target: aarch64-linux-gnu
+        Configured with: ../src/configure -v --with-pkgversion='Ubuntu 13.3.0-6ubuntu2~24.04' --with-bugurl=file:///usr/share/doc/gcc-13/README.Bugs --enable-languages=c,ada,c++,go,d,fortran,objc,obj-c++,m2 --prefix=/usr --with-gcc-major-version-only --program-suffix=-13 --program-prefix=aarch64-linux-gnu- --enable-shared --enable-linker-build-id --libexecdir=/usr/libexec --without-included-gettext --enable-threads=posix --libdir=/usr/lib --enable-nls --enable-bootstrap --enable-clocale=gnu --enable-libstdcxx-debug --enable-libstdcxx-time=yes --with-default-libstdcxx-abi=new --enable-libstdcxx-backtrace --enable-gnu-unique-object --disable-libquadmath --disable-libquadmath-support --enable-plugin --enable-default-pie --with-system-zlib --enable-libphobos-checking=release --with-target-system-zlib=auto --enable-objc-gc=auto --enable-multiarch --enable-fix-cortex-a53-843419 --disable-werror --enable-offload-targets=nvptx-none=/build/gcc-13-Nz4ro4/gcc-13-13.3.0/debian/tmp-nvptx/usr --enable-offload-defaulted --without-cuda-driver --enable-checking=release --build=aarch64-linux-gnu --host=aarch64-linux-gnu --target=aarch64-linux-gnu --with-build-config=bootstrap-lto-lean --enable-link-serialization=2
+        Thread model: posix
+        Supported LTO compression algorithms: zlib zstd
+        gcc version 13.3.0 (Ubuntu 13.3.0-6ubuntu2~24.04) 
+        COLLECT_GCC_OPTIONS='-c' '-fno-openmp' '-fno-openacc' '-fPIC' '-fcf-protection=none' '-g' '-mbranch-protection=standard' '-mlittle-endian' '-mabi=lp64' '-O2' '-fasynchronous-unwind-tables' '-g' '-O2' '-fno-omit-frame-pointer' '-mno-omit-leaf-frame-pointer' '-ffile-prefix-map=/home/ubuntu/project/qrb_ros_camera_ws/src/qrb_camera_debian/qrb_ros_camera=.' '-ffat-lto-objects' '-fstack-protector-strong' '-fstack-clash-protection' '-mbranch-protection=standard' '-fdebug-prefix-map=/home/ubuntu/project/qrb_ros_camera_ws/src/qrb_camera_debian/qrb_ros_camera=/usr/src/ros-jazzy-qrb-camera-2.0.2' '-v' '-mlittle-endian' '-mabi=lp64'   '-fltrans' '-o' '/tmp/ccQFCaxh.ltrans0.ltrans.o'
+         /usr/libexec/gcc/aarch64-linux-gnu/13/lto1 -quiet -dumpbase ./cmTC_b25db.ltrans0.ltrans -mbranch-protection=standard -mlittle-endian -mabi=lp64 -mno-omit-leaf-frame-pointer -mbranch-protection=standard -mlittle-endian -mabi=lp64 -g -g -O2 -O2 -version -fno-openmp -fno-openacc -fPIC -fcf-protection=none -fasynchronous-unwind-tables -fno-omit-frame-pointer -ffile-prefix-map=/home/ubuntu/project/qrb_ros_camera_ws/src/qrb_camera_debian/qrb_ros_camera=. -ffat-lto-objects -fstack-protector-strong -fstack-clash-protection -fdebug-prefix-map=/home/ubuntu/project/qrb_ros_camera_ws/src/qrb_camera_debian/qrb_ros_camera=/usr/src/ros-jazzy-qrb-camera-2.0.2 -fltrans /tmp/ccQFCaxh.ltrans0.o -o /tmp/ccgCTEZ9.s
+        GNU GIMPLE (Ubuntu 13.3.0-6ubuntu2~24.04) version 13.3.0 (aarch64-linux-gnu)
+        	compiled by GNU C version 13.3.0, GMP version 6.3.0, MPFR version 4.2.1, MPC version 1.3.1, isl version isl-0.26-GMP
+        
+        GGC heuristics: --param ggc-min-expand=100 --param ggc-min-heapsize=131072
+        COLLECT_GCC_OPTIONS='-c' '-fno-openmp' '-fno-openacc' '-fPIC' '-fcf-protection=none' '-g' '-mbranch-protection=standard' '-mlittle-endian' '-mabi=lp64' '-O2' '-fasynchronous-unwind-tables' '-g' '-O2' '-fno-omit-frame-pointer' '-mno-omit-leaf-frame-pointer' '-ffile-prefix-map=/home/ubuntu/project/qrb_ros_camera_ws/src/qrb_camera_debian/qrb_ros_camera=.' '-ffat-lto-objects' '-fstack-protector-strong' '-fstack-clash-protection' '-mbranch-protection=standard' '-fdebug-prefix-map=/home/ubuntu/project/qrb_ros_camera_ws/src/qrb_camera_debian/qrb_ros_camera=/usr/src/ros-jazzy-qrb-camera-2.0.2' '-v' '-mlittle-endian' '-mabi=lp64'   '-fltrans' '-o' '/tmp/ccQFCaxh.ltrans0.ltrans.o'
+         as -v --gdwarf-5 -EL -mabi=lp64 -mabi=lp64 -o /tmp/ccQFCaxh.ltrans0.ltrans.o /tmp/ccgCTEZ9.s
+        GNU assembler version 2.42 (aarch64-linux-gnu) using BFD version (GNU Binutils for Ubuntu) 2.42
+        MAKEFLAGS=w -j8 
+        COMPILER_PATH=/usr/libexec/gcc/aarch64-linux-gnu/13/:/usr/libexec/gcc/aarch64-linux-gnu/13/:/usr/libexec/gcc/aarch64-linux-gnu/:/usr/lib/gcc/aarch64-linux-gnu/13/:/usr/lib/gcc/aarch64-linux-gnu/:/usr/libexec/gcc/aarch64-linux-gnu/13/:/usr/libexec/gcc/aarch64-linux-gnu/13/:/usr/libexec/gcc/aarch64-linux-gnu/:/usr/lib/gcc/aarch64-linux-gnu/13/:/usr/lib/gcc/aarch64-linux-gnu/
+        LIBRARY_PATH=/usr/lib/gcc/aarch64-linux-gnu/13/../../../../lib/aarch64-linux-gnu/:/usr/lib/gcc/aarch64-linux-gnu/13/../../../../lib/../lib/:/lib/../lib/aarch64-linux-gnu/:/lib/../lib/../lib/:/usr/lib/../lib/aarch64-linux-gnu/:/usr/lib/../lib/../lib/:/usr/lib/gcc/aarch64-linux-gnu/13/../../../aarch64-linux-gnu/:/usr/lib/gcc/aarch64-linux-gnu/13/../../../../lib/:/lib/aarch64-linux-gnu/:/lib/../lib/:/usr/lib/aarch64-linux-gnu/:/usr/lib/../lib/:/usr/lib/gcc/aarch64-linux-gnu/13/:/usr/lib/gcc/aarch64-linux-gnu/13/../../../aarch64-linux-gnu/:/usr/lib/gcc/aarch64-linux-gnu/13/../../../../lib/:/lib/aarch64-linux-gnu/:/lib/../lib/:/usr/lib/aarch64-linux-gnu/:/usr/lib/../lib/:/usr/lib/gcc/aarch64-linux-gnu/13/:/usr/lib/gcc/aarch64-linux-gnu/13/../../../aarch64-linux-gnu/:/usr/lib/gcc/aarch64-linux-gnu/13/../../../../lib/:/lib/aarch64-linux-gnu/:/lib/../lib/:/usr/lib/aarch64-linux-gnu/:/usr/lib/../lib/:/usr/lib/gcc/aarch64-linux-gnu/13/../../../:/lib/:/usr/lib/:/usr/lib/gcc/aarch64-linux-gnu/13/../../../:/lib/:/usr/lib/
+        COLLECT_GCC_OPTIONS='-c' '-fno-openmp' '-fno-openacc' '-fPIC' '-fcf-protection=none' '-g' '-mbranch-protection=standard' '-mlittle-endian' '-mabi=lp64' '-O2' '-fasynchronous-unwind-tables' '-g' '-O2' '-fno-omit-frame-pointer' '-mno-omit-leaf-frame-pointer' '-ffile-prefix-map=/home/ubuntu/project/qrb_ros_camera_ws/src/qrb_camera_debian/qrb_ros_camera=.' '-ffat-lto-objects' '-fstack-protector-strong' '-fstack-clash-protection' '-mbranch-protection=standard' '-fdebug-prefix-map=/home/ubuntu/project/qrb_ros_camera_ws/src/qrb_camera_debian/qrb_ros_camera=/usr/src/ros-jazzy-qrb-camera-2.0.2' '-v' '-mlittle-endian' '-mabi=lp64'   '-fltrans' '-o' '/tmp/ccQFCaxh.ltrans0.ltrans.o' '-dumpdir' './cmTC_b25db.ltrans0.ltrans.'
+        COLLECT_GCC_OPTIONS='-g' '-O2' '-fno-omit-frame-pointer' '-mno-omit-leaf-frame-pointer' '-ffile-prefix-map=/home/ubuntu/project/qrb_ros_camera_ws/src/qrb_camera_debian/qrb_ros_camera=.' '-flto=auto' '-ffat-lto-objects' '-fstack-protector-strong' '-fstack-clash-protection' '-Wformat=1' '-mbranch-protection=standard' '-fdebug-prefix-map=/home/ubuntu/project/qrb_ros_camera_ws/src/qrb_camera_debian/qrb_ros_camera=/usr/src/ros-jazzy-qrb-camera-2.0.2' '-Wdate-time' '-D' '_FORTIFY_SOURCE=3' '-v' '-o' 'cmTC_b25db' '-mlittle-endian' '-mabi=lp64' '-dumpdir' 'cmTC_b25db.'
+        gmake[3]: Leaving directory '/home/ubuntu/project/qrb_ros_camera_ws/src/qrb_camera_debian/qrb_ros_camera/.obj-aarch64-linux-gnu/CMakeFiles/CMakeScratch/TryCompile-YFoeIH'
+        gmake[2]: Leaving directory '/home/ubuntu/project/qrb_ros_camera_ws/src/qrb_camera_debian/qrb_ros_camera/.obj-aarch64-linux-gnu/CMakeFiles/CMakeScratch/TryCompile-YFoeIH'
+        
+      exitCode: 0
+  -
+    kind: "message-v1"
+    backtrace:
+      - "/usr/share/cmake-3.28/Modules/CMakeDetermineCompilerABI.cmake:127 (message)"
+      - "/usr/share/cmake-3.28/Modules/CMakeTestCCompiler.cmake:26 (CMAKE_DETERMINE_COMPILER_ABI)"
+      - "CMakeLists.txt:2 (project)"
+    message: |
+      Parsed C implicit include dir info: rv=done
+        found start of include info
+        found start of implicit include info
+          add: [/usr/lib/gcc/aarch64-linux-gnu/13/include]
+          add: [/usr/local/include]
+          add: [/usr/include/aarch64-linux-gnu]
+          add: [/usr/include]
+        end of search list found
+        collapse include dir [/usr/lib/gcc/aarch64-linux-gnu/13/include] ==> [/usr/lib/gcc/aarch64-linux-gnu/13/include]
+        collapse include dir [/usr/local/include] ==> [/usr/local/include]
+        collapse include dir [/usr/include/aarch64-linux-gnu] ==> [/usr/include/aarch64-linux-gnu]
+        collapse include dir [/usr/include] ==> [/usr/include]
+        implicit include dirs: [/usr/lib/gcc/aarch64-linux-gnu/13/include;/usr/local/include;/usr/include/aarch64-linux-gnu;/usr/include]
+      
+      
+  -
+    kind: "message-v1"
+    backtrace:
+      - "/usr/share/cmake-3.28/Modules/CMakeDetermineCompilerABI.cmake:159 (message)"
+      - "/usr/share/cmake-3.28/Modules/CMakeTestCCompiler.cmake:26 (CMAKE_DETERMINE_COMPILER_ABI)"
+      - "CMakeLists.txt:2 (project)"
+    message: |
+      Parsed C implicit link information:
+        link line regex: [^( *|.*[/\\])(ld|CMAKE_LINK_STARTFILE-NOTFOUND|([^/\\]+-)?ld|collect2)[^/\\]*( |$)]
+        ignore line: [Change Dir: '/home/ubuntu/project/qrb_ros_camera_ws/src/qrb_camera_debian/qrb_ros_camera/.obj-aarch64-linux-gnu/CMakeFiles/CMakeScratch/TryCompile-YFoeIH']
+        ignore line: []
+        ignore line: [Run Build Command(s): /usr/bin/cmake -E env VERBOSE=1 /usr/bin/gmake -f Makefile cmTC_b25db/fast]
+        ignore line: [gmake[2]: Entering directory '/home/ubuntu/project/qrb_ros_camera_ws/src/qrb_camera_debian/qrb_ros_camera/.obj-aarch64-linux-gnu/CMakeFiles/CMakeScratch/TryCompile-YFoeIH']
+        ignore line: [/usr/bin/gmake  -f CMakeFiles/cmTC_b25db.dir/build.make CMakeFiles/cmTC_b25db.dir/build]
+        ignore line: [gmake[3]: Entering directory '/home/ubuntu/project/qrb_ros_camera_ws/src/qrb_camera_debian/qrb_ros_camera/.obj-aarch64-linux-gnu/CMakeFiles/CMakeScratch/TryCompile-YFoeIH']
+        ignore line: [Building C object CMakeFiles/cmTC_b25db.dir/CMakeCCompilerABI.c.o]
+        ignore line: [/usr/bin/cc   -g -O2 -fno-omit-frame-pointer -mno-omit-leaf-frame-pointer -ffile-prefix-map=/home/ubuntu/project/qrb_ros_camera_ws/src/qrb_camera_debian/qrb_ros_camera=. -flto=auto -ffat-lto-objects -fstack-protector-strong -fstack-clash-protection -Wformat -mbranch-protection=standard -fdebug-prefix-map=/home/ubuntu/project/qrb_ros_camera_ws/src/qrb_camera_debian/qrb_ros_camera=/usr/src/ros-jazzy-qrb-camera-2.0.2 -Wdate-time -D_FORTIFY_SOURCE=3    -v -o CMakeFiles/cmTC_b25db.dir/CMakeCCompilerABI.c.o -c /usr/share/cmake-3.28/Modules/CMakeCCompilerABI.c]
+        ignore line: [Using built-in specs.]
+        ignore line: [COLLECT_GCC=/usr/bin/cc]
+        ignore line: [OFFLOAD_TARGET_NAMES=nvptx-none]
+        ignore line: [OFFLOAD_TARGET_DEFAULT=1]
+        ignore line: [Target: aarch64-linux-gnu]
+        ignore line: [Configured with: ../src/configure -v --with-pkgversion='Ubuntu 13.3.0-6ubuntu2~24.04' --with-bugurl=file:///usr/share/doc/gcc-13/README.Bugs --enable-languages=c ada c++ go d fortran objc obj-c++ m2 --prefix=/usr --with-gcc-major-version-only --program-suffix=-13 --program-prefix=aarch64-linux-gnu- --enable-shared --enable-linker-build-id --libexecdir=/usr/libexec --without-included-gettext --enable-threads=posix --libdir=/usr/lib --enable-nls --enable-bootstrap --enable-clocale=gnu --enable-libstdcxx-debug --enable-libstdcxx-time=yes --with-default-libstdcxx-abi=new --enable-libstdcxx-backtrace --enable-gnu-unique-object --disable-libquadmath --disable-libquadmath-support --enable-plugin --enable-default-pie --with-system-zlib --enable-libphobos-checking=release --with-target-system-zlib=auto --enable-objc-gc=auto --enable-multiarch --enable-fix-cortex-a53-843419 --disable-werror --enable-offload-targets=nvptx-none=/build/gcc-13-Nz4ro4/gcc-13-13.3.0/debian/tmp-nvptx/usr --enable-offload-defaulted --without-cuda-driver --enable-checking=release --build=aarch64-linux-gnu --host=aarch64-linux-gnu --target=aarch64-linux-gnu --with-build-config=bootstrap-lto-lean --enable-link-serialization=2]
+        ignore line: [Thread model: posix]
+        ignore line: [Supported LTO compression algorithms: zlib zstd]
+        ignore line: [gcc version 13.3.0 (Ubuntu 13.3.0-6ubuntu2~24.04) ]
+        ignore line: [COLLECT_GCC_OPTIONS='-g' '-O2' '-fno-omit-frame-pointer' '-mno-omit-leaf-frame-pointer' '-ffile-prefix-map=/home/ubuntu/project/qrb_ros_camera_ws/src/qrb_camera_debian/qrb_ros_camera=.' '-flto=auto' '-ffat-lto-objects' '-fstack-protector-strong' '-fstack-clash-protection' '-Wformat=1' '-mbranch-protection=standard' '-fdebug-prefix-map=/home/ubuntu/project/qrb_ros_camera_ws/src/qrb_camera_debian/qrb_ros_camera=/usr/src/ros-jazzy-qrb-camera-2.0.2' '-Wdate-time' '-D' '_FORTIFY_SOURCE=3' '-v' '-o' 'CMakeFiles/cmTC_b25db.dir/CMakeCCompilerABI.c.o' '-c' '-mlittle-endian' '-mabi=lp64' '-dumpdir' 'CMakeFiles/cmTC_b25db.dir/']
+        ignore line: [ /usr/libexec/gcc/aarch64-linux-gnu/13/cc1 -quiet -v -imultiarch aarch64-linux-gnu -D _FORTIFY_SOURCE=3 /usr/share/cmake-3.28/Modules/CMakeCCompilerABI.c -quiet -dumpdir CMakeFiles/cmTC_b25db.dir/ -dumpbase CMakeCCompilerABI.c.c -dumpbase-ext .c -mno-omit-leaf-frame-pointer -mbranch-protection=standard -mlittle-endian -mabi=lp64 -g -O2 -Wformat=1 -Wdate-time -version -fno-omit-frame-pointer -ffile-prefix-map=/home/ubuntu/project/qrb_ros_camera_ws/src/qrb_camera_debian/qrb_ros_camera=. -flto=auto -ffat-lto-objects -fstack-protector-strong -fstack-clash-protection -fdebug-prefix-map=/home/ubuntu/project/qrb_ros_camera_ws/src/qrb_camera_debian/qrb_ros_camera=/usr/src/ros-jazzy-qrb-camera-2.0.2 -fasynchronous-unwind-tables -fstack-protector-strong -Wformat -Wformat-security -fstack-clash-protection -o /tmp/cc9jkOyQ.s]
+        ignore line: [GNU C17 (Ubuntu 13.3.0-6ubuntu2~24.04) version 13.3.0 (aarch64-linux-gnu)]
+        ignore line: [	compiled by GNU C version 13.3.0  GMP version 6.3.0  MPFR version 4.2.1  MPC version 1.3.1  isl version isl-0.26-GMP]
+        ignore line: []
+        ignore line: [GGC heuristics: --param ggc-min-expand=100 --param ggc-min-heapsize=131072]
+        ignore line: [ignoring nonexistent directory "/usr/local/include/aarch64-linux-gnu"]
+        ignore line: [ignoring nonexistent directory "/usr/lib/gcc/aarch64-linux-gnu/13/include-fixed/aarch64-linux-gnu"]
+        ignore line: [ignoring nonexistent directory "/usr/lib/gcc/aarch64-linux-gnu/13/include-fixed"]
+        ignore line: [ignoring nonexistent directory "/usr/lib/gcc/aarch64-linux-gnu/13/../../../../aarch64-linux-gnu/include"]
+        ignore line: [#include "..." search starts here:]
+        ignore line: [#include <...> search starts here:]
+        ignore line: [ /usr/lib/gcc/aarch64-linux-gnu/13/include]
+        ignore line: [ /usr/local/include]
+        ignore line: [ /usr/include/aarch64-linux-gnu]
+        ignore line: [ /usr/include]
+        ignore line: [End of search list.]
+        ignore line: [Compiler executable checksum: 4641e2542d7b0fa864451cdc7c3485d3]
+        ignore line: [COLLECT_GCC_OPTIONS='-g' '-O2' '-fno-omit-frame-pointer' '-mno-omit-leaf-frame-pointer' '-ffile-prefix-map=/home/ubuntu/project/qrb_ros_camera_ws/src/qrb_camera_debian/qrb_ros_camera=.' '-flto=auto' '-ffat-lto-objects' '-fstack-protector-strong' '-fstack-clash-protection' '-Wformat=1' '-mbranch-protection=standard' '-fdebug-prefix-map=/home/ubuntu/project/qrb_ros_camera_ws/src/qrb_camera_debian/qrb_ros_camera=/usr/src/ros-jazzy-qrb-camera-2.0.2' '-Wdate-time' '-D' '_FORTIFY_SOURCE=3' '-v' '-o' 'CMakeFiles/cmTC_b25db.dir/CMakeCCompilerABI.c.o' '-c' '-mlittle-endian' '-mabi=lp64' '-dumpdir' 'CMakeFiles/cmTC_b25db.dir/']
+        ignore line: [ as -v --gdwarf-5 -EL -mabi=lp64 -o CMakeFiles/cmTC_b25db.dir/CMakeCCompilerABI.c.o /tmp/cc9jkOyQ.s]
+        ignore line: [GNU assembler version 2.42 (aarch64-linux-gnu) using BFD version (GNU Binutils for Ubuntu) 2.42]
+        ignore line: [COMPILER_PATH=/usr/libexec/gcc/aarch64-linux-gnu/13/:/usr/libexec/gcc/aarch64-linux-gnu/13/:/usr/libexec/gcc/aarch64-linux-gnu/:/usr/lib/gcc/aarch64-linux-gnu/13/:/usr/lib/gcc/aarch64-linux-gnu/]
+        ignore line: [LIBRARY_PATH=/usr/lib/gcc/aarch64-linux-gnu/13/:/usr/lib/gcc/aarch64-linux-gnu/13/../../../aarch64-linux-gnu/:/usr/lib/gcc/aarch64-linux-gnu/13/../../../../lib/:/lib/aarch64-linux-gnu/:/lib/../lib/:/usr/lib/aarch64-linux-gnu/:/usr/lib/../lib/:/usr/lib/gcc/aarch64-linux-gnu/13/../../../:/lib/:/usr/lib/]
+        ignore line: [COLLECT_GCC_OPTIONS='-g' '-O2' '-fno-omit-frame-pointer' '-mno-omit-leaf-frame-pointer' '-ffile-prefix-map=/home/ubuntu/project/qrb_ros_camera_ws/src/qrb_camera_debian/qrb_ros_camera=.' '-flto=auto' '-ffat-lto-objects' '-fstack-protector-strong' '-fstack-clash-protection' '-Wformat=1' '-mbranch-protection=standard' '-fdebug-prefix-map=/home/ubuntu/project/qrb_ros_camera_ws/src/qrb_camera_debian/qrb_ros_camera=/usr/src/ros-jazzy-qrb-camera-2.0.2' '-Wdate-time' '-D' '_FORTIFY_SOURCE=3' '-v' '-o' 'CMakeFiles/cmTC_b25db.dir/CMakeCCompilerABI.c.o' '-c' '-mlittle-endian' '-mabi=lp64' '-dumpdir' 'CMakeFiles/cmTC_b25db.dir/CMakeCCompilerABI.c.']
+        ignore line: [Linking C executable cmTC_b25db]
+        ignore line: [/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_b25db.dir/link.txt --verbose=1]
+        ignore line: [/usr/bin/cc -g -O2 -fno-omit-frame-pointer -mno-omit-leaf-frame-pointer -ffile-prefix-map=/home/ubuntu/project/qrb_ros_camera_ws/src/qrb_camera_debian/qrb_ros_camera=. -flto=auto -ffat-lto-objects -fstack-protector-strong -fstack-clash-protection -Wformat -mbranch-protection=standard -fdebug-prefix-map=/home/ubuntu/project/qrb_ros_camera_ws/src/qrb_camera_debian/qrb_ros_camera=/usr/src/ros-jazzy-qrb-camera-2.0.2 -Wdate-time -D_FORTIFY_SOURCE=3   -v CMakeFiles/cmTC_b25db.dir/CMakeCCompilerABI.c.o -o cmTC_b25db ]
+        ignore line: [Using built-in specs.]
+        ignore line: [COLLECT_GCC=/usr/bin/cc]
+        ignore line: [COLLECT_LTO_WRAPPER=/usr/libexec/gcc/aarch64-linux-gnu/13/lto-wrapper]
+        ignore line: [OFFLOAD_TARGET_NAMES=nvptx-none]
+        ignore line: [OFFLOAD_TARGET_DEFAULT=1]
+        ignore line: [Target: aarch64-linux-gnu]
+        ignore line: [Configured with: ../src/configure -v --with-pkgversion='Ubuntu 13.3.0-6ubuntu2~24.04' --with-bugurl=file:///usr/share/doc/gcc-13/README.Bugs --enable-languages=c ada c++ go d fortran objc obj-c++ m2 --prefix=/usr --with-gcc-major-version-only --program-suffix=-13 --program-prefix=aarch64-linux-gnu- --enable-shared --enable-linker-build-id --libexecdir=/usr/libexec --without-included-gettext --enable-threads=posix --libdir=/usr/lib --enable-nls --enable-bootstrap --enable-clocale=gnu --enable-libstdcxx-debug --enable-libstdcxx-time=yes --with-default-libstdcxx-abi=new --enable-libstdcxx-backtrace --enable-gnu-unique-object --disable-libquadmath --disable-libquadmath-support --enable-plugin --enable-default-pie --with-system-zlib --enable-libphobos-checking=release --with-target-system-zlib=auto --enable-objc-gc=auto --enable-multiarch --enable-fix-cortex-a53-843419 --disable-werror --enable-offload-targets=nvptx-none=/build/gcc-13-Nz4ro4/gcc-13-13.3.0/debian/tmp-nvptx/usr --enable-offload-defaulted --without-cuda-driver --enable-checking=release --build=aarch64-linux-gnu --host=aarch64-linux-gnu --target=aarch64-linux-gnu --with-build-config=bootstrap-lto-lean --enable-link-serialization=2]
+        ignore line: [Thread model: posix]
+        ignore line: [Supported LTO compression algorithms: zlib zstd]
+        ignore line: [gcc version 13.3.0 (Ubuntu 13.3.0-6ubuntu2~24.04) ]
+        ignore line: [COMPILER_PATH=/usr/libexec/gcc/aarch64-linux-gnu/13/:/usr/libexec/gcc/aarch64-linux-gnu/13/:/usr/libexec/gcc/aarch64-linux-gnu/:/usr/lib/gcc/aarch64-linux-gnu/13/:/usr/lib/gcc/aarch64-linux-gnu/]
+        ignore line: [LIBRARY_PATH=/usr/lib/gcc/aarch64-linux-gnu/13/:/usr/lib/gcc/aarch64-linux-gnu/13/../../../aarch64-linux-gnu/:/usr/lib/gcc/aarch64-linux-gnu/13/../../../../lib/:/lib/aarch64-linux-gnu/:/lib/../lib/:/usr/lib/aarch64-linux-gnu/:/usr/lib/../lib/:/usr/lib/gcc/aarch64-linux-gnu/13/../../../:/lib/:/usr/lib/]
+        ignore line: [COLLECT_GCC_OPTIONS='-g' '-O2' '-fno-omit-frame-pointer' '-mno-omit-leaf-frame-pointer' '-ffile-prefix-map=/home/ubuntu/project/qrb_ros_camera_ws/src/qrb_camera_debian/qrb_ros_camera=.' '-flto=auto' '-ffat-lto-objects' '-fstack-protector-strong' '-fstack-clash-protection' '-Wformat=1' '-mbranch-protection=standard' '-fdebug-prefix-map=/home/ubuntu/project/qrb_ros_camera_ws/src/qrb_camera_debian/qrb_ros_camera=/usr/src/ros-jazzy-qrb-camera-2.0.2' '-Wdate-time' '-D' '_FORTIFY_SOURCE=3' '-v' '-o' 'cmTC_b25db' '-mlittle-endian' '-mabi=lp64' '-dumpdir' 'cmTC_b25db.']
+        link line: [ /usr/libexec/gcc/aarch64-linux-gnu/13/collect2 -plugin /usr/libexec/gcc/aarch64-linux-gnu/13/liblto_plugin.so -plugin-opt=/usr/libexec/gcc/aarch64-linux-gnu/13/lto-wrapper -plugin-opt=-fresolution=/tmp/cc4YidFd.res -plugin-opt=-pass-through=-lgcc -plugin-opt=-pass-through=-lgcc_s -plugin-opt=-pass-through=-lc -plugin-opt=-pass-through=-lgcc -plugin-opt=-pass-through=-lgcc_s -flto=auto --build-id --eh-frame-hdr --hash-style=gnu --as-needed -dynamic-linker /lib/ld-linux-aarch64.so.1 -X -EL -maarch64linux --fix-cortex-a53-843419 -pie -z now -z relro -o cmTC_b25db /usr/lib/gcc/aarch64-linux-gnu/13/../../../aarch64-linux-gnu/Scrt1.o /usr/lib/gcc/aarch64-linux-gnu/13/../../../aarch64-linux-gnu/crti.o /usr/lib/gcc/aarch64-linux-gnu/13/crtbeginS.o -L/usr/lib/gcc/aarch64-linux-gnu/13 -L/usr/lib/gcc/aarch64-linux-gnu/13/../../../aarch64-linux-gnu -L/usr/lib/gcc/aarch64-linux-gnu/13/../../../../lib -L/lib/aarch64-linux-gnu -L/lib/../lib -L/usr/lib/aarch64-linux-gnu -L/usr/lib/../lib -L/usr/lib/gcc/aarch64-linux-gnu/13/../../.. CMakeFiles/cmTC_b25db.dir/CMakeCCompilerABI.c.o -lgcc --push-state --as-needed -lgcc_s --pop-state -lc -lgcc --push-state --as-needed -lgcc_s --pop-state /usr/lib/gcc/aarch64-linux-gnu/13/crtendS.o /usr/lib/gcc/aarch64-linux-gnu/13/../../../aarch64-linux-gnu/crtn.o]
+          arg [/usr/libexec/gcc/aarch64-linux-gnu/13/collect2] ==> ignore
+          arg [-plugin] ==> ignore
+          arg [/usr/libexec/gcc/aarch64-linux-gnu/13/liblto_plugin.so] ==> ignore
+          arg [-plugin-opt=/usr/libexec/gcc/aarch64-linux-gnu/13/lto-wrapper] ==> ignore
+          arg [-plugin-opt=-fresolution=/tmp/cc4YidFd.res] ==> ignore
+          arg [-plugin-opt=-pass-through=-lgcc] ==> ignore
+          arg [-plugin-opt=-pass-through=-lgcc_s] ==> ignore
+          arg [-plugin-opt=-pass-through=-lc] ==> ignore
+          arg [-plugin-opt=-pass-through=-lgcc] ==> ignore
+          arg [-plugin-opt=-pass-through=-lgcc_s] ==> ignore
+          arg [-flto=auto] ==> ignore
+          arg [--build-id] ==> ignore
+          arg [--eh-frame-hdr] ==> ignore
+          arg [--hash-style=gnu] ==> ignore
+          arg [--as-needed] ==> ignore
+          arg [-dynamic-linker] ==> ignore
+          arg [/lib/ld-linux-aarch64.so.1] ==> ignore
+          arg [-X] ==> ignore
+          arg [-EL] ==> ignore
+          arg [-maarch64linux] ==> ignore
+          arg [--fix-cortex-a53-843419] ==> ignore
+          arg [-pie] ==> ignore
+          arg [-znow] ==> ignore
+          arg [-zrelro] ==> ignore
+          arg [-o] ==> ignore
+          arg [cmTC_b25db] ==> ignore
+          arg [/usr/lib/gcc/aarch64-linux-gnu/13/../../../aarch64-linux-gnu/Scrt1.o] ==> obj [/usr/lib/gcc/aarch64-linux-gnu/13/../../../aarch64-linux-gnu/Scrt1.o]
+          arg [/usr/lib/gcc/aarch64-linux-gnu/13/../../../aarch64-linux-gnu/crti.o] ==> obj [/usr/lib/gcc/aarch64-linux-gnu/13/../../../aarch64-linux-gnu/crti.o]
+          arg [/usr/lib/gcc/aarch64-linux-gnu/13/crtbeginS.o] ==> obj [/usr/lib/gcc/aarch64-linux-gnu/13/crtbeginS.o]
+          arg [-L/usr/lib/gcc/aarch64-linux-gnu/13] ==> dir [/usr/lib/gcc/aarch64-linux-gnu/13]
+          arg [-L/usr/lib/gcc/aarch64-linux-gnu/13/../../../aarch64-linux-gnu] ==> dir [/usr/lib/gcc/aarch64-linux-gnu/13/../../../aarch64-linux-gnu]
+          arg [-L/usr/lib/gcc/aarch64-linux-gnu/13/../../../../lib] ==> dir [/usr/lib/gcc/aarch64-linux-gnu/13/../../../../lib]
+          arg [-L/lib/aarch64-linux-gnu] ==> dir [/lib/aarch64-linux-gnu]
+          arg [-L/lib/../lib] ==> dir [/lib/../lib]
+          arg [-L/usr/lib/aarch64-linux-gnu] ==> dir [/usr/lib/aarch64-linux-gnu]
+          arg [-L/usr/lib/../lib] ==> dir [/usr/lib/../lib]
+          arg [-L/usr/lib/gcc/aarch64-linux-gnu/13/../../..] ==> dir [/usr/lib/gcc/aarch64-linux-gnu/13/../../..]
+          arg [CMakeFiles/cmTC_b25db.dir/CMakeCCompilerABI.c.o] ==> ignore
+          arg [-lgcc] ==> lib [gcc]
+          arg [--push-state] ==> ignore
+          arg [--as-needed] ==> ignore
+          arg [-lgcc_s] ==> lib [gcc_s]
+          arg [--pop-state] ==> ignore
+          arg [-lc] ==> lib [c]
+          arg [-lgcc] ==> lib [gcc]
+          arg [--push-state] ==> ignore
+          arg [--as-needed] ==> ignore
+          arg [-lgcc_s] ==> lib [gcc_s]
+          arg [--pop-state] ==> ignore
+          arg [/usr/lib/gcc/aarch64-linux-gnu/13/crtendS.o] ==> obj [/usr/lib/gcc/aarch64-linux-gnu/13/crtendS.o]
+          arg [/usr/lib/gcc/aarch64-linux-gnu/13/../../../aarch64-linux-gnu/crtn.o] ==> obj [/usr/lib/gcc/aarch64-linux-gnu/13/../../../aarch64-linux-gnu/crtn.o]
+        collapse obj [/usr/lib/gcc/aarch64-linux-gnu/13/../../../aarch64-linux-gnu/Scrt1.o] ==> [/usr/lib/aarch64-linux-gnu/Scrt1.o]
+        collapse obj [/usr/lib/gcc/aarch64-linux-gnu/13/../../../aarch64-linux-gnu/crti.o] ==> [/usr/lib/aarch64-linux-gnu/crti.o]
+        collapse obj [/usr/lib/gcc/aarch64-linux-gnu/13/../../../aarch64-linux-gnu/crtn.o] ==> [/usr/lib/aarch64-linux-gnu/crtn.o]
+        collapse library dir [/usr/lib/gcc/aarch64-linux-gnu/13] ==> [/usr/lib/gcc/aarch64-linux-gnu/13]
+        collapse library dir [/usr/lib/gcc/aarch64-linux-gnu/13/../../../aarch64-linux-gnu] ==> [/usr/lib/aarch64-linux-gnu]
+        collapse library dir [/usr/lib/gcc/aarch64-linux-gnu/13/../../../../lib] ==> [/usr/lib]
+        collapse library dir [/lib/aarch64-linux-gnu] ==> [/lib/aarch64-linux-gnu]
+        collapse library dir [/lib/../lib] ==> [/lib]
+        collapse library dir [/usr/lib/aarch64-linux-gnu] ==> [/usr/lib/aarch64-linux-gnu]
+        collapse library dir [/usr/lib/../lib] ==> [/usr/lib]
+        collapse library dir [/usr/lib/gcc/aarch64-linux-gnu/13/../../..] ==> [/usr/lib]
+        implicit libs: [gcc;gcc_s;c;gcc;gcc_s]
+        implicit objs: [/usr/lib/aarch64-linux-gnu/Scrt1.o;/usr/lib/aarch64-linux-gnu/crti.o;/usr/lib/gcc/aarch64-linux-gnu/13/crtbeginS.o;/usr/lib/gcc/aarch64-linux-gnu/13/crtendS.o;/usr/lib/aarch64-linux-gnu/crtn.o]
+        implicit dirs: [/usr/lib/gcc/aarch64-linux-gnu/13;/usr/lib/aarch64-linux-gnu;/usr/lib;/lib/aarch64-linux-gnu;/lib]
+        implicit fwks: []
+      
+      
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "/usr/share/cmake-3.28/Modules/CMakeDetermineCompilerABI.cmake:57 (try_compile)"
+      - "/usr/share/cmake-3.28/Modules/CMakeTestCXXCompiler.cmake:26 (CMAKE_DETERMINE_COMPILER_ABI)"
+      - "CMakeLists.txt:2 (project)"
+    checks:
+      - "Detecting CXX compiler ABI info"
+    directories:
+      source: "/home/ubuntu/project/qrb_ros_camera_ws/src/qrb_camera_debian/qrb_ros_camera/.obj-aarch64-linux-gnu/CMakeFiles/CMakeScratch/TryCompile-VYJfUZ"
+      binary: "/home/ubuntu/project/qrb_ros_camera_ws/src/qrb_camera_debian/qrb_ros_camera/.obj-aarch64-linux-gnu/CMakeFiles/CMakeScratch/TryCompile-VYJfUZ"
+    cmakeVariables:
+      CMAKE_CXX_FLAGS: "-g -O2 -fno-omit-frame-pointer -mno-omit-leaf-frame-pointer -ffile-prefix-map=/home/ubuntu/project/qrb_ros_camera_ws/src/qrb_camera_debian/qrb_ros_camera=. -flto=auto -ffat-lto-objects -fstack-protector-strong -fstack-clash-protection -Wformat -mbranch-protection=standard -fdebug-prefix-map=/home/ubuntu/project/qrb_ros_camera_ws/src/qrb_camera_debian/qrb_ros_camera=/usr/src/ros-jazzy-qrb-camera-2.0.2 -DNDEBUG -Wdate-time -D_FORTIFY_SOURCE=3"
+      CMAKE_CXX_FLAGS_DEBUG: "-g"
+      CMAKE_EXE_LINKER_FLAGS: ""
+    buildResult:
+      variable: "CMAKE_CXX_ABI_COMPILED"
+      cached: true
+      stdout: |
+        Change Dir: '/home/ubuntu/project/qrb_ros_camera_ws/src/qrb_camera_debian/qrb_ros_camera/.obj-aarch64-linux-gnu/CMakeFiles/CMakeScratch/TryCompile-VYJfUZ'
+        
+        Run Build Command(s): /usr/bin/cmake -E env VERBOSE=1 /usr/bin/gmake -f Makefile cmTC_878cc/fast
+        gmake[2]: Entering directory '/home/ubuntu/project/qrb_ros_camera_ws/src/qrb_camera_debian/qrb_ros_camera/.obj-aarch64-linux-gnu/CMakeFiles/CMakeScratch/TryCompile-VYJfUZ'
+        /usr/bin/gmake  -f CMakeFiles/cmTC_878cc.dir/build.make CMakeFiles/cmTC_878cc.dir/build
+        gmake[3]: Entering directory '/home/ubuntu/project/qrb_ros_camera_ws/src/qrb_camera_debian/qrb_ros_camera/.obj-aarch64-linux-gnu/CMakeFiles/CMakeScratch/TryCompile-VYJfUZ'
+        Building CXX object CMakeFiles/cmTC_878cc.dir/CMakeCXXCompilerABI.cpp.o
+        /usr/bin/c++   -g -O2 -fno-omit-frame-pointer -mno-omit-leaf-frame-pointer -ffile-prefix-map=/home/ubuntu/project/qrb_ros_camera_ws/src/qrb_camera_debian/qrb_ros_camera=. -flto=auto -ffat-lto-objects -fstack-protector-strong -fstack-clash-protection -Wformat -mbranch-protection=standard -fdebug-prefix-map=/home/ubuntu/project/qrb_ros_camera_ws/src/qrb_camera_debian/qrb_ros_camera=/usr/src/ros-jazzy-qrb-camera-2.0.2 -DNDEBUG -Wdate-time -D_FORTIFY_SOURCE=3    -v -o CMakeFiles/cmTC_878cc.dir/CMakeCXXCompilerABI.cpp.o -c /usr/share/cmake-3.28/Modules/CMakeCXXCompilerABI.cpp
+        Using built-in specs.
+        COLLECT_GCC=/usr/bin/c++
+        OFFLOAD_TARGET_NAMES=nvptx-none
+        OFFLOAD_TARGET_DEFAULT=1
+        Target: aarch64-linux-gnu
+        Configured with: ../src/configure -v --with-pkgversion='Ubuntu 13.3.0-6ubuntu2~24.04' --with-bugurl=file:///usr/share/doc/gcc-13/README.Bugs --enable-languages=c,ada,c++,go,d,fortran,objc,obj-c++,m2 --prefix=/usr --with-gcc-major-version-only --program-suffix=-13 --program-prefix=aarch64-linux-gnu- --enable-shared --enable-linker-build-id --libexecdir=/usr/libexec --without-included-gettext --enable-threads=posix --libdir=/usr/lib --enable-nls --enable-bootstrap --enable-clocale=gnu --enable-libstdcxx-debug --enable-libstdcxx-time=yes --with-default-libstdcxx-abi=new --enable-libstdcxx-backtrace --enable-gnu-unique-object --disable-libquadmath --disable-libquadmath-support --enable-plugin --enable-default-pie --with-system-zlib --enable-libphobos-checking=release --with-target-system-zlib=auto --enable-objc-gc=auto --enable-multiarch --enable-fix-cortex-a53-843419 --disable-werror --enable-offload-targets=nvptx-none=/build/gcc-13-Nz4ro4/gcc-13-13.3.0/debian/tmp-nvptx/usr --enable-offload-defaulted --without-cuda-driver --enable-checking=release --build=aarch64-linux-gnu --host=aarch64-linux-gnu --target=aarch64-linux-gnu --with-build-config=bootstrap-lto-lean --enable-link-serialization=2
+        Thread model: posix
+        Supported LTO compression algorithms: zlib zstd
+        gcc version 13.3.0 (Ubuntu 13.3.0-6ubuntu2~24.04) 
+        COLLECT_GCC_OPTIONS='-g' '-O2' '-fno-omit-frame-pointer' '-mno-omit-leaf-frame-pointer' '-ffile-prefix-map=/home/ubuntu/project/qrb_ros_camera_ws/src/qrb_camera_debian/qrb_ros_camera=.' '-flto=auto' '-ffat-lto-objects' '-fstack-protector-strong' '-fstack-clash-protection' '-Wformat=1' '-mbranch-protection=standard' '-fdebug-prefix-map=/home/ubuntu/project/qrb_ros_camera_ws/src/qrb_camera_debian/qrb_ros_camera=/usr/src/ros-jazzy-qrb-camera-2.0.2' '-D' 'NDEBUG' '-Wdate-time' '-D' '_FORTIFY_SOURCE=3' '-v' '-o' 'CMakeFiles/cmTC_878cc.dir/CMakeCXXCompilerABI.cpp.o' '-c' '-shared-libgcc' '-mlittle-endian' '-mabi=lp64' '-dumpdir' 'CMakeFiles/cmTC_878cc.dir/'
+         /usr/libexec/gcc/aarch64-linux-gnu/13/cc1plus -quiet -v -imultiarch aarch64-linux-gnu -D_GNU_SOURCE -D NDEBUG -D _FORTIFY_SOURCE=3 /usr/share/cmake-3.28/Modules/CMakeCXXCompilerABI.cpp -quiet -dumpdir CMakeFiles/cmTC_878cc.dir/ -dumpbase CMakeCXXCompilerABI.cpp.cpp -dumpbase-ext .cpp -mno-omit-leaf-frame-pointer -mbranch-protection=standard -mlittle-endian -mabi=lp64 -g -O2 -Wformat=1 -Wdate-time -version -fno-omit-frame-pointer -ffile-prefix-map=/home/ubuntu/project/qrb_ros_camera_ws/src/qrb_camera_debian/qrb_ros_camera=. -flto=auto -ffat-lto-objects -fstack-protector-strong -fstack-clash-protection -fdebug-prefix-map=/home/ubuntu/project/qrb_ros_camera_ws/src/qrb_camera_debian/qrb_ros_camera=/usr/src/ros-jazzy-qrb-camera-2.0.2 -fasynchronous-unwind-tables -fstack-protector-strong -Wformat -Wformat-security -fstack-clash-protection -o /tmp/ccUvLKS8.s
+        GNU C++17 (Ubuntu 13.3.0-6ubuntu2~24.04) version 13.3.0 (aarch64-linux-gnu)
+        	compiled by GNU C version 13.3.0, GMP version 6.3.0, MPFR version 4.2.1, MPC version 1.3.1, isl version isl-0.26-GMP
+        
+        GGC heuristics: --param ggc-min-expand=100 --param ggc-min-heapsize=131072
+        ignoring duplicate directory "/usr/include/aarch64-linux-gnu/c++/13"
+        ignoring nonexistent directory "/usr/local/include/aarch64-linux-gnu"
+        ignoring nonexistent directory "/usr/lib/gcc/aarch64-linux-gnu/13/include-fixed/aarch64-linux-gnu"
+        ignoring nonexistent directory "/usr/lib/gcc/aarch64-linux-gnu/13/include-fixed"
+        ignoring nonexistent directory "/usr/lib/gcc/aarch64-linux-gnu/13/../../../../aarch64-linux-gnu/include"
+        #include "..." search starts here:
+        #include <...> search starts here:
+         /usr/include/c++/13
+         /usr/include/aarch64-linux-gnu/c++/13
+         /usr/include/c++/13/backward
+         /usr/lib/gcc/aarch64-linux-gnu/13/include
+         /usr/local/include
+         /usr/include/aarch64-linux-gnu
+         /usr/include
+        End of search list.
+        Compiler executable checksum: e6eff1ab3426b92d3a3bf1dc105bfcb7
+        COLLECT_GCC_OPTIONS='-g' '-O2' '-fno-omit-frame-pointer' '-mno-omit-leaf-frame-pointer' '-ffile-prefix-map=/home/ubuntu/project/qrb_ros_camera_ws/src/qrb_camera_debian/qrb_ros_camera=.' '-flto=auto' '-ffat-lto-objects' '-fstack-protector-strong' '-fstack-clash-protection' '-Wformat=1' '-mbranch-protection=standard' '-fdebug-prefix-map=/home/ubuntu/project/qrb_ros_camera_ws/src/qrb_camera_debian/qrb_ros_camera=/usr/src/ros-jazzy-qrb-camera-2.0.2' '-D' 'NDEBUG' '-Wdate-time' '-D' '_FORTIFY_SOURCE=3' '-v' '-o' 'CMakeFiles/cmTC_878cc.dir/CMakeCXXCompilerABI.cpp.o' '-c' '-shared-libgcc' '-mlittle-endian' '-mabi=lp64' '-dumpdir' 'CMakeFiles/cmTC_878cc.dir/'
+         as -v --gdwarf-5 -EL -mabi=lp64 -o CMakeFiles/cmTC_878cc.dir/CMakeCXXCompilerABI.cpp.o /tmp/ccUvLKS8.s
+        GNU assembler version 2.42 (aarch64-linux-gnu) using BFD version (GNU Binutils for Ubuntu) 2.42
+        COMPILER_PATH=/usr/libexec/gcc/aarch64-linux-gnu/13/:/usr/libexec/gcc/aarch64-linux-gnu/13/:/usr/libexec/gcc/aarch64-linux-gnu/:/usr/lib/gcc/aarch64-linux-gnu/13/:/usr/lib/gcc/aarch64-linux-gnu/
+        LIBRARY_PATH=/usr/lib/gcc/aarch64-linux-gnu/13/:/usr/lib/gcc/aarch64-linux-gnu/13/../../../aarch64-linux-gnu/:/usr/lib/gcc/aarch64-linux-gnu/13/../../../../lib/:/lib/aarch64-linux-gnu/:/lib/../lib/:/usr/lib/aarch64-linux-gnu/:/usr/lib/../lib/:/usr/lib/gcc/aarch64-linux-gnu/13/../../../:/lib/:/usr/lib/
+        COLLECT_GCC_OPTIONS='-g' '-O2' '-fno-omit-frame-pointer' '-mno-omit-leaf-frame-pointer' '-ffile-prefix-map=/home/ubuntu/project/qrb_ros_camera_ws/src/qrb_camera_debian/qrb_ros_camera=.' '-flto=auto' '-ffat-lto-objects' '-fstack-protector-strong' '-fstack-clash-protection' '-Wformat=1' '-mbranch-protection=standard' '-fdebug-prefix-map=/home/ubuntu/project/qrb_ros_camera_ws/src/qrb_camera_debian/qrb_ros_camera=/usr/src/ros-jazzy-qrb-camera-2.0.2' '-D' 'NDEBUG' '-Wdate-time' '-D' '_FORTIFY_SOURCE=3' '-v' '-o' 'CMakeFiles/cmTC_878cc.dir/CMakeCXXCompilerABI.cpp.o' '-c' '-shared-libgcc' '-mlittle-endian' '-mabi=lp64' '-dumpdir' 'CMakeFiles/cmTC_878cc.dir/CMakeCXXCompilerABI.cpp.'
+        Linking CXX executable cmTC_878cc
+        /usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_878cc.dir/link.txt --verbose=1
+        /usr/bin/c++ -g -O2 -fno-omit-frame-pointer -mno-omit-leaf-frame-pointer -ffile-prefix-map=/home/ubuntu/project/qrb_ros_camera_ws/src/qrb_camera_debian/qrb_ros_camera=. -flto=auto -ffat-lto-objects -fstack-protector-strong -fstack-clash-protection -Wformat -mbranch-protection=standard -fdebug-prefix-map=/home/ubuntu/project/qrb_ros_camera_ws/src/qrb_camera_debian/qrb_ros_camera=/usr/src/ros-jazzy-qrb-camera-2.0.2 -DNDEBUG -Wdate-time -D_FORTIFY_SOURCE=3   -v CMakeFiles/cmTC_878cc.dir/CMakeCXXCompilerABI.cpp.o -o cmTC_878cc 
+        Using built-in specs.
+        COLLECT_GCC=/usr/bin/c++
+        COLLECT_LTO_WRAPPER=/usr/libexec/gcc/aarch64-linux-gnu/13/lto-wrapper
+        OFFLOAD_TARGET_NAMES=nvptx-none
+        OFFLOAD_TARGET_DEFAULT=1
+        Target: aarch64-linux-gnu
+        Configured with: ../src/configure -v --with-pkgversion='Ubuntu 13.3.0-6ubuntu2~24.04' --with-bugurl=file:///usr/share/doc/gcc-13/README.Bugs --enable-languages=c,ada,c++,go,d,fortran,objc,obj-c++,m2 --prefix=/usr --with-gcc-major-version-only --program-suffix=-13 --program-prefix=aarch64-linux-gnu- --enable-shared --enable-linker-build-id --libexecdir=/usr/libexec --without-included-gettext --enable-threads=posix --libdir=/usr/lib --enable-nls --enable-bootstrap --enable-clocale=gnu --enable-libstdcxx-debug --enable-libstdcxx-time=yes --with-default-libstdcxx-abi=new --enable-libstdcxx-backtrace --enable-gnu-unique-object --disable-libquadmath --disable-libquadmath-support --enable-plugin --enable-default-pie --with-system-zlib --enable-libphobos-checking=release --with-target-system-zlib=auto --enable-objc-gc=auto --enable-multiarch --enable-fix-cortex-a53-843419 --disable-werror --enable-offload-targets=nvptx-none=/build/gcc-13-Nz4ro4/gcc-13-13.3.0/debian/tmp-nvptx/usr --enable-offload-defaulted --without-cuda-driver --enable-checking=release --build=aarch64-linux-gnu --host=aarch64-linux-gnu --target=aarch64-linux-gnu --with-build-config=bootstrap-lto-lean --enable-link-serialization=2
+        Thread model: posix
+        Supported LTO compression algorithms: zlib zstd
+        gcc version 13.3.0 (Ubuntu 13.3.0-6ubuntu2~24.04) 
+        COMPILER_PATH=/usr/libexec/gcc/aarch64-linux-gnu/13/:/usr/libexec/gcc/aarch64-linux-gnu/13/:/usr/libexec/gcc/aarch64-linux-gnu/:/usr/lib/gcc/aarch64-linux-gnu/13/:/usr/lib/gcc/aarch64-linux-gnu/
+        LIBRARY_PATH=/usr/lib/gcc/aarch64-linux-gnu/13/:/usr/lib/gcc/aarch64-linux-gnu/13/../../../aarch64-linux-gnu/:/usr/lib/gcc/aarch64-linux-gnu/13/../../../../lib/:/lib/aarch64-linux-gnu/:/lib/../lib/:/usr/lib/aarch64-linux-gnu/:/usr/lib/../lib/:/usr/lib/gcc/aarch64-linux-gnu/13/../../../:/lib/:/usr/lib/
+        COLLECT_GCC_OPTIONS='-g' '-O2' '-fno-omit-frame-pointer' '-mno-omit-leaf-frame-pointer' '-ffile-prefix-map=/home/ubuntu/project/qrb_ros_camera_ws/src/qrb_camera_debian/qrb_ros_camera=.' '-flto=auto' '-ffat-lto-objects' '-fstack-protector-strong' '-fstack-clash-protection' '-Wformat=1' '-mbranch-protection=standard' '-fdebug-prefix-map=/home/ubuntu/project/qrb_ros_camera_ws/src/qrb_camera_debian/qrb_ros_camera=/usr/src/ros-jazzy-qrb-camera-2.0.2' '-D' 'NDEBUG' '-Wdate-time' '-D' '_FORTIFY_SOURCE=3' '-v' '-o' 'cmTC_878cc' '-shared-libgcc' '-mlittle-endian' '-mabi=lp64' '-dumpdir' 'cmTC_878cc.'
+         /usr/libexec/gcc/aarch64-linux-gnu/13/collect2 -plugin /usr/libexec/gcc/aarch64-linux-gnu/13/liblto_plugin.so -plugin-opt=/usr/libexec/gcc/aarch64-linux-gnu/13/lto-wrapper -plugin-opt=-fresolution=/tmp/ccpnmsM8.res -plugin-opt=-pass-through=-lgcc_s -plugin-opt=-pass-through=-lgcc -plugin-opt=-pass-through=-lc -plugin-opt=-pass-through=-lgcc_s -plugin-opt=-pass-through=-lgcc -flto=auto --build-id --eh-frame-hdr --hash-style=gnu --as-needed -dynamic-linker /lib/ld-linux-aarch64.so.1 -X -EL -maarch64linux --fix-cortex-a53-843419 -pie -z now -z relro -o cmTC_878cc /usr/lib/gcc/aarch64-linux-gnu/13/../../../aarch64-linux-gnu/Scrt1.o /usr/lib/gcc/aarch64-linux-gnu/13/../../../aarch64-linux-gnu/crti.o /usr/lib/gcc/aarch64-linux-gnu/13/crtbeginS.o -L/usr/lib/gcc/aarch64-linux-gnu/13 -L/usr/lib/gcc/aarch64-linux-gnu/13/../../../aarch64-linux-gnu -L/usr/lib/gcc/aarch64-linux-gnu/13/../../../../lib -L/lib/aarch64-linux-gnu -L/lib/../lib -L/usr/lib/aarch64-linux-gnu -L/usr/lib/../lib -L/usr/lib/gcc/aarch64-linux-gnu/13/../../.. CMakeFiles/cmTC_878cc.dir/CMakeCXXCompilerABI.cpp.o -lstdc++ -lm -lgcc_s -lgcc -lc -lgcc_s -lgcc /usr/lib/gcc/aarch64-linux-gnu/13/crtendS.o /usr/lib/gcc/aarch64-linux-gnu/13/../../../aarch64-linux-gnu/crtn.o
+        /usr/libexec/gcc/aarch64-linux-gnu/13/lto-wrapper -fresolution=/tmp/ccpnmsM8.res -flinker-output=pie CMakeFiles/cmTC_878cc.dir/CMakeCXXCompilerABI.cpp.o 
+        /usr/libexec/gcc/aarch64-linux-gnu/13/lto-wrapper -fresolution=/tmp/ccpnmsM8.res -flinker-output=pie CMakeFiles/cmTC_878cc.dir/CMakeCXXCompilerABI.cpp.o 
+        LTO parallelism level set to 8
+        /usr/bin/c++ @/tmp/ccZMEmOu
+        Using built-in specs.
+        COLLECT_GCC=/usr/bin/c++
+        OFFLOAD_TARGET_NAMES=nvptx-none
+        OFFLOAD_TARGET_DEFAULT=1
+        Target: aarch64-linux-gnu
+        Configured with: ../src/configure -v --with-pkgversion='Ubuntu 13.3.0-6ubuntu2~24.04' --with-bugurl=file:///usr/share/doc/gcc-13/README.Bugs --enable-languages=c,ada,c++,go,d,fortran,objc,obj-c++,m2 --prefix=/usr --with-gcc-major-version-only --program-suffix=-13 --program-prefix=aarch64-linux-gnu- --enable-shared --enable-linker-build-id --libexecdir=/usr/libexec --without-included-gettext --enable-threads=posix --libdir=/usr/lib --enable-nls --enable-bootstrap --enable-clocale=gnu --enable-libstdcxx-debug --enable-libstdcxx-time=yes --with-default-libstdcxx-abi=new --enable-libstdcxx-backtrace --enable-gnu-unique-object --disable-libquadmath --disable-libquadmath-support --enable-plugin --enable-default-pie --with-system-zlib --enable-libphobos-checking=release --with-target-system-zlib=auto --enable-objc-gc=auto --enable-multiarch --enable-fix-cortex-a53-843419 --disable-werror --enable-offload-targets=nvptx-none=/build/gcc-13-Nz4ro4/gcc-13-13.3.0/debian/tmp-nvptx/usr --enable-offload-defaulted --without-cuda-driver --enable-checking=release --build=aarch64-linux-gnu --host=aarch64-linux-gnu --target=aarch64-linux-gnu --with-build-config=bootstrap-lto-lean --enable-link-serialization=2
+        Thread model: posix
+        Supported LTO compression algorithms: zlib zstd
+        gcc version 13.3.0 (Ubuntu 13.3.0-6ubuntu2~24.04) 
+        COLLECT_GCC_OPTIONS='-c' '-fno-openmp' '-fno-openacc' '-fPIC' '-fcf-protection=none' '-g' '-mbranch-protection=standard' '-mlittle-endian' '-mabi=lp64' '-O2' '-fasynchronous-unwind-tables' '-g' '-O2' '-fno-omit-frame-pointer' '-mno-omit-leaf-frame-pointer' '-ffile-prefix-map=/home/ubuntu/project/qrb_ros_camera_ws/src/qrb_camera_debian/qrb_ros_camera=.' '-ffat-lto-objects' '-fstack-protector-strong' '-fstack-clash-protection' '-mbranch-protection=standard' '-fdebug-prefix-map=/home/ubuntu/project/qrb_ros_camera_ws/src/qrb_camera_debian/qrb_ros_camera=/usr/src/ros-jazzy-qrb-camera-2.0.2' '-v' '-shared-libgcc' '-mlittle-endian' '-mabi=lp64'   '-fltrans-output-list=/tmp/ccfOgS9i.ltrans.out' '-fwpa=8' '-fresolution=/tmp/ccpnmsM8.res' '-flinker-output=pie' '-shared-libgcc'
+         /usr/libexec/gcc/aarch64-linux-gnu/13/lto1 -quiet -dumpbase ./cmTC_878cc.wpa -mbranch-protection=standard -mlittle-endian -mabi=lp64 -mno-omit-leaf-frame-pointer -mbranch-protection=standard -mlittle-endian -mabi=lp64 -g -g -O2 -O2 -version -fno-openmp -fno-openacc -fPIC -fcf-protection=none -fasynchronous-unwind-tables -fno-omit-frame-pointer -ffile-prefix-map=/home/ubuntu/project/qrb_ros_camera_ws/src/qrb_camera_debian/qrb_ros_camera=. -ffat-lto-objects -fstack-protector-strong -fstack-clash-protection -fdebug-prefix-map=/home/ubuntu/project/qrb_ros_camera_ws/src/qrb_camera_debian/qrb_ros_camera=/usr/src/ros-jazzy-qrb-camera-2.0.2 -fltrans-output-list=/tmp/ccfOgS9i.ltrans.out -fwpa=8 -fresolution=/tmp/ccpnmsM8.res -flinker-output=pie @/tmp/ccr3D7Ur
+        GNU GIMPLE (Ubuntu 13.3.0-6ubuntu2~24.04) version 13.3.0 (aarch64-linux-gnu)
+        	compiled by GNU C version 13.3.0, GMP version 6.3.0, MPFR version 4.2.1, MPC version 1.3.1, isl version isl-0.26-GMP
+        
+        GGC heuristics: --param ggc-min-expand=100 --param ggc-min-heapsize=131072
+        COMPILER_PATH=/usr/libexec/gcc/aarch64-linux-gnu/13/:/usr/libexec/gcc/aarch64-linux-gnu/13/:/usr/libexec/gcc/aarch64-linux-gnu/:/usr/lib/gcc/aarch64-linux-gnu/13/:/usr/lib/gcc/aarch64-linux-gnu/:/usr/libexec/gcc/aarch64-linux-gnu/13/:/usr/libexec/gcc/aarch64-linux-gnu/13/:/usr/libexec/gcc/aarch64-linux-gnu/:/usr/lib/gcc/aarch64-linux-gnu/13/:/usr/lib/gcc/aarch64-linux-gnu/
+        LIBRARY_PATH=/usr/lib/gcc/aarch64-linux-gnu/13/../../../../lib/aarch64-linux-gnu/:/usr/lib/gcc/aarch64-linux-gnu/13/../../../../lib/../lib/:/lib/../lib/aarch64-linux-gnu/:/lib/../lib/../lib/:/usr/lib/../lib/aarch64-linux-gnu/:/usr/lib/../lib/../lib/:/usr/lib/gcc/aarch64-linux-gnu/13/../../../aarch64-linux-gnu/:/usr/lib/gcc/aarch64-linux-gnu/13/../../../../lib/:/lib/aarch64-linux-gnu/:/lib/../lib/:/usr/lib/aarch64-linux-gnu/:/usr/lib/../lib/:/usr/lib/gcc/aarch64-linux-gnu/13/:/usr/lib/gcc/aarch64-linux-gnu/13/../../../aarch64-linux-gnu/:/usr/lib/gcc/aarch64-linux-gnu/13/../../../../lib/:/lib/aarch64-linux-gnu/:/lib/../lib/:/usr/lib/aarch64-linux-gnu/:/usr/lib/../lib/:/usr/lib/gcc/aarch64-linux-gnu/13/:/usr/lib/gcc/aarch64-linux-gnu/13/../../../aarch64-linux-gnu/:/usr/lib/gcc/aarch64-linux-gnu/13/../../../../lib/:/lib/aarch64-linux-gnu/:/lib/../lib/:/usr/lib/aarch64-linux-gnu/:/usr/lib/../lib/:/usr/lib/gcc/aarch64-linux-gnu/13/../../../:/lib/:/usr/lib/:/usr/lib/gcc/aarch64-linux-gnu/13/../../../:/lib/:/usr/lib/
+        COLLECT_GCC_OPTIONS='-c' '-fno-openmp' '-fno-openacc' '-fPIC' '-fcf-protection=none' '-g' '-mbranch-protection=standard' '-mlittle-endian' '-mabi=lp64' '-O2' '-fasynchronous-unwind-tables' '-g' '-O2' '-fno-omit-frame-pointer' '-mno-omit-leaf-frame-pointer' '-ffile-prefix-map=/home/ubuntu/project/qrb_ros_camera_ws/src/qrb_camera_debian/qrb_ros_camera=.' '-ffat-lto-objects' '-fstack-protector-strong' '-fstack-clash-protection' '-mbranch-protection=standard' '-fdebug-prefix-map=/home/ubuntu/project/qrb_ros_camera_ws/src/qrb_camera_debian/qrb_ros_camera=/usr/src/ros-jazzy-qrb-camera-2.0.2' '-v' '-shared-libgcc' '-mlittle-endian' '-mabi=lp64'   '-fltrans-output-list=/tmp/ccfOgS9i.ltrans.out' '-fwpa=8' '-fresolution=/tmp/ccpnmsM8.res' '-flinker-output=pie' '-shared-libgcc' '-dumpdir' './cmTC_878cc.wpa.'
+        make -f /tmp/ccfRyAqT.mk -j8 all
+        Using built-in specs.
+        COLLECT_GCC=/usr/bin/c++
+        OFFLOAD_TARGET_NAMES=nvptx-none
+        OFFLOAD_TARGET_DEFAULT=1
+        Target: aarch64-linux-gnu
+        Configured with: ../src/configure -v --with-pkgversion='Ubuntu 13.3.0-6ubuntu2~24.04' --with-bugurl=file:///usr/share/doc/gcc-13/README.Bugs --enable-languages=c,ada,c++,go,d,fortran,objc,obj-c++,m2 --prefix=/usr --with-gcc-major-version-only --program-suffix=-13 --program-prefix=aarch64-linux-gnu- --enable-shared --enable-linker-build-id --libexecdir=/usr/libexec --without-included-gettext --enable-threads=posix --libdir=/usr/lib --enable-nls --enable-bootstrap --enable-clocale=gnu --enable-libstdcxx-debug --enable-libstdcxx-time=yes --with-default-libstdcxx-abi=new --enable-libstdcxx-backtrace --enable-gnu-unique-object --disable-libquadmath --disable-libquadmath-support --enable-plugin --enable-default-pie --with-system-zlib --enable-libphobos-checking=release --with-target-system-zlib=auto --enable-objc-gc=auto --enable-multiarch --enable-fix-cortex-a53-843419 --disable-werror --enable-offload-targets=nvptx-none=/build/gcc-13-Nz4ro4/gcc-13-13.3.0/debian/tmp-nvptx/usr --enable-offload-defaulted --without-cuda-driver --enable-checking=release --build=aarch64-linux-gnu --host=aarch64-linux-gnu --target=aarch64-linux-gnu --with-build-config=bootstrap-lto-lean --enable-link-serialization=2
+        Thread model: posix
+        Supported LTO compression algorithms: zlib zstd
+        gcc version 13.3.0 (Ubuntu 13.3.0-6ubuntu2~24.04) 
+        COLLECT_GCC_OPTIONS='-c' '-fno-openmp' '-fno-openacc' '-fPIC' '-fcf-protection=none' '-g' '-mbranch-protection=standard' '-mlittle-endian' '-mabi=lp64' '-O2' '-fasynchronous-unwind-tables' '-g' '-O2' '-fno-omit-frame-pointer' '-mno-omit-leaf-frame-pointer' '-ffile-prefix-map=/home/ubuntu/project/qrb_ros_camera_ws/src/qrb_camera_debian/qrb_ros_camera=.' '-ffat-lto-objects' '-fstack-protector-strong' '-fstack-clash-protection' '-mbranch-protection=standard' '-fdebug-prefix-map=/home/ubuntu/project/qrb_ros_camera_ws/src/qrb_camera_debian/qrb_ros_camera=/usr/src/ros-jazzy-qrb-camera-2.0.2' '-v' '-shared-libgcc' '-mlittle-endian' '-mabi=lp64'   '-fltrans' '-o' '/tmp/ccfOgS9i.ltrans0.ltrans.o' '-shared-libgcc'
+         /usr/libexec/gcc/aarch64-linux-gnu/13/lto1 -quiet -dumpbase ./cmTC_878cc.ltrans0.ltrans -mbranch-protection=standard -mlittle-endian -mabi=lp64 -mno-omit-leaf-frame-pointer -mbranch-protection=standard -mlittle-endian -mabi=lp64 -g -g -O2 -O2 -version -fno-openmp -fno-openacc -fPIC -fcf-protection=none -fasynchronous-unwind-tables -fno-omit-frame-pointer -ffile-prefix-map=/home/ubuntu/project/qrb_ros_camera_ws/src/qrb_camera_debian/qrb_ros_camera=. -ffat-lto-objects -fstack-protector-strong -fstack-clash-protection -fdebug-prefix-map=/home/ubuntu/project/qrb_ros_camera_ws/src/qrb_camera_debian/qrb_ros_camera=/usr/src/ros-jazzy-qrb-camera-2.0.2 -fltrans /tmp/ccfOgS9i.ltrans0.o -o /tmp/ccuOEFh1.s
+        GNU GIMPLE (Ubuntu 13.3.0-6ubuntu2~24.04) version 13.3.0 (aarch64-linux-gnu)
+        	compiled by GNU C version 13.3.0, GMP version 6.3.0, MPFR version 4.2.1, MPC version 1.3.1, isl version isl-0.26-GMP
+        
+        GGC heuristics: --param ggc-min-expand=100 --param ggc-min-heapsize=131072
+        COLLECT_GCC_OPTIONS='-c' '-fno-openmp' '-fno-openacc' '-fPIC' '-fcf-protection=none' '-g' '-mbranch-protection=standard' '-mlittle-endian' '-mabi=lp64' '-O2' '-fasynchronous-unwind-tables' '-g' '-O2' '-fno-omit-frame-pointer' '-mno-omit-leaf-frame-pointer' '-ffile-prefix-map=/home/ubuntu/project/qrb_ros_camera_ws/src/qrb_camera_debian/qrb_ros_camera=.' '-ffat-lto-objects' '-fstack-protector-strong' '-fstack-clash-protection' '-mbranch-protection=standard' '-fdebug-prefix-map=/home/ubuntu/project/qrb_ros_camera_ws/src/qrb_camera_debian/qrb_ros_camera=/usr/src/ros-jazzy-qrb-camera-2.0.2' '-v' '-shared-libgcc' '-mlittle-endian' '-mabi=lp64'   '-fltrans' '-o' '/tmp/ccfOgS9i.ltrans0.ltrans.o' '-shared-libgcc'
+         as -v --gdwarf-5 -EL -mabi=lp64 -mabi=lp64 -o /tmp/ccfOgS9i.ltrans0.ltrans.o /tmp/ccuOEFh1.s
+        GNU assembler version 2.42 (aarch64-linux-gnu) using BFD version (GNU Binutils for Ubuntu) 2.42
+        MAKEFLAGS=w -j8 
+        COMPILER_PATH=/usr/libexec/gcc/aarch64-linux-gnu/13/:/usr/libexec/gcc/aarch64-linux-gnu/13/:/usr/libexec/gcc/aarch64-linux-gnu/:/usr/lib/gcc/aarch64-linux-gnu/13/:/usr/lib/gcc/aarch64-linux-gnu/:/usr/libexec/gcc/aarch64-linux-gnu/13/:/usr/libexec/gcc/aarch64-linux-gnu/13/:/usr/libexec/gcc/aarch64-linux-gnu/:/usr/lib/gcc/aarch64-linux-gnu/13/:/usr/lib/gcc/aarch64-linux-gnu/
+        LIBRARY_PATH=/usr/lib/gcc/aarch64-linux-gnu/13/../../../../lib/aarch64-linux-gnu/:/usr/lib/gcc/aarch64-linux-gnu/13/../../../../lib/../lib/:/lib/../lib/aarch64-linux-gnu/:/lib/../lib/../lib/:/usr/lib/../lib/aarch64-linux-gnu/:/usr/lib/../lib/../lib/:/usr/lib/gcc/aarch64-linux-gnu/13/../../../aarch64-linux-gnu/:/usr/lib/gcc/aarch64-linux-gnu/13/../../../../lib/:/lib/aarch64-linux-gnu/:/lib/../lib/:/usr/lib/aarch64-linux-gnu/:/usr/lib/../lib/:/usr/lib/gcc/aarch64-linux-gnu/13/:/usr/lib/gcc/aarch64-linux-gnu/13/../../../aarch64-linux-gnu/:/usr/lib/gcc/aarch64-linux-gnu/13/../../../../lib/:/lib/aarch64-linux-gnu/:/lib/../lib/:/usr/lib/aarch64-linux-gnu/:/usr/lib/../lib/:/usr/lib/gcc/aarch64-linux-gnu/13/:/usr/lib/gcc/aarch64-linux-gnu/13/../../../aarch64-linux-gnu/:/usr/lib/gcc/aarch64-linux-gnu/13/../../../../lib/:/lib/aarch64-linux-gnu/:/lib/../lib/:/usr/lib/aarch64-linux-gnu/:/usr/lib/../lib/:/usr/lib/gcc/aarch64-linux-gnu/13/../../../:/lib/:/usr/lib/:/usr/lib/gcc/aarch64-linux-gnu/13/../../../:/lib/:/usr/lib/
+        COLLECT_GCC_OPTIONS='-c' '-fno-openmp' '-fno-openacc' '-fPIC' '-fcf-protection=none' '-g' '-mbranch-protection=standard' '-mlittle-endian' '-mabi=lp64' '-O2' '-fasynchronous-unwind-tables' '-g' '-O2' '-fno-omit-frame-pointer' '-mno-omit-leaf-frame-pointer' '-ffile-prefix-map=/home/ubuntu/project/qrb_ros_camera_ws/src/qrb_camera_debian/qrb_ros_camera=.' '-ffat-lto-objects' '-fstack-protector-strong' '-fstack-clash-protection' '-mbranch-protection=standard' '-fdebug-prefix-map=/home/ubuntu/project/qrb_ros_camera_ws/src/qrb_camera_debian/qrb_ros_camera=/usr/src/ros-jazzy-qrb-camera-2.0.2' '-v' '-shared-libgcc' '-mlittle-endian' '-mabi=lp64'   '-fltrans' '-o' '/tmp/ccfOgS9i.ltrans0.ltrans.o' '-shared-libgcc' '-dumpdir' './cmTC_878cc.ltrans0.ltrans.'
+        COLLECT_GCC_OPTIONS='-g' '-O2' '-fno-omit-frame-pointer' '-mno-omit-leaf-frame-pointer' '-ffile-prefix-map=/home/ubuntu/project/qrb_ros_camera_ws/src/qrb_camera_debian/qrb_ros_camera=.' '-flto=auto' '-ffat-lto-objects' '-fstack-protector-strong' '-fstack-clash-protection' '-Wformat=1' '-mbranch-protection=standard' '-fdebug-prefix-map=/home/ubuntu/project/qrb_ros_camera_ws/src/qrb_camera_debian/qrb_ros_camera=/usr/src/ros-jazzy-qrb-camera-2.0.2' '-D' 'NDEBUG' '-Wdate-time' '-D' '_FORTIFY_SOURCE=3' '-v' '-o' 'cmTC_878cc' '-shared-libgcc' '-mlittle-endian' '-mabi=lp64' '-dumpdir' 'cmTC_878cc.'
+        gmake[3]: Leaving directory '/home/ubuntu/project/qrb_ros_camera_ws/src/qrb_camera_debian/qrb_ros_camera/.obj-aarch64-linux-gnu/CMakeFiles/CMakeScratch/TryCompile-VYJfUZ'
+        gmake[2]: Leaving directory '/home/ubuntu/project/qrb_ros_camera_ws/src/qrb_camera_debian/qrb_ros_camera/.obj-aarch64-linux-gnu/CMakeFiles/CMakeScratch/TryCompile-VYJfUZ'
+        
+      exitCode: 0
+  -
+    kind: "message-v1"
+    backtrace:
+      - "/usr/share/cmake-3.28/Modules/CMakeDetermineCompilerABI.cmake:127 (message)"
+      - "/usr/share/cmake-3.28/Modules/CMakeTestCXXCompiler.cmake:26 (CMAKE_DETERMINE_COMPILER_ABI)"
+      - "CMakeLists.txt:2 (project)"
+    message: |
+      Parsed CXX implicit include dir info: rv=done
+        found start of include info
+        found start of implicit include info
+          add: [/usr/include/c++/13]
+          add: [/usr/include/aarch64-linux-gnu/c++/13]
+          add: [/usr/include/c++/13/backward]
+          add: [/usr/lib/gcc/aarch64-linux-gnu/13/include]
+          add: [/usr/local/include]
+          add: [/usr/include/aarch64-linux-gnu]
+          add: [/usr/include]
+        end of search list found
+        collapse include dir [/usr/include/c++/13] ==> [/usr/include/c++/13]
+        collapse include dir [/usr/include/aarch64-linux-gnu/c++/13] ==> [/usr/include/aarch64-linux-gnu/c++/13]
+        collapse include dir [/usr/include/c++/13/backward] ==> [/usr/include/c++/13/backward]
+        collapse include dir [/usr/lib/gcc/aarch64-linux-gnu/13/include] ==> [/usr/lib/gcc/aarch64-linux-gnu/13/include]
+        collapse include dir [/usr/local/include] ==> [/usr/local/include]
+        collapse include dir [/usr/include/aarch64-linux-gnu] ==> [/usr/include/aarch64-linux-gnu]
+        collapse include dir [/usr/include] ==> [/usr/include]
+        implicit include dirs: [/usr/include/c++/13;/usr/include/aarch64-linux-gnu/c++/13;/usr/include/c++/13/backward;/usr/lib/gcc/aarch64-linux-gnu/13/include;/usr/local/include;/usr/include/aarch64-linux-gnu;/usr/include]
+      
+      
+  -
+    kind: "message-v1"
+    backtrace:
+      - "/usr/share/cmake-3.28/Modules/CMakeDetermineCompilerABI.cmake:159 (message)"
+      - "/usr/share/cmake-3.28/Modules/CMakeTestCXXCompiler.cmake:26 (CMAKE_DETERMINE_COMPILER_ABI)"
+      - "CMakeLists.txt:2 (project)"
+    message: |
+      Parsed CXX implicit link information:
+        link line regex: [^( *|.*[/\\])(ld|CMAKE_LINK_STARTFILE-NOTFOUND|([^/\\]+-)?ld|collect2)[^/\\]*( |$)]
+        ignore line: [Change Dir: '/home/ubuntu/project/qrb_ros_camera_ws/src/qrb_camera_debian/qrb_ros_camera/.obj-aarch64-linux-gnu/CMakeFiles/CMakeScratch/TryCompile-VYJfUZ']
+        ignore line: []
+        ignore line: [Run Build Command(s): /usr/bin/cmake -E env VERBOSE=1 /usr/bin/gmake -f Makefile cmTC_878cc/fast]
+        ignore line: [gmake[2]: Entering directory '/home/ubuntu/project/qrb_ros_camera_ws/src/qrb_camera_debian/qrb_ros_camera/.obj-aarch64-linux-gnu/CMakeFiles/CMakeScratch/TryCompile-VYJfUZ']
+        ignore line: [/usr/bin/gmake  -f CMakeFiles/cmTC_878cc.dir/build.make CMakeFiles/cmTC_878cc.dir/build]
+        ignore line: [gmake[3]: Entering directory '/home/ubuntu/project/qrb_ros_camera_ws/src/qrb_camera_debian/qrb_ros_camera/.obj-aarch64-linux-gnu/CMakeFiles/CMakeScratch/TryCompile-VYJfUZ']
+        ignore line: [Building CXX object CMakeFiles/cmTC_878cc.dir/CMakeCXXCompilerABI.cpp.o]
+        ignore line: [/usr/bin/c++   -g -O2 -fno-omit-frame-pointer -mno-omit-leaf-frame-pointer -ffile-prefix-map=/home/ubuntu/project/qrb_ros_camera_ws/src/qrb_camera_debian/qrb_ros_camera=. -flto=auto -ffat-lto-objects -fstack-protector-strong -fstack-clash-protection -Wformat -mbranch-protection=standard -fdebug-prefix-map=/home/ubuntu/project/qrb_ros_camera_ws/src/qrb_camera_debian/qrb_ros_camera=/usr/src/ros-jazzy-qrb-camera-2.0.2 -DNDEBUG -Wdate-time -D_FORTIFY_SOURCE=3    -v -o CMakeFiles/cmTC_878cc.dir/CMakeCXXCompilerABI.cpp.o -c /usr/share/cmake-3.28/Modules/CMakeCXXCompilerABI.cpp]
+        ignore line: [Using built-in specs.]
+        ignore line: [COLLECT_GCC=/usr/bin/c++]
+        ignore line: [OFFLOAD_TARGET_NAMES=nvptx-none]
+        ignore line: [OFFLOAD_TARGET_DEFAULT=1]
+        ignore line: [Target: aarch64-linux-gnu]
+        ignore line: [Configured with: ../src/configure -v --with-pkgversion='Ubuntu 13.3.0-6ubuntu2~24.04' --with-bugurl=file:///usr/share/doc/gcc-13/README.Bugs --enable-languages=c ada c++ go d fortran objc obj-c++ m2 --prefix=/usr --with-gcc-major-version-only --program-suffix=-13 --program-prefix=aarch64-linux-gnu- --enable-shared --enable-linker-build-id --libexecdir=/usr/libexec --without-included-gettext --enable-threads=posix --libdir=/usr/lib --enable-nls --enable-bootstrap --enable-clocale=gnu --enable-libstdcxx-debug --enable-libstdcxx-time=yes --with-default-libstdcxx-abi=new --enable-libstdcxx-backtrace --enable-gnu-unique-object --disable-libquadmath --disable-libquadmath-support --enable-plugin --enable-default-pie --with-system-zlib --enable-libphobos-checking=release --with-target-system-zlib=auto --enable-objc-gc=auto --enable-multiarch --enable-fix-cortex-a53-843419 --disable-werror --enable-offload-targets=nvptx-none=/build/gcc-13-Nz4ro4/gcc-13-13.3.0/debian/tmp-nvptx/usr --enable-offload-defaulted --without-cuda-driver --enable-checking=release --build=aarch64-linux-gnu --host=aarch64-linux-gnu --target=aarch64-linux-gnu --with-build-config=bootstrap-lto-lean --enable-link-serialization=2]
+        ignore line: [Thread model: posix]
+        ignore line: [Supported LTO compression algorithms: zlib zstd]
+        ignore line: [gcc version 13.3.0 (Ubuntu 13.3.0-6ubuntu2~24.04) ]
+        ignore line: [COLLECT_GCC_OPTIONS='-g' '-O2' '-fno-omit-frame-pointer' '-mno-omit-leaf-frame-pointer' '-ffile-prefix-map=/home/ubuntu/project/qrb_ros_camera_ws/src/qrb_camera_debian/qrb_ros_camera=.' '-flto=auto' '-ffat-lto-objects' '-fstack-protector-strong' '-fstack-clash-protection' '-Wformat=1' '-mbranch-protection=standard' '-fdebug-prefix-map=/home/ubuntu/project/qrb_ros_camera_ws/src/qrb_camera_debian/qrb_ros_camera=/usr/src/ros-jazzy-qrb-camera-2.0.2' '-D' 'NDEBUG' '-Wdate-time' '-D' '_FORTIFY_SOURCE=3' '-v' '-o' 'CMakeFiles/cmTC_878cc.dir/CMakeCXXCompilerABI.cpp.o' '-c' '-shared-libgcc' '-mlittle-endian' '-mabi=lp64' '-dumpdir' 'CMakeFiles/cmTC_878cc.dir/']
+        ignore line: [ /usr/libexec/gcc/aarch64-linux-gnu/13/cc1plus -quiet -v -imultiarch aarch64-linux-gnu -D_GNU_SOURCE -D NDEBUG -D _FORTIFY_SOURCE=3 /usr/share/cmake-3.28/Modules/CMakeCXXCompilerABI.cpp -quiet -dumpdir CMakeFiles/cmTC_878cc.dir/ -dumpbase CMakeCXXCompilerABI.cpp.cpp -dumpbase-ext .cpp -mno-omit-leaf-frame-pointer -mbranch-protection=standard -mlittle-endian -mabi=lp64 -g -O2 -Wformat=1 -Wdate-time -version -fno-omit-frame-pointer -ffile-prefix-map=/home/ubuntu/project/qrb_ros_camera_ws/src/qrb_camera_debian/qrb_ros_camera=. -flto=auto -ffat-lto-objects -fstack-protector-strong -fstack-clash-protection -fdebug-prefix-map=/home/ubuntu/project/qrb_ros_camera_ws/src/qrb_camera_debian/qrb_ros_camera=/usr/src/ros-jazzy-qrb-camera-2.0.2 -fasynchronous-unwind-tables -fstack-protector-strong -Wformat -Wformat-security -fstack-clash-protection -o /tmp/ccUvLKS8.s]
+        ignore line: [GNU C++17 (Ubuntu 13.3.0-6ubuntu2~24.04) version 13.3.0 (aarch64-linux-gnu)]
+        ignore line: [	compiled by GNU C version 13.3.0  GMP version 6.3.0  MPFR version 4.2.1  MPC version 1.3.1  isl version isl-0.26-GMP]
+        ignore line: []
+        ignore line: [GGC heuristics: --param ggc-min-expand=100 --param ggc-min-heapsize=131072]
+        ignore line: [ignoring duplicate directory "/usr/include/aarch64-linux-gnu/c++/13"]
+        ignore line: [ignoring nonexistent directory "/usr/local/include/aarch64-linux-gnu"]
+        ignore line: [ignoring nonexistent directory "/usr/lib/gcc/aarch64-linux-gnu/13/include-fixed/aarch64-linux-gnu"]
+        ignore line: [ignoring nonexistent directory "/usr/lib/gcc/aarch64-linux-gnu/13/include-fixed"]
+        ignore line: [ignoring nonexistent directory "/usr/lib/gcc/aarch64-linux-gnu/13/../../../../aarch64-linux-gnu/include"]
+        ignore line: [#include "..." search starts here:]
+        ignore line: [#include <...> search starts here:]
+        ignore line: [ /usr/include/c++/13]
+        ignore line: [ /usr/include/aarch64-linux-gnu/c++/13]
+        ignore line: [ /usr/include/c++/13/backward]
+        ignore line: [ /usr/lib/gcc/aarch64-linux-gnu/13/include]
+        ignore line: [ /usr/local/include]
+        ignore line: [ /usr/include/aarch64-linux-gnu]
+        ignore line: [ /usr/include]
+        ignore line: [End of search list.]
+        ignore line: [Compiler executable checksum: e6eff1ab3426b92d3a3bf1dc105bfcb7]
+        ignore line: [COLLECT_GCC_OPTIONS='-g' '-O2' '-fno-omit-frame-pointer' '-mno-omit-leaf-frame-pointer' '-ffile-prefix-map=/home/ubuntu/project/qrb_ros_camera_ws/src/qrb_camera_debian/qrb_ros_camera=.' '-flto=auto' '-ffat-lto-objects' '-fstack-protector-strong' '-fstack-clash-protection' '-Wformat=1' '-mbranch-protection=standard' '-fdebug-prefix-map=/home/ubuntu/project/qrb_ros_camera_ws/src/qrb_camera_debian/qrb_ros_camera=/usr/src/ros-jazzy-qrb-camera-2.0.2' '-D' 'NDEBUG' '-Wdate-time' '-D' '_FORTIFY_SOURCE=3' '-v' '-o' 'CMakeFiles/cmTC_878cc.dir/CMakeCXXCompilerABI.cpp.o' '-c' '-shared-libgcc' '-mlittle-endian' '-mabi=lp64' '-dumpdir' 'CMakeFiles/cmTC_878cc.dir/']
+        ignore line: [ as -v --gdwarf-5 -EL -mabi=lp64 -o CMakeFiles/cmTC_878cc.dir/CMakeCXXCompilerABI.cpp.o /tmp/ccUvLKS8.s]
+        ignore line: [GNU assembler version 2.42 (aarch64-linux-gnu) using BFD version (GNU Binutils for Ubuntu) 2.42]
+        ignore line: [COMPILER_PATH=/usr/libexec/gcc/aarch64-linux-gnu/13/:/usr/libexec/gcc/aarch64-linux-gnu/13/:/usr/libexec/gcc/aarch64-linux-gnu/:/usr/lib/gcc/aarch64-linux-gnu/13/:/usr/lib/gcc/aarch64-linux-gnu/]
+        ignore line: [LIBRARY_PATH=/usr/lib/gcc/aarch64-linux-gnu/13/:/usr/lib/gcc/aarch64-linux-gnu/13/../../../aarch64-linux-gnu/:/usr/lib/gcc/aarch64-linux-gnu/13/../../../../lib/:/lib/aarch64-linux-gnu/:/lib/../lib/:/usr/lib/aarch64-linux-gnu/:/usr/lib/../lib/:/usr/lib/gcc/aarch64-linux-gnu/13/../../../:/lib/:/usr/lib/]
+        ignore line: [COLLECT_GCC_OPTIONS='-g' '-O2' '-fno-omit-frame-pointer' '-mno-omit-leaf-frame-pointer' '-ffile-prefix-map=/home/ubuntu/project/qrb_ros_camera_ws/src/qrb_camera_debian/qrb_ros_camera=.' '-flto=auto' '-ffat-lto-objects' '-fstack-protector-strong' '-fstack-clash-protection' '-Wformat=1' '-mbranch-protection=standard' '-fdebug-prefix-map=/home/ubuntu/project/qrb_ros_camera_ws/src/qrb_camera_debian/qrb_ros_camera=/usr/src/ros-jazzy-qrb-camera-2.0.2' '-D' 'NDEBUG' '-Wdate-time' '-D' '_FORTIFY_SOURCE=3' '-v' '-o' 'CMakeFiles/cmTC_878cc.dir/CMakeCXXCompilerABI.cpp.o' '-c' '-shared-libgcc' '-mlittle-endian' '-mabi=lp64' '-dumpdir' 'CMakeFiles/cmTC_878cc.dir/CMakeCXXCompilerABI.cpp.']
+        ignore line: [Linking CXX executable cmTC_878cc]
+        ignore line: [/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_878cc.dir/link.txt --verbose=1]
+        ignore line: [/usr/bin/c++ -g -O2 -fno-omit-frame-pointer -mno-omit-leaf-frame-pointer -ffile-prefix-map=/home/ubuntu/project/qrb_ros_camera_ws/src/qrb_camera_debian/qrb_ros_camera=. -flto=auto -ffat-lto-objects -fstack-protector-strong -fstack-clash-protection -Wformat -mbranch-protection=standard -fdebug-prefix-map=/home/ubuntu/project/qrb_ros_camera_ws/src/qrb_camera_debian/qrb_ros_camera=/usr/src/ros-jazzy-qrb-camera-2.0.2 -DNDEBUG -Wdate-time -D_FORTIFY_SOURCE=3   -v CMakeFiles/cmTC_878cc.dir/CMakeCXXCompilerABI.cpp.o -o cmTC_878cc ]
+        ignore line: [Using built-in specs.]
+        ignore line: [COLLECT_GCC=/usr/bin/c++]
+        ignore line: [COLLECT_LTO_WRAPPER=/usr/libexec/gcc/aarch64-linux-gnu/13/lto-wrapper]
+        ignore line: [OFFLOAD_TARGET_NAMES=nvptx-none]
+        ignore line: [OFFLOAD_TARGET_DEFAULT=1]
+        ignore line: [Target: aarch64-linux-gnu]
+        ignore line: [Configured with: ../src/configure -v --with-pkgversion='Ubuntu 13.3.0-6ubuntu2~24.04' --with-bugurl=file:///usr/share/doc/gcc-13/README.Bugs --enable-languages=c ada c++ go d fortran objc obj-c++ m2 --prefix=/usr --with-gcc-major-version-only --program-suffix=-13 --program-prefix=aarch64-linux-gnu- --enable-shared --enable-linker-build-id --libexecdir=/usr/libexec --without-included-gettext --enable-threads=posix --libdir=/usr/lib --enable-nls --enable-bootstrap --enable-clocale=gnu --enable-libstdcxx-debug --enable-libstdcxx-time=yes --with-default-libstdcxx-abi=new --enable-libstdcxx-backtrace --enable-gnu-unique-object --disable-libquadmath --disable-libquadmath-support --enable-plugin --enable-default-pie --with-system-zlib --enable-libphobos-checking=release --with-target-system-zlib=auto --enable-objc-gc=auto --enable-multiarch --enable-fix-cortex-a53-843419 --disable-werror --enable-offload-targets=nvptx-none=/build/gcc-13-Nz4ro4/gcc-13-13.3.0/debian/tmp-nvptx/usr --enable-offload-defaulted --without-cuda-driver --enable-checking=release --build=aarch64-linux-gnu --host=aarch64-linux-gnu --target=aarch64-linux-gnu --with-build-config=bootstrap-lto-lean --enable-link-serialization=2]
+        ignore line: [Thread model: posix]
+        ignore line: [Supported LTO compression algorithms: zlib zstd]
+        ignore line: [gcc version 13.3.0 (Ubuntu 13.3.0-6ubuntu2~24.04) ]
+        ignore line: [COMPILER_PATH=/usr/libexec/gcc/aarch64-linux-gnu/13/:/usr/libexec/gcc/aarch64-linux-gnu/13/:/usr/libexec/gcc/aarch64-linux-gnu/:/usr/lib/gcc/aarch64-linux-gnu/13/:/usr/lib/gcc/aarch64-linux-gnu/]
+        ignore line: [LIBRARY_PATH=/usr/lib/gcc/aarch64-linux-gnu/13/:/usr/lib/gcc/aarch64-linux-gnu/13/../../../aarch64-linux-gnu/:/usr/lib/gcc/aarch64-linux-gnu/13/../../../../lib/:/lib/aarch64-linux-gnu/:/lib/../lib/:/usr/lib/aarch64-linux-gnu/:/usr/lib/../lib/:/usr/lib/gcc/aarch64-linux-gnu/13/../../../:/lib/:/usr/lib/]
+        ignore line: [COLLECT_GCC_OPTIONS='-g' '-O2' '-fno-omit-frame-pointer' '-mno-omit-leaf-frame-pointer' '-ffile-prefix-map=/home/ubuntu/project/qrb_ros_camera_ws/src/qrb_camera_debian/qrb_ros_camera=.' '-flto=auto' '-ffat-lto-objects' '-fstack-protector-strong' '-fstack-clash-protection' '-Wformat=1' '-mbranch-protection=standard' '-fdebug-prefix-map=/home/ubuntu/project/qrb_ros_camera_ws/src/qrb_camera_debian/qrb_ros_camera=/usr/src/ros-jazzy-qrb-camera-2.0.2' '-D' 'NDEBUG' '-Wdate-time' '-D' '_FORTIFY_SOURCE=3' '-v' '-o' 'cmTC_878cc' '-shared-libgcc' '-mlittle-endian' '-mabi=lp64' '-dumpdir' 'cmTC_878cc.']
+        link line: [ /usr/libexec/gcc/aarch64-linux-gnu/13/collect2 -plugin /usr/libexec/gcc/aarch64-linux-gnu/13/liblto_plugin.so -plugin-opt=/usr/libexec/gcc/aarch64-linux-gnu/13/lto-wrapper -plugin-opt=-fresolution=/tmp/ccpnmsM8.res -plugin-opt=-pass-through=-lgcc_s -plugin-opt=-pass-through=-lgcc -plugin-opt=-pass-through=-lc -plugin-opt=-pass-through=-lgcc_s -plugin-opt=-pass-through=-lgcc -flto=auto --build-id --eh-frame-hdr --hash-style=gnu --as-needed -dynamic-linker /lib/ld-linux-aarch64.so.1 -X -EL -maarch64linux --fix-cortex-a53-843419 -pie -z now -z relro -o cmTC_878cc /usr/lib/gcc/aarch64-linux-gnu/13/../../../aarch64-linux-gnu/Scrt1.o /usr/lib/gcc/aarch64-linux-gnu/13/../../../aarch64-linux-gnu/crti.o /usr/lib/gcc/aarch64-linux-gnu/13/crtbeginS.o -L/usr/lib/gcc/aarch64-linux-gnu/13 -L/usr/lib/gcc/aarch64-linux-gnu/13/../../../aarch64-linux-gnu -L/usr/lib/gcc/aarch64-linux-gnu/13/../../../../lib -L/lib/aarch64-linux-gnu -L/lib/../lib -L/usr/lib/aarch64-linux-gnu -L/usr/lib/../lib -L/usr/lib/gcc/aarch64-linux-gnu/13/../../.. CMakeFiles/cmTC_878cc.dir/CMakeCXXCompilerABI.cpp.o -lstdc++ -lm -lgcc_s -lgcc -lc -lgcc_s -lgcc /usr/lib/gcc/aarch64-linux-gnu/13/crtendS.o /usr/lib/gcc/aarch64-linux-gnu/13/../../../aarch64-linux-gnu/crtn.o]
+          arg [/usr/libexec/gcc/aarch64-linux-gnu/13/collect2] ==> ignore
+          arg [-plugin] ==> ignore
+          arg [/usr/libexec/gcc/aarch64-linux-gnu/13/liblto_plugin.so] ==> ignore
+          arg [-plugin-opt=/usr/libexec/gcc/aarch64-linux-gnu/13/lto-wrapper] ==> ignore
+          arg [-plugin-opt=-fresolution=/tmp/ccpnmsM8.res] ==> ignore
+          arg [-plugin-opt=-pass-through=-lgcc_s] ==> ignore
+          arg [-plugin-opt=-pass-through=-lgcc] ==> ignore
+          arg [-plugin-opt=-pass-through=-lc] ==> ignore
+          arg [-plugin-opt=-pass-through=-lgcc_s] ==> ignore
+          arg [-plugin-opt=-pass-through=-lgcc] ==> ignore
+          arg [-flto=auto] ==> ignore
+          arg [--build-id] ==> ignore
+          arg [--eh-frame-hdr] ==> ignore
+          arg [--hash-style=gnu] ==> ignore
+          arg [--as-needed] ==> ignore
+          arg [-dynamic-linker] ==> ignore
+          arg [/lib/ld-linux-aarch64.so.1] ==> ignore
+          arg [-X] ==> ignore
+          arg [-EL] ==> ignore
+          arg [-maarch64linux] ==> ignore
+          arg [--fix-cortex-a53-843419] ==> ignore
+          arg [-pie] ==> ignore
+          arg [-znow] ==> ignore
+          arg [-zrelro] ==> ignore
+          arg [-o] ==> ignore
+          arg [cmTC_878cc] ==> ignore
+          arg [/usr/lib/gcc/aarch64-linux-gnu/13/../../../aarch64-linux-gnu/Scrt1.o] ==> obj [/usr/lib/gcc/aarch64-linux-gnu/13/../../../aarch64-linux-gnu/Scrt1.o]
+          arg [/usr/lib/gcc/aarch64-linux-gnu/13/../../../aarch64-linux-gnu/crti.o] ==> obj [/usr/lib/gcc/aarch64-linux-gnu/13/../../../aarch64-linux-gnu/crti.o]
+          arg [/usr/lib/gcc/aarch64-linux-gnu/13/crtbeginS.o] ==> obj [/usr/lib/gcc/aarch64-linux-gnu/13/crtbeginS.o]
+          arg [-L/usr/lib/gcc/aarch64-linux-gnu/13] ==> dir [/usr/lib/gcc/aarch64-linux-gnu/13]
+          arg [-L/usr/lib/gcc/aarch64-linux-gnu/13/../../../aarch64-linux-gnu] ==> dir [/usr/lib/gcc/aarch64-linux-gnu/13/../../../aarch64-linux-gnu]
+          arg [-L/usr/lib/gcc/aarch64-linux-gnu/13/../../../../lib] ==> dir [/usr/lib/gcc/aarch64-linux-gnu/13/../../../../lib]
+          arg [-L/lib/aarch64-linux-gnu] ==> dir [/lib/aarch64-linux-gnu]
+          arg [-L/lib/../lib] ==> dir [/lib/../lib]
+          arg [-L/usr/lib/aarch64-linux-gnu] ==> dir [/usr/lib/aarch64-linux-gnu]
+          arg [-L/usr/lib/../lib] ==> dir [/usr/lib/../lib]
+          arg [-L/usr/lib/gcc/aarch64-linux-gnu/13/../../..] ==> dir [/usr/lib/gcc/aarch64-linux-gnu/13/../../..]
+          arg [CMakeFiles/cmTC_878cc.dir/CMakeCXXCompilerABI.cpp.o] ==> ignore
+          arg [-lstdc++] ==> lib [stdc++]
+          arg [-lm] ==> lib [m]
+          arg [-lgcc_s] ==> lib [gcc_s]
+          arg [-lgcc] ==> lib [gcc]
+          arg [-lc] ==> lib [c]
+          arg [-lgcc_s] ==> lib [gcc_s]
+          arg [-lgcc] ==> lib [gcc]
+          arg [/usr/lib/gcc/aarch64-linux-gnu/13/crtendS.o] ==> obj [/usr/lib/gcc/aarch64-linux-gnu/13/crtendS.o]
+          arg [/usr/lib/gcc/aarch64-linux-gnu/13/../../../aarch64-linux-gnu/crtn.o] ==> obj [/usr/lib/gcc/aarch64-linux-gnu/13/../../../aarch64-linux-gnu/crtn.o]
+        collapse obj [/usr/lib/gcc/aarch64-linux-gnu/13/../../../aarch64-linux-gnu/Scrt1.o] ==> [/usr/lib/aarch64-linux-gnu/Scrt1.o]
+        collapse obj [/usr/lib/gcc/aarch64-linux-gnu/13/../../../aarch64-linux-gnu/crti.o] ==> [/usr/lib/aarch64-linux-gnu/crti.o]
+        collapse obj [/usr/lib/gcc/aarch64-linux-gnu/13/../../../aarch64-linux-gnu/crtn.o] ==> [/usr/lib/aarch64-linux-gnu/crtn.o]
+        collapse library dir [/usr/lib/gcc/aarch64-linux-gnu/13] ==> [/usr/lib/gcc/aarch64-linux-gnu/13]
+        collapse library dir [/usr/lib/gcc/aarch64-linux-gnu/13/../../../aarch64-linux-gnu] ==> [/usr/lib/aarch64-linux-gnu]
+        collapse library dir [/usr/lib/gcc/aarch64-linux-gnu/13/../../../../lib] ==> [/usr/lib]
+        collapse library dir [/lib/aarch64-linux-gnu] ==> [/lib/aarch64-linux-gnu]
+        collapse library dir [/lib/../lib] ==> [/lib]
+        collapse library dir [/usr/lib/aarch64-linux-gnu] ==> [/usr/lib/aarch64-linux-gnu]
+        collapse library dir [/usr/lib/../lib] ==> [/usr/lib]
+        collapse library dir [/usr/lib/gcc/aarch64-linux-gnu/13/../../..] ==> [/usr/lib]
+        implicit libs: [stdc++;m;gcc_s;gcc;c;gcc_s;gcc]
+        implicit objs: [/usr/lib/aarch64-linux-gnu/Scrt1.o;/usr/lib/aarch64-linux-gnu/crti.o;/usr/lib/gcc/aarch64-linux-gnu/13/crtbeginS.o;/usr/lib/gcc/aarch64-linux-gnu/13/crtendS.o;/usr/lib/aarch64-linux-gnu/crtn.o]
+        implicit dirs: [/usr/lib/gcc/aarch64-linux-gnu/13;/usr/lib/aarch64-linux-gnu;/usr/lib;/lib/aarch64-linux-gnu;/lib]
+        implicit fwks: []
+      
+      
+...

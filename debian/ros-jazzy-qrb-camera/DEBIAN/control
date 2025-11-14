@@ -1,0 +1,10 @@
+Package: ros-jazzy-qrb-camera
+Version: 2.0.2
+Architecture: arm64
+Maintainer: Zhanye Lin <zhanlin@qti.qualcomm.com>
+Installed-Size: 341
+Depends: libc6 (>= 2.34), libgcc-s1 (>= 3.3.1), libqmmf1-qcs9100 (>= 1.0.r1.08100), libstdc++6 (>= 13.1), libqmmf1, qcom-camera-server
+Section: misc
+Priority: optional
+Homepage: https://github.com/qualcomm-qrb-ros/qrb_ros_camera
+Description: Qualcomm Robotics Camera Interface

@@ -1,0 +1,4 @@
+source;share/qrb_camera/local_setup.bash
+source;share/qrb_camera/local_setup.dsv
+source;share/qrb_camera/local_setup.sh
+source;share/qrb_camera/local_setup.zsh
