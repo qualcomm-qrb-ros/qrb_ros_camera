@@ -63,7 +63,7 @@ private:
   std::mutex frame_mutex_;
   qmmf::recorder::Recorder recorder_;
   std::vector<QMMFFrame *> frames_;
-  // std::vector<std::shared_ptr<Frame>> frames_;
+
   std::vector<QMMFStream> track_streams_;
   std::vector<QMMFStream> snap_streams_;
   std::vector<uint32_t> session_ids_;
