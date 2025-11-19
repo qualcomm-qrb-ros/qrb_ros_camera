@@ -1,6 +1,7 @@
 // Copyright (c) 2023 Qualcomm Innovation Center, Inc. All rights reserved.
 // SPDX-License-Identifier: BSD-3-Clause-Clear
 
+// clang-format off
 #include <syslog.h>
 #include <stdarg.h>
 #include <stdio.h>
@@ -42,3 +43,4 @@
 #define ALOGI(fmt, arg...) syslog (LOG_INFO, LOG_TAG fmt, ##arg)
 #define ALOGW(fmt, arg...) syslog (LOG_WARNING, LOG_TAG fmt, ##arg)
 #define ALOGE(fmt, arg...) syslog (LOG_ERROR, LOG_TAG fmt, ##arg)
+// clang-format on
