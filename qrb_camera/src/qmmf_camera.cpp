@@ -5,8 +5,8 @@
  */
 #include "qrb_camera/qmmf_camera.hpp"
 
-#include <iostream>
 #include <algorithm>
+#include <iostream>
 
 using namespace qmmf;
 using namespace recorder;

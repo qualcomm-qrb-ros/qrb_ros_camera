@@ -1,5 +1,10 @@
 # Changelog for package qrb_ros_camera
 
+## 2.0.2 (2026-03-11)
+
+- Fix cannot find QMMF_CAMERA_METADATA
+- Contributors: Dan Wang
+
 ## 2.0.1 (2025-09-5)
 
 - Fix msg frame_id error issue
