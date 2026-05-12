@@ -44,8 +44,10 @@ private:
 
   void publish_color_image(int stream_index, std::unique_ptr<qrb_camera::CameraFrame> frame);
 
-  void show_fps(std::string & name,
-      std::string format,
+  bool init();
+
+  void show_fps(const std::string & name,
+      const std::string & format,
       int64_t & latency,
       uint64_t & last_record_timestamp,
       uint64_t current_frame_timestamp,
@@ -58,8 +60,6 @@ private:
 
   std::unique_ptr<qrb_ros::transport::type::Image> convert_camera_frame_to_msg(
       std::unique_ptr<qrb_camera::CameraFrame> frame);
-
-  void init();
 
   void start_camera();
 
