@@ -1,3 +1,9 @@
+ros-jazzy-qrb-ros-camera (3.0.0) noble; urgency=high
+
+  * Update camera backend to qcarcam
+
+ -- Dan Wang <danwa@qti.qualcomm.com>  Mon, 12 May 2026 00:00:00 +0000
+
 ros-jazzy-qrb-ros-camera (2.0.2.1) noble; urgency=high
 
   * update launch file

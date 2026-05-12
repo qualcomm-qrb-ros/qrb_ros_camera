@@ -10,7 +10,7 @@
 #include <mutex>
 
 #include "qrb_camera/camera_interface.hpp"
-#include "qrb_camera/qmmf_camera.hpp"
+#include "qrb_camera/qcarcam_camera.hpp"
 #include "qrb_camera/qrb_camera_common.hpp"
 
 namespace qrb_camera

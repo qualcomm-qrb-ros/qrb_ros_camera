@@ -167,7 +167,13 @@ void TestNode::handler_callback(
     buffer->map();
     buffer->sync_start();
     int size = buffer->size();
-    uint8_t * bufData = (uint8_t *)buffer->addr();
+    uint8_t * addr = (uint8_t *)buffer->addr();
+
+    std::vector<uint8_t> local_buf(addr, addr + size);
+    uint8_t * bufData = local_buf.data();
+    buffer->sync_end();
+    buffer->unmap();
+
     char fname[256];
     const char * prefix_name = "test";
     std::string node_name = this->get_name();
@@ -178,13 +184,12 @@ void TestNode::handler_callback(
     if (fd == NULL) {
       RCLCPP_ERROR(this->get_logger(),
           "can't open this file: %s, please check whether diectory exist!", fname);
+     
       return;
     }
     fwrite(bufData, size, 1, fd);
     fclose(fd);
     fd = NULL;
-    buffer->unmap();
-    buffer->sync_end();
   }
 }
 

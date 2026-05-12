@@ -51,7 +51,9 @@ class ICameraFrame
 
 protected:
   uint32_t refs_;
-  ICameraFrame() : refs_(0), timestamp(0), data(nullptr), fd(0) {}
+  // wd todo
+  // before: ICameraFrame() : refs_(0), timestamp(0), data(nullptr), fd(0) {}
+  ICameraFrame() : refs_(0), timestamp(0), data(nullptr), fd(-1) {}
   virtual ~ICameraFrame() {}
 
 public:
@@ -181,7 +183,7 @@ struct CameraParam
 
 enum class CameraType
 {
-  QMMF
+  QCarCam
 };
 
 /**
