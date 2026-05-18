@@ -1,5 +1,7 @@
-// Copyright (c) 2024 Qualcomm Innovation Center, Inc. All rights reserved.
-// SPDX-License-Identifier: BSD-3-Clause-Clear
+/*
+ *​​​​ Copyright (c) Qualcomm Technologies, Inc. and/or its subsidiaries.
+ * SPDX-License-Identifier: BSD-3-Clause-Clear
+ */
 #include <sensor_msgs/msg/camera_info.hpp>
 
 #include "qrb_ros_transport_image_type/image.hpp"

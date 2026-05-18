@@ -28,9 +28,10 @@
  *
  */
 /*
- *​​​​ ​Changes from Qualcomm Innovation Center, Inc. are provided
- * under the following license: Copyright (c) 2023 Qualcomm Innovation Center,
- * Inc. All rights reserved. SPDX-License-Identifier: BSD-3-Clause-Clear
+ * ​​Changes from Qualcomm Technologies, Inc. are provided under the following license:
+ *
+ * Copyright (c) Qualcomm Technologies, Inc. and/or its subsidiaries.
+ * SPDX-License-Identifier: BSD-3-Clause-Clear
  */
 #ifndef QRB_CAMERA__CAMERA_INTERFACE_HPP_
 #define QRB_CAMERA__CAMERA_INTERFACE_HPP_
@@ -51,7 +52,6 @@ class ICameraFrame
 
 protected:
   uint32_t refs_;
-  // wd todo
   // before: ICameraFrame() : refs_(0), timestamp(0), data(nullptr), fd(0) {}
   ICameraFrame() : refs_(0), timestamp(0), data(nullptr), fd(-1) {}
   virtual ~ICameraFrame() {}
