@@ -1,6 +1,5 @@
 /*
- * Copyright (c) Qualcomm Technologies, Inc. and/or its subsidiaries.
- * All Rights Reserved.
+ *​​​​ Copyright (c) Qualcomm Technologies, Inc. and/or its subsidiaries.
  * SPDX-License-Identifier: BSD-3-Clause-Clear
  */
 // libqcxclient.so was built for Android where these symbols come from libcutils.
