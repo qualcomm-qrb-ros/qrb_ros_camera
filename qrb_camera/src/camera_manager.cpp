@@ -25,7 +25,6 @@ CameraManager::~CameraManager()
 
 int CameraManager::create_camera(CameraType type, uint32_t camera_id)
 {
-  std::cout << "###debug...create_camera" << std::endl;
   std::lock_guard<std::mutex> lock(mtx_);
 
   std::cout << "devices_.size(): " << devices_.size() << std::endl;

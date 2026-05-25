@@ -16,7 +16,7 @@ def generate_launch_description():
     # ── Launch arguments ────────────────────────────────────────────────────
     camera_id_arg = DeclareLaunchArgument(
         'camera_id', default_value='0',
-        description='Camera ID: index for QMMF, inputId for QCarCam (e.g. 11/6)')
+        description='Camera ID: inputId for QCarCam (e.g. 11/6)')
 
     width_arg  = DeclareLaunchArgument('width',  default_value='1280', description='Stream width in pixels')
     height_arg = DeclareLaunchArgument('height', default_value='720',  description='Stream height in pixels')

@@ -129,10 +129,7 @@ int main()
   CameraManager manager;
 
   // ── 1. Create device ──────────────────────────────────────────────────
-  std::cout << "###debug...start to create_camera" << std::endl;
   auto index = manager.create_camera(CameraType::QCarCam, CAMERA_ID);
-  std::cout << "###debug...end to create_camera" << std::endl;
-  std::cout << "###debug...succss to create camera, index: " << index << std::endl;
   if (index < 0) {
     std::cerr << "[ERROR] create_camera failed (inputId=" << CAMERA_ID << ")" << std::endl;
     return -1;
@@ -155,12 +152,10 @@ int main()
   detail.stream_fps.push_back(IMG_FPS);
   detail.stream_type.push_back(StreamType::Track);  // required, must match stream_size
 
-  std::cout << "###debug...start to set_camera_parameter" << std::endl;
   if (!manager.set_camera_parameter(index, detail)) {
     std::cerr << "[ERROR] set_camera_parameter failed" << std::endl;
     return -1;
   }
-  std::cout << "###debug...end to set_camera_parameter" << std::endl;
 
   // ── 3. Register callback BEFORE start_camera ─────────────────────────
   // QCarCamCamera::on_frame_ready() snapshots listeners_ inside the driver
@@ -193,11 +188,8 @@ int main()
                 << std::endl;
     // }
 
-    // uint32_t idx = save_count.fetch_add(1);
-    
-    if (/*n > 3 &&*/ n < 20 && frame->data) {
+    if (n > 3 && n < 20 && frame->data) {
       uint32_t idx = save_count.load();
-      std::cout << "###debug...idx: " << idx << std::endl;
       if (idx < SAVE_FRAMES) {
         save_count.fetch_add(1);
         std::vector<uint8_t> rgb(frame->width * frame->height * 3);
@@ -210,24 +202,20 @@ int main()
     }
   };
 
-  std::cout << "###debug...start to register_callback" << std::endl;
   if (!manager.register_callback(index, image_cb)) {
     std::cerr << "[ERROR] register_callback failed" << std::endl;
     return -1;
   }
-  std::cout << "###debug...end to register_callback" << std::endl;
 
   // ── 4. Start camera ───────────────────────────────────────────────────
   // Internally: QCarCamInitialize → QueryInputs → Open (REQUEST_MODE) →
   //   SetParam(ISP_USECASE) → RegisterEventCallback → SetParam(EVENT_MASK) →
   //   allocate_buffers (GBM) → QCarCamSetBuffers → QCarCamReserve →
   //   QCarCamStart → submit_initial (pre-queue all buffer slots)
-  std::cout << "###debug...start to start_camera" << std::endl;
   if (!manager.start_camera(index)) {
     std::cerr << "[ERROR] start_camera failed" << std::endl;
     return -1;
   }
-  std::cout << "###debug...end to start_camera" << std::endl;
 
   std::cout << "[INFO] Camera " << CAMERA_ID << " started ("
             << IMG_WIDTH << "x" << IMG_HEIGHT << " @" << IMG_FPS << "fps nv12)."
@@ -244,9 +232,7 @@ int main()
   // Internally: QCarCamStop → QCarCamRelease → QCarCamClose →
   //   QCarCamUninitialize → free_buffers (munmap + gbm_bo_destroy) →
   //   gbm_device_destroy → close(drm_fd)
-  std::cout << "###debug...start to stop_camera" << std::endl;
   manager.stop_camera(index);
-  std::cout << "###debug...end to stop_camera" << std::endl;
 
   std::cout << "[INFO] Stopped. Total frames received: " << frame_count.load() << std::endl;
   return 0;
