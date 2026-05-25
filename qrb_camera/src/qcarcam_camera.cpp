@@ -140,7 +140,9 @@ int QCarCamCamera::start_camera()
 
   // Shared cleanup lambda – called on any failure path
   auto cleanup = [this]() {
-    for (auto & s : streams_) { if (s) s->free_buffers(); }
+    for (auto & s : streams_) {
+      if (s) { s->free_buffers(); }
+    }
     streams_.clear();
     if (handle_ != QCARCAM_HNDL_INVALID) {
       QCarCamStop(handle_);     // may fail if Start not reached yet — ignore
@@ -159,12 +161,10 @@ int QCarCamCamera::start_camera()
     std::cout << "[ERROR] [" << logger_ << "]: query_and_verify_input failed" << std::endl;
     return -1;
   }
-  std::cout << "###debug...QCarCamQueryInputs OK" << std::endl;
 
   // ------------------------------------------------------------------
   // Step 2: Open QCarCam handle (with REQUEST_MODE flag)
   // ------------------------------------------------------------------
-  // wd todo: hard code, need to make sure how to setting
   QCarCamOpen_t open_params = {};
   open_params.opMode              = QCARCAM_OPMODE_ISP;
   open_params.numInputs           = 1;
@@ -184,7 +184,8 @@ int QCarCamCamera::start_camera()
   }
   if (handle_ == QCARCAM_HNDL_INVALID) {
     std::cout << "[ERROR] [" << logger_ << "]: QCarCamOpen failed after retries" << std::endl;
-    cleanup(); return -1;
+    cleanup();
+    return -1;
   }
 
   // ------------------------------------------------------------------
@@ -192,15 +193,15 @@ int QCarCamCamera::start_camera()
   // ------------------------------------------------------------------
   isp_config_.cameraId = static_cast<QCarCamIspUsecase_e>(0);
   isp_config_.id = static_cast<QCarCamIspUsecase_e>(0);
-  isp_config_.usecaseId = static_cast<QCarCamIspUsecase_e>(138); // line 267 138-5
+  isp_config_.usecaseId = static_cast<QCarCamIspUsecase_e>(QCARCAM_ISP_USECASE);
   ret = QCarCamSetParam(handle_,
                         QCARCAM_STREAM_CONFIG_PARAM_ISP_USECASE,
                         &isp_config_, sizeof(isp_config_));
   if (ret != QCARCAM_RET_OK) {
     std::cout << "[ERROR] [" << logger_ << "]: SetParam ISP_USECASE failed: " << ret << std::endl;
-    cleanup(); return -1;
+    cleanup();
+    return -1;
   }
-  std::cout << "###debug...QCarCamSetPara OK" << std::endl;
 
   // ------------------------------------------------------------------
   // Step 5: RegisterEventCallback
@@ -208,9 +209,9 @@ int QCarCamCamera::start_camera()
   ret = QCarCamRegisterEventCallback(handle_, &qcarcam_event_cb, this);
   if (ret != QCARCAM_RET_OK) {
     std::cout << "[ERROR] [" << logger_ << "]: RegisterEventCallback failed: " << ret << std::endl;
-    cleanup(); return -1;
+    cleanup();
+    return -1;
   }
-  std::cout << "###debug...QCarCamRegisterEventCallback OK" << std::endl;
 
   // ------------------------------------------------------------------
   // Step 4: SetParam – EVENT_MASK
@@ -224,9 +225,9 @@ int QCarCamCamera::start_camera()
                           &mask, sizeof(mask));
     if (ret != QCARCAM_RET_OK) {
       std::cout << "[ERROR] [" << logger_ << "]: SetParam EVENT_MASK failed: " << ret << std::endl;
-      cleanup(); return -1;
+      cleanup();
+      return -1;
     }
-    std::cout << "###debug...second QCarCamSetParam OK" << std::endl;
   }
 
   // ------------------------------------------------------------------
@@ -246,29 +247,31 @@ int QCarCamCamera::start_camera()
 
     streams_.clear();
 
-    std::cout << "###debug...stream_params_ size: " << stream_params_.size() << std::endl;
     for (size_t s = 0; s < stream_params_.size(); ++s) {
       streams_.push_back(std::make_unique<QCarCamStream>());
       auto & st = *streams_.back();
 
       if (!st.init(stream_params_[s], camera_id_, resubmit_fn)) {
         std::cout << "[ERROR] [" << logger_ << "]: stream[" << s << "].init failed" << std::endl;
-        cleanup(); return -1;
+        cleanup();
+        return -1;
       }
 
       if (!st.allocate_buffers()) {
         std::cout << "[ERROR] [" << logger_ << "]: stream[" << s << "].allocate_buffers failed"
                   << std::endl;
-        cleanup(); return -1;
+        cleanup();
+        return -1;
       }
 
-      st.buf_list().id = static_cast<uint32_t>(5); // line 197 138-5
+      st.buf_list().id = QCARCAM_BUFFERLIST_TYPE;
 
       ret = QCarCamSetBuffers(handle_, &st.buf_list());
       if (ret != QCARCAM_RET_OK) {
         std::cout << "[ERROR] [" << logger_ << "]: QCarCamSetBuffers stream[" << s
                   << "] failed: " << ret << std::endl;
-        cleanup(); return -1;
+        cleanup();
+        return -1;
       }
 
       std::cout << "[INFO] [" << logger_ << "]: QCarCamSetBuffers stream[" << s
@@ -284,7 +287,8 @@ int QCarCamCamera::start_camera()
   ret = QCarCamReserve(handle_);
   if (ret != QCARCAM_RET_OK) {
     std::cout << "[ERROR] [" << logger_ << "]: QCarCamReserve failed: " << ret << std::endl;
-    cleanup(); return -1;
+    cleanup();
+    return -1;
   }
   std::cout << "[INFO] [" << logger_ << "]: QCarCamReserve OK" << std::endl;
 
@@ -295,7 +299,8 @@ int QCarCamCamera::start_camera()
   if (ret != QCARCAM_RET_OK) {
     std::cout << "[ERROR] [" << logger_ << "]: QCarCamStart failed: " << ret << std::endl;
     QCarCamRelease(handle_);
-    cleanup(); return -1;
+    cleanup();
+    return -1;
   }
   std::cout << "[INFO] [" << logger_ << "]: QCarCamStart OK" << std::endl;
 
@@ -315,7 +320,8 @@ int QCarCamCamera::start_camera()
                 << sp->stream_name() << "'" << std::endl;
       QCarCamStop(handle_);
       QCarCamRelease(handle_);
-      cleanup(); return -1;
+      cleanup();
+      return -1;
     }
   }
 
@@ -361,7 +367,9 @@ int QCarCamCamera::stop_camera()
     is_initialized_ = false;
   }
 
-  for (auto & s : streams_) { if (s) s->free_buffers(); }
+  for (auto & s : streams_) {
+    if (s) { s->free_buffers(); }
+  }
   streams_.clear();
 
   is_working_ = false;

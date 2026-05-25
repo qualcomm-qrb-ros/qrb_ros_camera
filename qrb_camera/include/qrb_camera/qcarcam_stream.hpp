@@ -47,6 +47,9 @@ namespace qrb_camera
 static constexpr uint32_t QCARCAM_NUM_BUFFERS        = 5;
 static constexpr uint32_t QCARCAM_MAX_IN_USE_BUFFERS = 4;
 
+static constexpr uint32_t QCARCAM_STRIDE_ALIGN = 128U;  // stride: round up to 128 bytes
+static constexpr uint32_t QCARCAM_HEIGHT_ALIGN  =  32U;  // scanline height: round up to 32 lines
+
 // ---------------------------------------------------------------------------
 // DMA-heap buffer slot (one per output buffer per stream)
 // ---------------------------------------------------------------------------

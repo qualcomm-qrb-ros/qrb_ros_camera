@@ -29,6 +29,11 @@ static constexpr uint32_t QCARCAM_MAX_QUERY_RETRY   = 500U;
 static constexpr uint32_t QCARCAM_SENSOR_WAIT_US    = 10000U;
 static constexpr const char * QCARCAM_QCX_MQUEUE_PATH = "/dev/mqueue/QCX_debfcadf";
 
+// ISP usecase 138: full ISP pipeline including IPE (Image Processing Engine)
+static constexpr uint32_t QCARCAM_ISP_USECASE    = 138U;
+// Buffer list type 5: NV12 output format
+static constexpr uint32_t QCARCAM_BUFFERLIST_TYPE =   5U;
+
 // ---------------------------------------------------------------------------
 // QCarCamCamera – ICameraDevice implementation using QCarCam submit-request
 // mode.  Supports multiple simultaneous streams from a single camera input.

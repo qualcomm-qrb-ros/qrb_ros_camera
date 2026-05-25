@@ -13,7 +13,6 @@ namespace camera
 CameraNode::CameraNode(const rclcpp::NodeOptions & options)
   : rclcpp::Node("camera_node", options)
 {
-  std::cout << "###debug...CameraNode::CameraNode" << std::endl;
   RCLCPP_INFO(this->get_logger(), "QRB Camera Node start");
 
   camera_index_ = -1;
@@ -26,11 +25,8 @@ CameraNode::CameraNode(const rclcpp::NodeOptions & options)
 
   // configure_->get_camera_id() from launch config
 
-  std::cout << "###debug...camera_id: " << configure_->get_camera_id() << std::endl;
-
   camera_index_ = manager_.create_camera(
       qrb_camera::CameraType::QCarCam, configure_->get_camera_id());
-  std::cout << "###debug...camera_index_: " << camera_index_ << std::endl;
 
   if (camera_index_ < 0) {
     throw std::runtime_error("QRB Camera Node: create_camera failed");
@@ -64,7 +60,6 @@ void CameraNode::start_camera()
 
 CameraNode::~CameraNode()
 {
-  std::cout << "###debug...stop_camera" << std::endl;
   manager_.stop_camera(camera_index_);
 }
 
@@ -181,7 +176,7 @@ void CameraNode::publish_image(std::unique_ptr<qrb_camera::CameraFrame> frame)
   }
 
   if (stream_index == -1) {
-    RCLCPP_ERROR(this->get_logger(), “unknown stream name: %s”, frame->stream_name.c_str());
+    RCLCPP_ERROR(this->get_logger(), "unknown stream name: %s", frame->stream_name.c_str());
     return;
   }
 
@@ -193,7 +188,6 @@ void CameraNode::publish_color_image(int stream_index,
 {
   auto info = std::make_unique<CAMERA_INFO_TOPIC_TYPE>(camera_infos_[stream_index]);
 
-  std::cout << "###debug...frame->format: " << frame->format << std::endl;
   show_fps(frame->stream_name, "nv12", stream_ts_[stream_index].latency,
       stream_ts_[stream_index].timestamp, frame->timestamp, stream_ts_[stream_index].frame_count,
       frame->height, frame->width, frame->stride, frame->slice, frame->frame_id);
@@ -226,11 +220,8 @@ std::unique_ptr<qrb_ros::transport::type::Image> CameraNode::convert_camera_fram
   image_handler->width = frame->width;
   image_handler->height = frame->height;
 
-  std::cout << "###debug...frame->format: "
-            << frame->format << std::endl;
   image_handler->encoding = frame->format;
 
-  std::cout << "###debug...frame->size: " << frame->size << std::endl;
   auto dma_buf = std::make_shared<lib_mem_dmabuf::DmaBuffer>(frame->fd, frame->size);
   dma_buf->set_auto_release(false);
 
