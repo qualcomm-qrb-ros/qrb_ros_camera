@@ -54,12 +54,15 @@ static int open_dma_heap()
   return -1;
 }
 
+namespace qrb_camera
+{
+
 // ---------------------------------------------------------------------------
 // compute_plane_layout – stride / size for each YUV plane without GBM.
 //
 // Qualcomm alignment convention (SA8775P / IQ10):
-//   stride     : round up to nearest 128 bytes
-//   height     : round up to nearest 32 lines
+//   stride     : round up to nearest 128 bytes  (QCARCAM_STRIDE_ALIGN)
+//   height     : round up to nearest 32 lines   (QCARCAM_HEIGHT_ALIGN)
 //
 // Only NV12 / NV21 (2-plane) and packed UYVY (1-plane) are handled;
 // other formats fall back to NV12 layout.
@@ -71,12 +74,12 @@ static void compute_plane_layout(QCarCamColorFmt_e fmt,
                                   uint32_t & num_planes,
                                   uint32_t   plane_sizes[3])
 {
-  uint32_t h_align = (height + 31u) & ~31u;
+  uint32_t h_align = (height + QCARCAM_HEIGHT_ALIGN - 1u) & ~(QCARCAM_HEIGHT_ALIGN - 1u);
 
   switch (fmt) {
     case QCARCAM_FMT_NV12:
     case QCARCAM_FMT_NV21: {
-      stride         = (width + 127u) & ~127u;
+      stride         = (width + QCARCAM_STRIDE_ALIGN - 1u) & ~(QCARCAM_STRIDE_ALIGN - 1u);
       plane_sizes[0] = stride * h_align;           // Y
       plane_sizes[1] = stride * (h_align / 2u);    // UV interleaved
       total_size     = plane_sizes[0] + plane_sizes[1];
@@ -84,7 +87,7 @@ static void compute_plane_layout(QCarCamColorFmt_e fmt,
       break;
     }
     case QCARCAM_FMT_UYVY_8: {
-      stride         = ((width * 2u) + 127u) & ~127u;
+      stride         = ((width * 2u) + QCARCAM_STRIDE_ALIGN - 1u) & ~(QCARCAM_STRIDE_ALIGN - 1u);
       plane_sizes[0] = stride * h_align;
       total_size     = plane_sizes[0];
       num_planes     = 1;
@@ -92,7 +95,7 @@ static void compute_plane_layout(QCarCamColorFmt_e fmt,
     }
     default: {
       // Fallback: treat as NV12
-      stride         = (width + 127u) & ~127u;
+      stride         = (width + QCARCAM_STRIDE_ALIGN - 1u) & ~(QCARCAM_STRIDE_ALIGN - 1u);
       plane_sizes[0] = stride * h_align;
       plane_sizes[1] = stride * (h_align / 2u);
       total_size     = plane_sizes[0] + plane_sizes[1];
@@ -101,9 +104,6 @@ static void compute_plane_layout(QCarCamColorFmt_e fmt,
     }
   }
 }
-
-namespace qrb_camera
-{
 
 // ---------------------------------------------------------------------------
 // init – store stream parameters

@@ -86,7 +86,7 @@ bool ConfigureParser::get_camera_info(
     sensor_msgs::msg::CameraInfo & camera_info)
 {
   if (!init_) {
-    RCLCPP_ERROR(node_handler_->get_logger(), “please call init at first”);
+    RCLCPP_ERROR(node_handler_->get_logger(), "please call init at first");
     return false;
   }
 
