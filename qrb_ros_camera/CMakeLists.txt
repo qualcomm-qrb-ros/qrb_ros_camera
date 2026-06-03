@@ -23,7 +23,6 @@ ament_auto_find_build_dependencies()
 
 find_package(PkgConfig REQUIRED)
 pkg_check_modules(YAML_CPP REQUIRED yaml-cpp)
-pkg_check_modules(QMMF_CAMERA_METADATA REQUIRED IMPORTED_TARGET qmmf_camera_metadata)
 
 include_directories(include)
 include_directories(${YAML_CPP_INCLUDE_DIRS})
@@ -35,7 +34,6 @@ ament_auto_add_library(camera_node SHARED
 
 target_link_libraries(camera_node
   ${YAML_CPP_LIBRARIES}
-  PkgConfig::QMMF_CAMERA_METADATA
 )
 
 rclcpp_components_register_nodes(camera_node "qrb_ros::camera::CameraNode")
