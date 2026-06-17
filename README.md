@@ -1,25 +1,10 @@
-<div align="center">
-  <h1>QRB ROS Camera</h1>
-  <p align="center">
-   <img src="https://s7d1.scene7.com/is/image/dmqualcommprod/rb3gen2-dev-kits-hero-7" alt="Qualcomm QRB ROS" title="Qualcomm QRB ROS" />
-      
-  </p>
-  <p>ROS Packages for Cameras on Qualcomm Robotics Platforms</p>
-  
-  <a href="https://ubuntu.com/download/qualcomm-iot" target="_blank"><img src="https://img.shields.io/badge/Qualcomm%20Ubuntu-E95420?style=for-the-badge&logo=ubuntu&logoColor=white" alt="Qualcomm Ubuntu"></a>
-  <a href="https://docs.ros.org/en/jazzy/" target="_blank"><img src="https://img.shields.io/badge/ROS%20Jazzy-1c428a?style=for-the-badge&logo=ros&logoColor=white" alt="Jazzy"></a>
-  
-</div>
-
----
-
 ## 👋 Overview
 
-The [QRB ROS Camera](https://review-android.quicinc.com/q/project:external/github.com/quic-qrb-ros/qrb_ros_camera) is a ROS package to publish the images from Qualcomm **GMSL** cameras. It provides:
+The `QRB ROS Camera` is a ROS package to publish the images from Qualcomm **GMSL** cameras. It provides:
 
 - Concurrent multiple streams output support.
 - Composable ROS node support.
-- Zero-Copy transport powered by [QRB ROS Transport](https://review-android.quicinc.com/q/project:external/github.com/quic-qrb-ros/qrb_ros_transport).
+- Zero-Copy transport powered by `QRB ROS Transport`  .
 - Only support outputs in NV12 format
 
 
@@ -198,9 +183,12 @@ The `QCarCam` (Qualcomm Camera Client) is the Qualcomm camera framework, it expo
 ---
 
 ## 🚀 Usage
+### Check whether the camera devices have been detected and obtain the corresponding camera_id
+```bash
+journalctl -b |grep -i input_
+```
 
 ### Start the camera node
-
 ```bash
 source /opt/ros/jazzy/setup.bash
 ros2 launch qrb_ros_camera qrb_ros_camera_launch.py
@@ -227,7 +215,7 @@ It opens camera `0`, with `1` stream, using a resolution of `1280 x 720`, and ou
 You can override defaults via launch arguments:
 
 ```bash
-ros2 launch qrb_ros_camera qrb_ros_camera_launch.py camera_id:=11 width:=3840 height:=2160 fps:=30
+ros2 launch qrb_ros_camera qrb_ros_camera_launch.py camera_id:=6 width:=1824 height:=1536 fps:=30
 ```
 
 The output for these commands:
@@ -251,75 +239,6 @@ ros2 topic list
 /cam0_stream1
 /cam0_stream1_camera_info
 ```
-
-### Enable multiple cameras
-
-There are two ways to use multiple streams depending on your hardware setup.
-
-**Case 1: Multiple streams from the same camera** (`stream_size > 1`)
-
-One `CameraNode` can output multiple streams from a single camera device:
-
-```py
-parameters=[{
-    'camera_id': 11,
-    'stream_size': 2,
-    'stream_name': ['stream1', 'stream2'],
-    'stream1.width':  3840,
-    'stream1.height': 2160,
-    'stream1.fps':    30,
-    'stream2.width':  1280,
-    'stream2.height': 720,
-    'stream2.fps':    30,
-    'camera_info_path': os.path.join(
-        get_package_share_directory('qrb_ros_camera'),
-        'config', 'camera_info_OX03F10_yuv.yaml'),
-}]
-```
-
-Published topics:
-
-```bash
-/cam11_stream1
-/cam11_stream1_camera_info
-/cam11_stream2
-/cam11_stream2_camera_info
-```
-
-**Case 2: Streams from different cameras** (different `camera_id`)
-
-Each camera requires its own `CameraNode` instance. Use
-`qrb_ros_camera_dual_stream_launch.py` which starts two independent nodes:
-
-```bash
-ros2 launch qrb_ros_camera qrb_ros_camera_dual_stream_launch.py \
-  camera_id1:=11 width1:=3840 height1:=2160 fps1:=30 \
-  camera_id2:=6  width2:=1824 height2:=1536 fps2:=30
-```
-
-Published topics:
-
-```bash
-/cam11_stream1
-/cam11_stream1_camera_info
-/cam6_stream1
-/cam6_stream1_camera_info
-```
-
-The launch file parameters for Case 2:
-
-| Parameter | Default | Description |
-|---|---|---|
-| `camera_id1` | `11` | QCarCam inputId for camera 1 |
-| `width1` | `3840` | Camera 1 stream width |
-| `height1` | `2160` | Camera 1 stream height |
-| `fps1` | `30` | Camera 1 frame rate |
-| `camera_id2` | `6` | QCarCam inputId for camera 2 |
-| `width2` | `1824` | Camera 2 stream width |
-| `height2` | `1536` | Camera 2 stream height |
-| `fps2` | `30` | Camera 2 frame rate |
-| `camera_info_path` | `camera_info_OX03F10_yuv.yaml` | Intrinsic YAML (shared) |
-| `dump` | `False` | Dump frames to disk (debug) |
 
 ### Enable zero copy transport
 
@@ -376,11 +295,14 @@ Built `.deb` files are output to:
 <workspace>/debian_packages/oss/ros-jazzy-qrb-ros-camera
 ```
 
+Check whether the camera devices have been detected and obtain the corresponding camera_id
+```bash
+journalctl -b |grep -i input_
+```
 Run and debug
-
 ```bash
 source /opt/ros/jazzy/setup.bash
-ros2 launch qrb_ros_camera qrb_ros_camera_launch.py
+ros2 launch qrb_ros_camera qrb_ros_camera_launch.py camera_id:=<camera_id> width:=<width> height:=<height> fps:=<fps>
 ```
 
 ## 📜 License

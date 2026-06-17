@@ -304,7 +304,7 @@ void QCarCamStream::dispatch_frame(uint32_t                               buf_id
   frame.width        = width_;
   frame.height       = height_;
   frame.stride       = buffers_[buf_idx].planes[0].stride;
-  frame.slice        = height_;
+  frame.slice        = (height_ + QCARCAM_HEIGHT_ALIGN - 1u) & ~(QCARCAM_HEIGHT_ALIGN - 1u);
   frame.format       = to_ros_encoding(color_fmt_);
   frame.frame_source = stream_name_;
   frame.index        = frame_cnt_;
