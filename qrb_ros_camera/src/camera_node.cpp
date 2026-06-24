@@ -105,7 +105,7 @@ void CameraNode::show_fps(const std::string & name,
     int64_t & latency,
     uint64_t & last_record_timestamp,
     uint64_t current_frame_timestamp,
-    uint64_t & frame_count,
+    int64_t & frame_count,
     int height,
     int width,
     int stride,
@@ -116,7 +116,7 @@ void CameraNode::show_fps(const std::string & name,
 
   if (frame_count == 0) {
     frame_count = 1;
-    latency = cur_system_time - current_frame_timestamp - time_offset_;
+    latency = cur_system_time - static_cast<int64_t>(current_frame_timestamp) - time_offset_;
     last_record_timestamp = current_frame_timestamp;
     return;
   }
