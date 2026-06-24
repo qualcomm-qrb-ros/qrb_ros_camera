@@ -98,12 +98,12 @@ void TestNode::show_fps(std::string & name,
   uint64_t cur_system_time = get_clock()->now().nanoseconds();
   if (g_receive_frame_count[type] == 0) {
     g_receive_frame_count[type] = 1;
-    g_receive_total_latency[type] = cur_system_time - current_frame_timestamp;
+    g_receive_total_latency[type] = static_cast<int64_t>(cur_system_time - current_frame_timestamp);
     g_receive_last_fpstime[type] = cur_system_time;
     return;
   }
   g_receive_frame_count[type]++;
-  g_receive_total_latency[type] += cur_system_time - current_frame_timestamp;
+  g_receive_total_latency[type] += static_cast<int64_t>(cur_system_time - current_frame_timestamp);
   uint64_t diff = cur_system_time - g_receive_last_fpstime[type];
   uint64_t period = 5ULL * 1000000000ULL;
   if (diff > period) {

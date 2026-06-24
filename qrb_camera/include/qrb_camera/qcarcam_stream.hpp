@@ -99,6 +99,7 @@ public:
   // ---- Runtime (called from QCarCamCamera event callback) ----
 
   void on_frame_ready(uint32_t                               buf_idx,
+                      uint64_t                               frame_timestamp,
                       const std::vector<ICameraListener *> & listeners);
 
   // ---- Accessors ----
@@ -113,6 +114,7 @@ private:
 
   // ---- Per-frame helpers ----
   void dispatch_frame(uint32_t                               buf_idx,
+                      uint64_t                               frame_timestamp,
                       const std::vector<ICameraListener *> & listeners);
   void drain_release_queue();
 

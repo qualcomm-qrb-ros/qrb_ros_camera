@@ -411,6 +411,7 @@ void QCarCamCamera::on_frame_ready(const QCarCamEventPayload_t * payload)
 
   uint32_t blid    = payload->frameInfo.id;
   uint32_t buf_idx = payload->frameInfo.bufferIndex;
+  uint64_t hw_ts   = payload->frameInfo.sofTimestamp.timestamp;
 
   // Snapshot the listener list (short lock, no callback under lock)
   std::vector<ICameraListener *> snapshot;
@@ -422,7 +423,7 @@ void QCarCamCamera::on_frame_ready(const QCarCamEventPayload_t * payload)
   // Route to the stream whose bufferlist id matches
   for (auto & sp : streams_) {
     if (sp->buf_list_id() == blid) {
-      sp->on_frame_ready(buf_idx, snapshot);
+      sp->on_frame_ready(buf_idx, hw_ts, snapshot);
       return;
     }
   }

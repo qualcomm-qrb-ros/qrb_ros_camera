@@ -254,6 +254,7 @@ void QCarCamStream::free_buffers()
 // on_frame_ready – entry point from QCarCamCamera event callback
 // ---------------------------------------------------------------------------
 void QCarCamStream::on_frame_ready(uint32_t                               buf_idx,
+                                    uint64_t                               frame_timestamp,
                                     const std::vector<ICameraListener *> & listeners)
 {
   if (buf_idx >= QCARCAM_NUM_BUFFERS) {
@@ -280,7 +281,7 @@ void QCarCamStream::on_frame_ready(uint32_t                               buf_id
     resubmit_fn_(buf_list_.id, drop_idx);
   }
 
-  dispatch_frame(buf_idx, listeners);
+  dispatch_frame(buf_idx, frame_timestamp, listeners);
   drain_release_queue();
 }
 
@@ -288,6 +289,7 @@ void QCarCamStream::on_frame_ready(uint32_t                               buf_id
 // dispatch_frame – build ICameraFrame and call on_preview_frame synchronously
 // ---------------------------------------------------------------------------
 void QCarCamStream::dispatch_frame(uint32_t                               buf_idx,
+                                    uint64_t                               frame_timestamp,
                                     const std::vector<ICameraListener *> & listeners)
 {
   if (listeners.empty()) {
@@ -312,10 +314,7 @@ void QCarCamStream::dispatch_frame(uint32_t                               buf_id
   frame.orientation  = 0;
   frame.metadata     = nullptr;
 
-  struct timespec ts = {};
-  clock_gettime(CLOCK_BOOTTIME, &ts);
-  frame.timestamp = static_cast<uint64_t>(ts.tv_sec) * 1000000000ULL
-                  + static_cast<uint64_t>(ts.tv_nsec);
+  frame.timestamp = frame_timestamp;
 
   {
     std::lock_guard<std::mutex> lk(buf_mtx_);
