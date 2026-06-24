@@ -25,7 +25,7 @@ struct StreamTimeStamp
 {
   std::string stream_name;
   uint64_t timestamp = 0;
-  uint64_t frame_count = 0;
+  int64_t frame_count = 0;
   int64_t latency = 0;
 };
 
@@ -50,7 +50,7 @@ private:
       int64_t & latency,
       uint64_t & last_record_timestamp,
       uint64_t current_frame_timestamp,
-      uint64_t & frame_count,
+      int64_t & frame_count,
       int height,
       int width,
       int stride,
