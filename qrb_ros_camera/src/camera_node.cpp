@@ -4,6 +4,7 @@
  */
 #include "qrb_ros_camera/camera_node.hpp"
 
+#include <cstdint>
 #include <stdexcept>
 
 namespace qrb_ros
@@ -146,10 +147,15 @@ void CameraNode::show_fps(const std::string & name,
 
 void CameraNode::calculate_offset()
 {
-  struct timespec spec;
-  clock_gettime(CLOCK_BOOTTIME, &spec);
+  uint64_t qtimer_time = getQtimerTime();
 
-  int64_t cur_system_time = 1000000000LL * spec.tv_sec + spec.tv_nsec;
+  if (qtimer_time > static_cast<uint64_t>(INT64_MAX)) {
+    RCLCPP_ERROR(this->get_logger(),
+        "invalid qtimer time %lu exceeds INT64_MAX, skip offset calculation", qtimer_time);
+    return;
+  }
+
+  int64_t cur_system_time = static_cast<int64_t>(qtimer_time);
 
   int64_t cur_ros_time = (this->get_clock()->now()).nanoseconds();
 
@@ -228,6 +234,23 @@ std::unique_ptr<qrb_ros::transport::type::Image> CameraNode::convert_camera_fram
   image_handler->dmabuf = dma_buf;
 
   return image_handler;
+}
+
+uint64_t CameraNode::getQtimerTime()
+{
+    uint64_t qTimerCount = 0, qTimerFreq = 0, qTimerSec = 0, qTimerNanosNSec = 0;
+#if __aarch64__
+    asm volatile("mrs %0, cntvct_el0" : "=r" (qTimerCount));
+    asm volatile("mrs %0, cntfrq_el0" : "=r"(qTimerFreq));
+#else
+    asm volatile("mrrc p15, 1, %Q0, %R0, c14" : "=r" (qTimerCount));
+    qTimerFreq =  19200000; //19.2 MHz TBD: find right asm instruction
+#endif
+    qTimerSec = (qTimerCount / qTimerFreq);
+    qTimerNanosNSec = (qTimerCount % qTimerFreq);
+    qTimerNanosNSec *= 1000000000;
+    qTimerNanosNSec /= qTimerFreq;
+    return (qTimerSec * 1000000000 + qTimerNanosNSec) ;
 }
 
 }  // namespace camera

@@ -62,6 +62,8 @@ private:
 
   void start_camera();
 
+  uint64_t getQtimerTime();
+
   std::vector<std::shared_ptr<rclcpp::Publisher<IMAGE_TOPIC_TYPE>>> color_image_pub_vector_;
   std::vector<std::shared_ptr<rclcpp::Publisher<CAMERA_INFO_TOPIC_TYPE>>>
       color_camera_info_pub_vector_;
