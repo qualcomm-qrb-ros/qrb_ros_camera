@@ -10,8 +10,76 @@ env:
 
 jobs:
   ros-build:
-    uses: qualcomm-qrb-ros/qrb_ros_gh_actions/.github/workflows/ubuntu-build.yml@main
-    with:
-      env_setup_commands: |
-        echo "LD_LIBRARY_PATH=/usr/lib/qcm6490:$LD_LIBRARY_PATH" >> $GITHUB_ENV
-        echo "LIBRARY_PATH=/usr/lib/qcm6490:$LIBRARY_PATH" >> $GITHUB_ENV        
+    runs-on: [ubuntu-24.04-arm]
+    container: ros:jazzy
+    steps:
+      - name: Update and install extra packages
+        run: |
+          # Add QCOM PPA
+          sudo apt-get update
+          sudo apt-get install -y software-properties-common
+          sudo add-apt-repository -y ppa:ubuntu-qcom-iot/qcom-ppa
+          sudo add-apt-repository -y ppa:ubuntu-qcom-iot/qirp
+          sudo apt update -y && sudo apt upgrade -y
+          sudo apt install -y unzip wget python3-bloom python3-rosdep fakeroot debhelper dh-python
+          sudo apt-get install -y ocl-icd-libopencl1 opencl-headers
+          curl https://sh.rustup.rs -sSf | sh -s -- -y
+          . "$HOME/.cargo/env"
+          cargo --version
+          echo "LD_LIBRARY_PATH=/usr/lib/qcm6490:$LD_LIBRARY_PATH" >> $GITHUB_ENV
+          echo "LIBRARY_PATH=/usr/lib/qcm6490:$LIBRARY_PATH" >> $GITHUB_ENV        
+      - name: Checkout source code
+        uses: actions/checkout@v6.0.2
+        with:
+          path: ${{ env.ROS_SRC }}/${{ github.event.repository.name }}
+
+
+      - name: Check ROS dependency
+        run: |
+          wget https://raw.githubusercontent.com/qualcomm-qrb-ros/qrb_ros_distro/refs/heads/main/qrb-ros-dep/qcom-distribution.yaml -O ${ROS_WS}/qcom-distribution.yaml
+          if [ -f /etc/ros/rosdep/sources.list.d/20-default.list ];then
+            echo "yaml file://${ROS_WS}/qcom-distribution.yaml" | sudo tee -a /etc/ros/rosdep/sources.list.d/20-default.list
+          fi 
+          vcs import --input https://raw.githubusercontent.com/ros2/ros2/lyrical/ros2.repos ${ROS_SRC}
+          sudo rosdep update
+          sudo rosdep install -y --rosdistro jazzy --from-paths ${ROS_SRC} --ignore-src --skip-keys "fastcdr rti-connext-dds-7.7.0 urdfdom_headers"
+      - name: Build ROS packages
+        shell: bash
+        run: |
+          cd ${ROS_WS}
+          # source /opt/ros/jazzy/setup.sh
+          colcon build 
+      - name: Generate Debian packages
+        continue-on-error: true
+        shell: bash
+        run: |
+          cd ${ROS_WS}
+          mkdir ${ROS_WS}/debian_dir
+          export OUTPUT_DIR=${ROS_WS}/debian_dir
+          source /opt/ros/jazzy/setup.sh
+          for pkg in $(colcon list -t | cut -f2)
+          do
+            cd ${pkg}
+            bloom-generate rosdebian --ros-distro lyrical -i "$(date +%s)"
+            # Build package using fakeroot
+            fakeroot debian/rules binary -j8
+            # Move build result to the output directory
+            mv ../*.deb $OUTPUT_DIR
+            mv ../*.ddeb $OUTPUT_DIR
+            ls -al $OUTPUT_DIR
+          done
+      - name: Stage build artifacts for publishing
+        run: |
+          build_dir=./uploads
+          mkdir -p $build_dir
+          tar -cvf "${build_dir}/${{ github.event.repository.name }}-ubuntu-artifacts.tar" --transform "s|^${ROS_WS}/||" -C "${ROS_WS}" install
+          tar -cvf "${build_dir}/${{ github.event.repository.name }}-ubuntu-debs.tar" --transform "s|^${ROS_WS}/||" -C "${ROS_WS}" debian_dir
+      - name: Upload artifacts to S3 bucket
+        id: upload-artifacts
+        continue-on-error: true
+        uses: qualcomm-qrb-ros/qrb_ros_gh_actions/.github/actions/upload-artifact@main
+        with:
+          path: ./uploads
+          destination: ${{ github.repository_owner }}/${{ github.event.repository.name }}/${{ github.run_id }}-${{ github.run_attempt }}/
+          s3_bucket: qli-prd-ros-gh-artifacts
+          retention: 7d
