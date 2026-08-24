@@ -47,7 +47,7 @@ jobs:
         shell: bash
         run: |
           cd ${ROS_WS}
-          source /opt/ros/jazzy/setup.sh
+          # source /opt/ros/jazzy/setup.sh
           colcon build 
       - name: Generate Debian packages
         continue-on-error: true
