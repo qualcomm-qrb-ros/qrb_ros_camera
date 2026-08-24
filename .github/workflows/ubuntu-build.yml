@@ -24,6 +24,7 @@ jobs:
           sudo apt install -y unzip wget python3-bloom python3-rosdep fakeroot debhelper dh-python
           sudo apt-get install -y ocl-icd-libopencl1 opencl-headers
           curl https://sh.rustup.rs -sSf | sh -s -- -y
+          . "$HOME/.cargo/env"
           cargo --version
           echo "LD_LIBRARY_PATH=/usr/lib/qcm6490:$LD_LIBRARY_PATH" >> $GITHUB_ENV
           echo "LIBRARY_PATH=/usr/lib/qcm6490:$LIBRARY_PATH" >> $GITHUB_ENV        
