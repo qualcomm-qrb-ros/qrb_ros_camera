@@ -56,7 +56,7 @@ jobs:
           cd ${ROS_WS}
           mkdir ${ROS_WS}/debian_dir
           export OUTPUT_DIR=${ROS_WS}/debian_dir
-          source /opt/ros/lyrical/setup.sh
+          source /opt/ros/jazzy/setup.sh
           for pkg in $(colcon list -t | cut -f2)
           do
             cd ${pkg}
