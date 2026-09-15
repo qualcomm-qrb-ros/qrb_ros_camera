@@ -14,4 +14,5 @@ jobs:
     with:
       env_setup_commands: |
         echo "LD_LIBRARY_PATH=/usr/lib/qcm6490:$LD_LIBRARY_PATH" >> $GITHUB_ENV
-        echo "LIBRARY_PATH=/usr/lib/qcm6490:$LIBRARY_PATH" >> $GITHUB_ENV        
+        echo "LIBRARY_PATH=/usr/lib/qcm6490:$LIBRARY_PATH" >> $GITHUB_ENV
+      ros-distro: lyrical
