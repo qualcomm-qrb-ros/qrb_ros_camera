@@ -59,7 +59,7 @@ def generate_launch_description():
                     'stream1.height':   PythonExpression(["int('", height, "')"]),
                     'stream1.width':    PythonExpression(["int('", width,  "')"]),
                     'stream1.fps':      PythonExpression(["int('", fps,    "')"]),
-                    'camera_info_path': camera_info_path,
+                    'stream1.camera_info_path': camera_info_path,
                 }],
             ),
             ComposableNode(

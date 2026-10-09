@@ -179,6 +179,7 @@ struct CameraParam
   std::vector<StreamParam> track_params;
   std::vector<StreamParam> snapshot_params;
   std::vector<StreamParam> video_params;
+  uint32_t isp_usecase = 0;
 };
 
 enum class CameraType

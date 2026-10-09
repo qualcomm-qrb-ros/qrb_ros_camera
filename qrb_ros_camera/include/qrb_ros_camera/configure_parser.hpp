@@ -33,6 +33,7 @@ public:
 
   bool get_camera_info(const uint32_t width,
       const uint32_t height,
+      const int stream_index,
       sensor_msgs::msg::CameraInfo & camera_info);
 
 private:

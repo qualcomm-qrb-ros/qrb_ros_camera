@@ -62,6 +62,8 @@ struct CameraConfigure
   std::vector<uint32_t> stream_fps;
   std::vector<StreamType> stream_type;
 
+  uint32_t isp_usecase = 0;
+
   std::vector<CameraIntrinsicParam> camera_intrinsic_params;
   CameraExtrinsicParam camera_extrinsic_param;
 };

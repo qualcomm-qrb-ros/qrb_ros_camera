@@ -64,8 +64,9 @@ namespace qrb_camera
 //   stride     : round up to nearest 128 bytes  (QCARCAM_STRIDE_ALIGN)
 //   height     : round up to nearest 32 lines   (QCARCAM_HEIGHT_ALIGN)
 //
-// Only NV12 / NV21 (2-plane) and packed UYVY (1-plane) are handled;
-// other formats fall back to NV12 layout.
+// Only NV12 / NV21 (2-plane), packed UYVY (1-plane), and MIPI RAW
+// (MIPIRAW_8 / MIPIRAW_16, 1-plane) are handled; other formats fall back to
+// NV12 layout.
 // ---------------------------------------------------------------------------
 static void compute_plane_layout(QCarCamColorFmt_e fmt,
                                   uint32_t width, uint32_t height,
@@ -87,6 +88,20 @@ static void compute_plane_layout(QCarCamColorFmt_e fmt,
       break;
     }
     case QCARCAM_FMT_UYVY_8: {
+      stride         = ((width * 2u) + QCARCAM_STRIDE_ALIGN - 1u) & ~(QCARCAM_STRIDE_ALIGN - 1u);
+      plane_sizes[0] = stride * h_align;
+      total_size     = plane_sizes[0];
+      num_planes     = 1;
+      break;
+    }
+    case QCARCAM_FMT_MIPIRAW_8: {
+      stride         = (width + QCARCAM_STRIDE_ALIGN - 1u) & ~(QCARCAM_STRIDE_ALIGN - 1u);
+      plane_sizes[0] = stride * h_align;
+      total_size     = plane_sizes[0];
+      num_planes     = 1;
+      break;
+    }
+    case QCARCAM_FMT_MIPIRAW_16: {
       stride         = ((width * 2u) + QCARCAM_STRIDE_ALIGN - 1u) & ~(QCARCAM_STRIDE_ALIGN - 1u);
       plane_sizes[0] = stride * h_align;
       total_size     = plane_sizes[0];
@@ -125,6 +140,10 @@ bool QCarCamStream::init(const StreamParam & sp,
     color_fmt_ = QCARCAM_FMT_NV21;
   } else if (sp.format == "uyvy" || sp.format == "UYVY") {
     color_fmt_ = QCARCAM_FMT_UYVY_8;
+  } else if (sp.format == "mipi8" || sp.format == "MIPI8") {
+    color_fmt_ = QCARCAM_FMT_MIPIRAW_8;
+  } else if (sp.format == "mipi16" || sp.format == "MIPI16") {
+    color_fmt_ = QCARCAM_FMT_MIPIRAW_16;
   } else {
     std::cout << "[WARN] [" << logger_ << "]: unknown format '" << sp.format
               << "', defaulting to NV12" << std::endl;
@@ -354,10 +373,12 @@ void QCarCamStream::drain_release_queue()
 std::string QCarCamStream::to_ros_encoding(QCarCamColorFmt_e fmt)
 {
   switch (fmt) {
-    case QCARCAM_FMT_NV12:   return "nv12";
-    case QCARCAM_FMT_NV21:   return "nv21";
-    case QCARCAM_FMT_UYVY_8: return "uyvy";
-    default:                 return "nv12";
+    case QCARCAM_FMT_NV12:        return "nv12";
+    case QCARCAM_FMT_NV21:        return "nv21";
+    case QCARCAM_FMT_UYVY_8:      return "uyvy";
+    case QCARCAM_FMT_MIPIRAW_8:   return "mipi8";
+    case QCARCAM_FMT_MIPIRAW_16:  return "mipi16";
+    default:                      return "nv12";
   }
 }
 
