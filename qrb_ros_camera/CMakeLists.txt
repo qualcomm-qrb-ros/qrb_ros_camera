@@ -36,7 +36,10 @@ target_link_libraries(camera_node
   ${YAML_CPP_LIBRARIES}
 )
 
-rclcpp_components_register_nodes(camera_node "qrb_ros::camera::CameraNode")
+rclcpp_components_register_node(camera_node
+  PLUGIN "qrb_ros::camera::CameraNode"
+  EXECUTABLE camera_node_exe
+)
 
 if(BUILD_TESTING)
 
@@ -44,8 +47,9 @@ if(BUILD_TESTING)
     test/src/camera_test.cpp
   )
 
-  rclcpp_components_register_nodes(${PROJECT_NAME}_test
+  rclcpp_components_register_node(${PROJECT_NAME}_test
     PLUGIN "qrb_ros::camera::TestNode"
+    EXECUTABLE test_node_exe
   )
 
 endif()

@@ -118,6 +118,8 @@ void CameraManager::convert_detail_to_param(int index, std::vector<CameraParam> 
     }
   }
 
+  camera_pam.isp_usecase = (*it)->isp_usecase;
+
   param.push_back(camera_pam);
 }
 

@@ -38,38 +38,37 @@ bool ConfigureParser::init()
   camera_.stream_heights.reserve(stream_size);
   camera_.stream_type.reserve(stream_size);
 
-  std::string camera_info = node_handler_->declare_parameter("camera_info_path", "");
-
   for (int i = 0; i < stream_size; i++) {
     uint32_t height = node_handler_->declare_parameter(stream_name[i] + ".height", 1080);
     uint32_t width = node_handler_->declare_parameter(stream_name[i] + ".width", 1920);
     uint32_t fps = node_handler_->declare_parameter(stream_name[i] + ".fps", 30);
-
-    std::string format = "nv12";
+    std::string format = node_handler_->declare_parameter(stream_name[i] + ".format",
+                                                          std::string("nv12"));
+    std::string stream_camera_info = node_handler_->declare_parameter(
+        stream_name[i] + ".camera_info_path", std::string(""));
 
     camera_.stream_names.push_back(stream_name[i]);
     camera_.stream_formats.push_back(format);
     camera_.stream_widths.push_back(width);
     camera_.stream_heights.push_back(height);
     camera_.stream_fps.push_back(fps);
-
     camera_.stream_type.push_back(qrb_camera::StreamType::Track);
+
+    qrb_camera::CameraIntrinsicParam param;
+    if (!load_camera_info_param(stream_camera_info, param)) {
+      RCLCPP_WARN(node_handler_->get_logger(),
+          "no camera_info_path set for stream '%s', publishing empty intrinsics",
+          stream_name[i].c_str());
+    }
+    camera_.camera_intrinsic_params.push_back(param);
   }
 
   camera_.camera_type = "qcarcam";
-
-
   camera_.camera_id = camera_id;
   camera_.stream_size = stream_size;
 
-  qrb_camera::CameraIntrinsicParam param;
-  bool ret = load_camera_info_param(camera_info, param);
-  if (!ret) {
-    RCLCPP_ERROR(node_handler_->get_logger(), "load_camera_info_param failed");
-    return false;
-  }
-
-  camera_.camera_intrinsic_params.push_back(param);
+  camera_.isp_usecase = static_cast<uint32_t>(
+      node_handler_->declare_parameter("isp_usecase", 0));
 
   init_ = true;
   return true;
@@ -83,6 +82,7 @@ qrb_camera::CameraConfigure & ConfigureParser::get_camera_param()
 bool ConfigureParser::get_camera_info(
     const uint32_t width,
     const uint32_t height,
+    const int stream_index,
     sensor_msgs::msg::CameraInfo & camera_info)
 {
   if (!init_) {
@@ -90,7 +90,11 @@ bool ConfigureParser::get_camera_info(
     return false;
   }
 
-  auto param = camera_.camera_intrinsic_params[0];
+  // per-stream camera info
+  int idx = (stream_index >= 0 &&
+             stream_index < static_cast<int>(camera_.camera_intrinsic_params.size()))
+            ? stream_index : 0;
+  auto param = camera_.camera_intrinsic_params[idx];
 
   camera_info.width = width;
   camera_info.height = height;

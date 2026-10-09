@@ -95,7 +95,7 @@ bool CameraNode::init()
     stream_ts_[i].stream_name = configure.stream_names[i];
 
     configure_->get_camera_info(
-        configure.stream_widths[i], configure.stream_heights[i], camera_infos_[i]);
+        configure.stream_widths[i], configure.stream_heights[i], i, camera_infos_[i]);
   }
 
   return true;
@@ -194,7 +194,7 @@ void CameraNode::publish_color_image(int stream_index,
 {
   auto info = std::make_unique<CAMERA_INFO_TOPIC_TYPE>(camera_infos_[stream_index]);
 
-  show_fps(frame->stream_name, "nv12", stream_ts_[stream_index].latency,
+  show_fps(frame->stream_name, frame->format, stream_ts_[stream_index].latency,
       stream_ts_[stream_index].timestamp, frame->timestamp, stream_ts_[stream_index].frame_count,
       frame->height, frame->width, frame->stride, frame->slice, frame->frame_id);
 
@@ -226,7 +226,14 @@ std::unique_ptr<qrb_ros::transport::type::Image> CameraNode::convert_camera_fram
   image_handler->width = frame->width;
   image_handler->height = frame->height;
 
-  image_handler->encoding = frame->format;
+  const std::string & fmt = frame->format;
+  if (fmt == "mipi16") {
+    image_handler->encoding = "16UC1";
+  } else if (fmt == "mipi8") {
+    image_handler->encoding = "mono8";
+  } else {
+    image_handler->encoding = fmt;
+  }
 
   auto dma_buf = std::make_shared<lib_mem_dmabuf::DmaBuffer>(frame->fd, frame->size);
   dma_buf->set_auto_release(false);
