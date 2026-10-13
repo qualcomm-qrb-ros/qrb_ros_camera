@@ -5,14 +5,12 @@
 #include "qrb_ros_camera/camera_node.hpp"
 
 #include <cstdint>
-#include <stdexcept>
 
 namespace qrb_ros
 {
 namespace camera
 {
-CameraNode::CameraNode(const rclcpp::NodeOptions & options)
-  : rclcpp::Node("camera_node", options)
+CameraNode::CameraNode(const rclcpp::NodeOptions & options) : rclcpp::Node("camera_node", options)
 {
   RCLCPP_INFO(this->get_logger(), "QRB Camera Node start");
 
@@ -26,8 +24,8 @@ CameraNode::CameraNode(const rclcpp::NodeOptions & options)
 
   // configure_->get_camera_id() from launch config
 
-  camera_index_ = manager_.create_camera(
-      qrb_camera::CameraType::QCarCam, configure_->get_camera_id());
+  camera_index_ =
+      manager_.create_camera(qrb_camera::CameraType::QCarCam, configure_->get_camera_id());
 
   if (camera_index_ < 0) {
     throw std::runtime_error("QRB Camera Node: create_camera failed");
@@ -137,7 +135,7 @@ void CameraNode::show_fps(const std::string & name,
     RCLCPP_INFO(this->get_logger(),
         "name: %s, fmt %s, w x h[%u x %u], stride x slice[%u x %u] "
         "frame_id %u, frameCnt %lu, "
-        "Fps: %.4lf, ts %llu ns, latency %ld us",
+        "Fps: %.4lf, ts %lu ns, latency %ld us",
         name.c_str(), format.c_str(), width, height, stride, slice, frame_id, frame_count, fps,
         current_frame_timestamp, average_latency);
 
@@ -171,7 +169,6 @@ void CameraNode::publish_image(std::unique_ptr<qrb_camera::CameraFrame> frame)
       this->get_logger(), "camera node publish image call: %s", frame->stream_name.c_str());
 
   int stream_index = -1;
-  auto format = frame->format;
   const auto & configure = configure_->get_camera_param();
 
   for (int i = 0; i < configure.stream_size; i++) {
@@ -245,19 +242,19 @@ std::unique_ptr<qrb_ros::transport::type::Image> CameraNode::convert_camera_fram
 
 uint64_t CameraNode::getQtimerTime()
 {
-    uint64_t qTimerCount = 0, qTimerFreq = 0, qTimerSec = 0, qTimerNanosNSec = 0;
+  uint64_t qTimerCount = 0, qTimerFreq = 0, qTimerSec = 0, qTimerNanosNSec = 0;
 #if __aarch64__
-    asm volatile("mrs %0, cntvct_el0" : "=r" (qTimerCount));
-    asm volatile("mrs %0, cntfrq_el0" : "=r"(qTimerFreq));
+  asm volatile("mrs %0, cntvct_el0" : "=r"(qTimerCount));
+  asm volatile("mrs %0, cntfrq_el0" : "=r"(qTimerFreq));
 #else
-    asm volatile("mrrc p15, 1, %Q0, %R0, c14" : "=r" (qTimerCount));
-    qTimerFreq =  19200000; //19.2 MHz TBD: find right asm instruction
+  asm volatile("mrrc p15, 1, %Q0, %R0, c14" : "=r"(qTimerCount));
+  qTimerFreq = 19200000;  // 19.2 MHz TBD: find right asm instruction
 #endif
-    qTimerSec = (qTimerCount / qTimerFreq);
-    qTimerNanosNSec = (qTimerCount % qTimerFreq);
-    qTimerNanosNSec *= 1000000000;
-    qTimerNanosNSec /= qTimerFreq;
-    return (qTimerSec * 1000000000 + qTimerNanosNSec) ;
+  qTimerSec = (qTimerCount / qTimerFreq);
+  qTimerNanosNSec = (qTimerCount % qTimerFreq);
+  qTimerNanosNSec *= 1000000000;
+  qTimerNanosNSec /= qTimerFreq;
+  return (qTimerSec * 1000000000 + qTimerNanosNSec);
 }
 
 }  // namespace camera

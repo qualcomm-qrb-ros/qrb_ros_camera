@@ -9,7 +9,6 @@
 #include "qrb_camera/qcarcam_camera.hpp"
 #include "qrb_camera/qcarcam_listener.hpp"
 
-
 namespace qrb_camera
 {
 
@@ -30,8 +29,7 @@ int CameraManager::create_camera(CameraType type, uint32_t camera_id)
   std::cout << "devices_.size(): " << devices_.size() << std::endl;
 
   for (size_t i = 0; i < devices_.size(); i++) {
-    if (devices_[i] != nullptr &&
-        devices_[i]->get_type() == type &&
+    if (devices_[i] != nullptr && devices_[i]->get_type() == type &&
         devices_[i]->get_id() == camera_id) {
       std::cout << "[ERROR] [" << logger_ << "]: please destroy the same camera id at first."
                 << std::endl;
@@ -45,7 +43,8 @@ int CameraManager::create_camera(CameraType type, uint32_t camera_id)
   }
 
   if (device == nullptr) {
-    std::cout << "[ERROR] [" << logger_ << "]: unsupported camera type for this build." << std::endl;
+    std::cout << "[ERROR] [" << logger_ << "]: unsupported camera type for this build."
+              << std::endl;
     return -1;
   }
 
@@ -96,8 +95,9 @@ void CameraManager::convert_detail_to_param(int index, std::vector<CameraParam> 
   auto size = (*it)->stream_size;
 
   for (int j = 0; j < size; j++) {
-    uint32_t blid = (j < static_cast<int>((*it)->stream_bufferlist_ids.size()))
-                    ? (*it)->stream_bufferlist_ids[j] : 0;
+    uint32_t blid = (j < static_cast<int>((*it)->stream_bufferlist_ids.size())) ?
+                        (*it)->stream_bufferlist_ids[j] :
+                        0;
 
     if ((*it)->stream_type[j] == StreamType::Track) {
       StreamParam stream_pam;
@@ -199,7 +199,8 @@ bool CameraManager::register_callback(int index, ImageCallback image_cb)
   }
 
   if (listener == nullptr) {
-    std::cout << "[WARNING] [" << logger_ << "]: unsupported camera type for this build." << std::endl;
+    std::cout << "[WARNING] [" << logger_ << "]: unsupported camera type for this build."
+              << std::endl;
     return false;
   }
 
