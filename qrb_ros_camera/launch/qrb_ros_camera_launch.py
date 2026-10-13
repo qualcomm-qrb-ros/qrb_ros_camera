@@ -21,6 +21,8 @@ def generate_launch_description():
     width_arg  = DeclareLaunchArgument('width',  default_value='1280', description='Stream width in pixels')
     height_arg = DeclareLaunchArgument('height', default_value='720',  description='Stream height in pixels')
     fps_arg    = DeclareLaunchArgument('fps',    default_value='30',   description='Target frame rate')
+    bufferlist_id_arg = DeclareLaunchArgument(
+        'bufferlist_id', default_value='5', description='QCarCam bufferlist id')
 
     camera_info_path_arg = DeclareLaunchArgument(
         'camera_info_path',
@@ -36,6 +38,7 @@ def generate_launch_description():
     width            = LaunchConfiguration('width')
     height           = LaunchConfiguration('height')
     fps              = LaunchConfiguration('fps')
+    bufferlist_id    = LaunchConfiguration('bufferlist_id')
     camera_info_path = LaunchConfiguration('camera_info_path')
     dump             = LaunchConfiguration('dump')
 
@@ -59,6 +62,7 @@ def generate_launch_description():
                     'stream1.height':   PythonExpression(["int('", height, "')"]),
                     'stream1.width':    PythonExpression(["int('", width,  "')"]),
                     'stream1.fps':      PythonExpression(["int('", fps,    "')"]),
+                    'stream1.bufferlist_id': PythonExpression(["int('", bufferlist_id, "')"]),
                     'stream1.camera_info_path': camera_info_path,
                 }],
             ),
@@ -84,6 +88,7 @@ def generate_launch_description():
         width_arg,
         height_arg,
         fps_arg,
+        bufferlist_id_arg,
         camera_info_path_arg,
         dump_arg,
         container,

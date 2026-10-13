@@ -271,8 +271,14 @@ int QCarCamCamera::start_camera()
         return -1;
       }
 
-      // Each stream must have a unique bufferlist id.  Use 1-based stream index
-      st.buf_list().id = static_cast<uint32_t>(s + 1);
+      if (stream_params_[s].bufferlist_id == 0) {
+        std::cout << "[ERROR] [" << logger_ << "]: stream[" << s << "] '"
+                  << stream_params_[s].name << "' has zero bufferlist_id"
+                  << std::endl;
+        cleanup();
+        return -1;
+      }
+      st.buf_list().id = stream_params_[s].bufferlist_id;
 
       ret = QCarCamSetBuffers(handle_, &st.buf_list());
       if (ret != QCARCAM_RET_OK) {

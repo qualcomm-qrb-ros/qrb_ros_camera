@@ -61,6 +61,7 @@ struct CameraConfigure
   std::vector<uint32_t> stream_heights;
   std::vector<uint32_t> stream_fps;
   std::vector<StreamType> stream_type;
+  std::vector<uint32_t> stream_bufferlist_ids;
 
   uint32_t isp_usecase = 0;
 
