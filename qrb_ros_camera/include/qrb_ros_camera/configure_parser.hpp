@@ -39,7 +39,7 @@ public:
 private:
   bool load_camera_info_param(std::string & path, qrb_camera::CameraIntrinsicParam & param);
 
-  bool init_{ false };
+  bool init_{false};
   qrb_camera::CameraConfigure camera_;
   rclcpp::Node * node_handler_;
 };

@@ -28,7 +28,6 @@
 
 #include <qcarcam.h>
 
-#include <condition_variable>
 #include <functional>
 #include <list>
 #include <mutex>
@@ -36,7 +35,6 @@
 #include <vector>
 
 #include "qrb_camera/camera_interface.hpp"
-#include "qrb_camera/qrb_camera_common.hpp"
 
 namespace qrb_camera
 {
@@ -44,19 +42,19 @@ namespace qrb_camera
 // ---------------------------------------------------------------------------
 // Constants
 // ---------------------------------------------------------------------------
-static constexpr uint32_t QCARCAM_NUM_BUFFERS        = 5;
+static constexpr uint32_t QCARCAM_NUM_BUFFERS = 5;
 static constexpr uint32_t QCARCAM_MAX_IN_USE_BUFFERS = 4;
 
 static constexpr uint32_t QCARCAM_STRIDE_ALIGN = 128U;  // stride: round up to 128 bytes
-static constexpr uint32_t QCARCAM_HEIGHT_ALIGN  =  32U;  // scanline height: round up to 32 lines
+static constexpr uint32_t QCARCAM_HEIGHT_ALIGN = 32U;   // scanline height: round up to 32 lines
 
 // ---------------------------------------------------------------------------
 // DMA-heap buffer slot (one per output buffer per stream)
 // ---------------------------------------------------------------------------
 struct DmaHeapBuf
 {
-  int    fd    = -1;
-  size_t len   = 0;
+  int fd = -1;
+  size_t len = 0;
   void * vaddr = nullptr;
 };
 
@@ -76,16 +74,14 @@ public:
   QCarCamStream() = default;
   ~QCarCamStream() = default;
 
-  QCarCamStream(const QCarCamStream &)            = delete;
+  QCarCamStream(const QCarCamStream &) = delete;
   QCarCamStream & operator=(const QCarCamStream &) = delete;
-  QCarCamStream(QCarCamStream &&)                  = default;
-  QCarCamStream & operator=(QCarCamStream &&)      = default;
+  QCarCamStream(QCarCamStream &&) = default;
+  QCarCamStream & operator=(QCarCamStream &&) = default;
 
   // ---- Setup (called before QCarCamSetBuffers) ----
 
-  bool init(const StreamParam & sp,
-            uint32_t            camera_id,
-            ResubmitFn          resubmit_fn);
+  bool init(const StreamParam & sp, uint32_t camera_id, ResubmitFn resubmit_fn);
 
   // Allocate DMA-heap buffers and fill buf_list_.
   bool allocate_buffers();
@@ -98,9 +94,9 @@ public:
 
   // ---- Runtime (called from QCarCamCamera event callback) ----
 
-  void on_frame_ready(uint32_t                               buf_idx,
-                      uint64_t                               frame_timestamp,
-                      const std::vector<ICameraListener *> & listeners);
+  void on_frame_ready(uint32_t buf_idx,
+      uint64_t frame_timestamp,
+      const std::vector<ICameraListener *> & listeners);
 
   // ---- Accessors ----
 
@@ -113,32 +109,32 @@ private:
   static std::string to_ros_encoding(QCarCamColorFmt_e fmt);
 
   // ---- Per-frame helpers ----
-  void dispatch_frame(uint32_t                               buf_idx,
-                      uint64_t                               frame_timestamp,
-                      const std::vector<ICameraListener *> & listeners);
+  void dispatch_frame(uint32_t buf_idx,
+      uint64_t frame_timestamp,
+      const std::vector<ICameraListener *> & listeners);
   void drain_release_queue();
 
   // ---- Stream parameters ----
-  uint32_t          width_       = 1920;
-  uint32_t          height_      = 1080;
-  uint32_t          fps_         = 30;
-  uint32_t          camera_id_   = 0;
-  std::string       stream_name_ = "stream";
-  QCarCamColorFmt_e color_fmt_   = QCARCAM_FMT_NV12;
+  uint32_t width_ = 1920;
+  uint32_t height_ = 1080;
+  uint32_t fps_ = 30;
+  uint32_t camera_id_ = 0;
+  std::string stream_name_ = "stream";
+  QCarCamColorFmt_e color_fmt_ = QCARCAM_FMT_NV12;
 
   // ---- QCarCam buffer descriptors ----
   // buf_list_.pBuffers points into buffers_[].
-  QCarCamBufferList_t buf_list_                     = {};
-  QCarCamBuffer_t     buffers_[QCARCAM_NUM_BUFFERS] = {};
+  QCarCamBufferList_t buf_list_ = {};
+  QCarCamBuffer_t buffers_[QCARCAM_NUM_BUFFERS] = {};
 
   // ---- DMA-heap buffer slots ----
   DmaHeapBuf dma_bufs_[QCARCAM_NUM_BUFFERS] = {};
 
   // ---- Buffer queue management ----
-  std::mutex          buf_mtx_;
+  std::mutex buf_mtx_;
   std::list<uint32_t> avail_queue_;
   std::list<uint32_t> release_queue_;
-  uint32_t            occupied_cnt_ = 0;
+  uint32_t occupied_cnt_ = 0;
 
   // ---- Resubmit callback (provided by QCarCamCamera) ----
   ResubmitFn resubmit_fn_;

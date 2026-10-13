@@ -20,17 +20,17 @@
 // =============================================================================
 
 #include "qrb_camera/qcarcam_stream.hpp"
-#include "qrb_camera/qcarcam_frame.hpp"
 
 #include <fcntl.h>
 #include <linux/dma-heap.h>
 #include <sys/ioctl.h>
 #include <sys/mman.h>
-#include <time.h>
 #include <unistd.h>
 
 #include <cerrno>
 #include <iostream>
+
+#include "qrb_camera/qcarcam_frame.hpp"
 
 // ---------------------------------------------------------------------------
 // open_dma_heap – open the first usable DMA heap device node.
@@ -39,11 +39,7 @@
 static int open_dma_heap()
 {
   static const char * heaps[] = {
-    "/dev/dma_heap/qcom,system",
-    "/dev/dma_heap/system",
-    "/dev/dma_heap/linux,cma",
-    nullptr
-  };
+      "/dev/dma_heap/qcom,system", "/dev/dma_heap/system", "/dev/dma_heap/linux,cma", nullptr};
   for (const char ** h = heaps; *h; ++h) {
     int fd = open(*h, O_RDONLY | O_CLOEXEC);
     if (fd >= 0) {
@@ -69,52 +65,53 @@ namespace qrb_camera
 // NV12 layout.
 // ---------------------------------------------------------------------------
 static void compute_plane_layout(QCarCamColorFmt_e fmt,
-                                  uint32_t width, uint32_t height,
-                                  uint32_t & stride,
-                                  uint32_t & total_size,
-                                  uint32_t & num_planes,
-                                  uint32_t   plane_sizes[3])
+    uint32_t width,
+    uint32_t height,
+    uint32_t & stride,
+    uint32_t & total_size,
+    uint32_t & num_planes,
+    uint32_t plane_sizes[3])
 {
   uint32_t h_align = (height + QCARCAM_HEIGHT_ALIGN - 1u) & ~(QCARCAM_HEIGHT_ALIGN - 1u);
 
   switch (fmt) {
     case QCARCAM_FMT_NV12:
     case QCARCAM_FMT_NV21: {
-      stride         = (width + QCARCAM_STRIDE_ALIGN - 1u) & ~(QCARCAM_STRIDE_ALIGN - 1u);
-      plane_sizes[0] = stride * h_align;           // Y
-      plane_sizes[1] = stride * (h_align / 2u);    // UV interleaved
-      total_size     = plane_sizes[0] + plane_sizes[1];
-      num_planes     = 2;
+      stride = (width + QCARCAM_STRIDE_ALIGN - 1u) & ~(QCARCAM_STRIDE_ALIGN - 1u);
+      plane_sizes[0] = stride * h_align;         // Y
+      plane_sizes[1] = stride * (h_align / 2u);  // UV interleaved
+      total_size = plane_sizes[0] + plane_sizes[1];
+      num_planes = 2;
       break;
     }
     case QCARCAM_FMT_UYVY_8: {
-      stride         = ((width * 2u) + QCARCAM_STRIDE_ALIGN - 1u) & ~(QCARCAM_STRIDE_ALIGN - 1u);
+      stride = ((width * 2u) + QCARCAM_STRIDE_ALIGN - 1u) & ~(QCARCAM_STRIDE_ALIGN - 1u);
       plane_sizes[0] = stride * h_align;
-      total_size     = plane_sizes[0];
-      num_planes     = 1;
+      total_size = plane_sizes[0];
+      num_planes = 1;
       break;
     }
     case QCARCAM_FMT_MIPIRAW_8: {
-      stride         = (width + QCARCAM_STRIDE_ALIGN - 1u) & ~(QCARCAM_STRIDE_ALIGN - 1u);
+      stride = (width + QCARCAM_STRIDE_ALIGN - 1u) & ~(QCARCAM_STRIDE_ALIGN - 1u);
       plane_sizes[0] = stride * h_align;
-      total_size     = plane_sizes[0];
-      num_planes     = 1;
+      total_size = plane_sizes[0];
+      num_planes = 1;
       break;
     }
     case QCARCAM_FMT_MIPIRAW_16: {
-      stride         = ((width * 2u) + QCARCAM_STRIDE_ALIGN - 1u) & ~(QCARCAM_STRIDE_ALIGN - 1u);
+      stride = ((width * 2u) + QCARCAM_STRIDE_ALIGN - 1u) & ~(QCARCAM_STRIDE_ALIGN - 1u);
       plane_sizes[0] = stride * h_align;
-      total_size     = plane_sizes[0];
-      num_planes     = 1;
+      total_size = plane_sizes[0];
+      num_planes = 1;
       break;
     }
     default: {
       // Fallback: treat as NV12
-      stride         = (width + QCARCAM_STRIDE_ALIGN - 1u) & ~(QCARCAM_STRIDE_ALIGN - 1u);
+      stride = (width + QCARCAM_STRIDE_ALIGN - 1u) & ~(QCARCAM_STRIDE_ALIGN - 1u);
       plane_sizes[0] = stride * h_align;
       plane_sizes[1] = stride * (h_align / 2u);
-      total_size     = plane_sizes[0] + plane_sizes[1];
-      num_planes     = 2;
+      total_size = plane_sizes[0] + plane_sizes[1];
+      num_planes = 2;
       break;
     }
   }
@@ -123,15 +120,13 @@ static void compute_plane_layout(QCarCamColorFmt_e fmt,
 // ---------------------------------------------------------------------------
 // init – store stream parameters
 // ---------------------------------------------------------------------------
-bool QCarCamStream::init(const StreamParam & sp,
-                          uint32_t            camera_id,
-                          ResubmitFn          resubmit_fn)
+bool QCarCamStream::init(const StreamParam & sp, uint32_t camera_id, ResubmitFn resubmit_fn)
 {
-  width_       = sp.width;
-  height_      = sp.height;
-  fps_         = sp.frame_rate;
+  width_ = sp.width;
+  height_ = sp.height;
+  fps_ = sp.frame_rate;
   stream_name_ = sp.name;
-  camera_id_   = camera_id;
+  camera_id_ = camera_id;
   resubmit_fn_ = resubmit_fn;
 
   if (sp.format == "nv12" || sp.format == "NV12") {
@@ -150,9 +145,8 @@ bool QCarCamStream::init(const StreamParam & sp,
     color_fmt_ = QCARCAM_FMT_NV12;
   }
 
-  std::cout << "[INFO] [" << logger_ << "]: init stream '" << stream_name_
-            << "' " << width_ << "x" << height_ << " @" << fps_ << "fps"
-            << " fmt=" << sp.format << std::endl;
+  std::cout << "[INFO] [" << logger_ << "]: init stream '" << stream_name_ << "' " << width_ << "x"
+            << height_ << " @" << fps_ << "fps" << " fmt=" << sp.format << std::endl;
   return true;
 }
 
@@ -165,12 +159,11 @@ bool QCarCamStream::init(const StreamParam & sp,
 // ---------------------------------------------------------------------------
 bool QCarCamStream::allocate_buffers()
 {
-  uint32_t stride     = 0;
+  uint32_t stride = 0;
   uint32_t total_size = 0;
   uint32_t num_planes = 0;
   uint32_t plane_sizes[3] = {};
-  compute_plane_layout(color_fmt_, width_, height_,
-                       stride, total_size, num_planes, plane_sizes);
+  compute_plane_layout(color_fmt_, width_, height_, stride, total_size, num_planes, plane_sizes);
 
   if (stride == 0 || total_size == 0) {
     std::cout << "[ERROR] [" << logger_ << "]: unsupported format or zero stride" << std::endl;
@@ -186,7 +179,7 @@ bool QCarCamStream::allocate_buffers()
 
   for (uint32_t i = 0; i < QCARCAM_NUM_BUFFERS; ++i) {
     struct dma_heap_allocation_data alloc = {};
-    alloc.len      = total_size;
+    alloc.len = total_size;
     alloc.fd_flags = O_RDWR | O_CLOEXEC;
 
     if (ioctl(heap_fd, DMA_HEAP_IOCTL_ALLOC, &alloc) < 0) {
@@ -197,29 +190,28 @@ bool QCarCamStream::allocate_buffers()
       return false;
     }
 
-    int    buf_fd = static_cast<int>(alloc.fd);
-    void * vaddr  = mmap(nullptr, total_size,
-                         PROT_READ | PROT_WRITE, MAP_SHARED, buf_fd, 0);
+    int buf_fd = static_cast<int>(alloc.fd);
+    void * vaddr = mmap(nullptr, total_size, PROT_READ | PROT_WRITE, MAP_SHARED, buf_fd, 0);
     if (vaddr == MAP_FAILED) {
       vaddr = nullptr;
     }
 
-    dma_bufs_[i].fd    = buf_fd;
-    dma_bufs_[i].len   = total_size;
+    dma_bufs_[i].fd = buf_fd;
+    dma_bufs_[i].len = total_size;
     dma_bufs_[i].vaddr = vaddr;
 
     // Plane 0 – carries the dma-buf fd (planes[0].memHndl only, per qcc.cpp)
-    buffers_[i].numPlanes         = num_planes;
-    buffers_[i].planes[0].width   = width_;
-    buffers_[i].planes[0].height  = height_;
-    buffers_[i].planes[0].stride  = stride;
-    buffers_[i].planes[0].size    = plane_sizes[0];
+    buffers_[i].numPlanes = num_planes;
+    buffers_[i].planes[0].width = width_;
+    buffers_[i].planes[0].height = height_;
+    buffers_[i].planes[0].stride = stride;
+    buffers_[i].planes[0].size = plane_sizes[0];
     buffers_[i].planes[0].memHndl = static_cast<uint64_t>(buf_fd);
 
     // Plane 1 (NV12 / NV21)
     if (num_planes >= 2) {
       buffers_[i].planes[1].stride = stride;
-      buffers_[i].planes[1].size   = plane_sizes[1];
+      buffers_[i].planes[1].size = plane_sizes[1];
       // planes[1].memHndl intentionally left 0 – driver infers from plane 0 fd
     }
   }
@@ -231,8 +223,7 @@ bool QCarCamStream::allocate_buffers()
   buf_list_.pBuffers = buffers_;
 
   std::cout << "[INFO] [" << logger_ << "]: allocated " << QCARCAM_NUM_BUFFERS
-            << " DMA-heap buffers for stream '" << stream_name_
-            << "' " << width_ << "x" << height_
+            << " DMA-heap buffers for stream '" << stream_name_ << "' " << width_ << "x" << height_
             << " stride=" << stride << " total=" << total_size << "B" << std::endl;
   return true;
 }
@@ -272,9 +263,9 @@ void QCarCamStream::free_buffers()
 // ---------------------------------------------------------------------------
 // on_frame_ready – entry point from QCarCamCamera event callback
 // ---------------------------------------------------------------------------
-void QCarCamStream::on_frame_ready(uint32_t                               buf_idx,
-                                    uint64_t                               frame_timestamp,
-                                    const std::vector<ICameraListener *> & listeners)
+void QCarCamStream::on_frame_ready(uint32_t buf_idx,
+    uint64_t frame_timestamp,
+    const std::vector<ICameraListener *> & listeners)
 {
   if (buf_idx >= QCARCAM_NUM_BUFFERS) {
     std::cout << "[ERROR] [" << logger_ << "]: invalid buf_idx=" << buf_idx << std::endl;
@@ -307,9 +298,9 @@ void QCarCamStream::on_frame_ready(uint32_t                               buf_id
 // ---------------------------------------------------------------------------
 // dispatch_frame – build ICameraFrame and call on_preview_frame synchronously
 // ---------------------------------------------------------------------------
-void QCarCamStream::dispatch_frame(uint32_t                               buf_idx,
-                                    uint64_t                               frame_timestamp,
-                                    const std::vector<ICameraListener *> & listeners)
+void QCarCamStream::dispatch_frame(uint32_t buf_idx,
+    uint64_t frame_timestamp,
+    const std::vector<ICameraListener *> & listeners)
 {
   if (listeners.empty()) {
     std::lock_guard<std::mutex> lk(buf_mtx_);
@@ -319,19 +310,19 @@ void QCarCamStream::dispatch_frame(uint32_t                               buf_id
   }
 
   QCarCamFrame frame;
-  frame.fd           = dma_bufs_[buf_idx].fd;
-  frame.data         = static_cast<uint8_t *>(dma_bufs_[buf_idx].vaddr);
-  frame.size         = static_cast<uint32_t>(dma_bufs_[buf_idx].len);
-  frame.width        = width_;
-  frame.height       = height_;
-  frame.stride       = buffers_[buf_idx].planes[0].stride;
-  frame.slice        = (height_ + QCARCAM_HEIGHT_ALIGN - 1u) & ~(QCARCAM_HEIGHT_ALIGN - 1u);
-  frame.format       = to_ros_encoding(color_fmt_);
+  frame.fd = dma_bufs_[buf_idx].fd;
+  frame.data = static_cast<uint8_t *>(dma_bufs_[buf_idx].vaddr);
+  frame.size = static_cast<uint32_t>(dma_bufs_[buf_idx].len);
+  frame.width = width_;
+  frame.height = height_;
+  frame.stride = buffers_[buf_idx].planes[0].stride;
+  frame.slice = (height_ + QCARCAM_HEIGHT_ALIGN - 1u) & ~(QCARCAM_HEIGHT_ALIGN - 1u);
+  frame.format = to_ros_encoding(color_fmt_);
   frame.frame_source = stream_name_;
-  frame.index        = frame_cnt_;
-  frame.camera_id    = camera_id_;
-  frame.orientation  = 0;
-  frame.metadata     = nullptr;
+  frame.index = frame_cnt_;
+  frame.camera_id = camera_id_;
+  frame.orientation = 0;
+  frame.metadata = nullptr;
 
   frame.timestamp = frame_timestamp;
 
@@ -373,12 +364,18 @@ void QCarCamStream::drain_release_queue()
 std::string QCarCamStream::to_ros_encoding(QCarCamColorFmt_e fmt)
 {
   switch (fmt) {
-    case QCARCAM_FMT_NV12:        return "nv12";
-    case QCARCAM_FMT_NV21:        return "nv21";
-    case QCARCAM_FMT_UYVY_8:      return "uyvy";
-    case QCARCAM_FMT_MIPIRAW_8:   return "mipi8";
-    case QCARCAM_FMT_MIPIRAW_16:  return "mipi16";
-    default:                      return "nv12";
+    case QCARCAM_FMT_NV12:
+      return "nv12";
+    case QCARCAM_FMT_NV21:
+      return "nv21";
+    case QCARCAM_FMT_UYVY_8:
+      return "uyvy";
+    case QCARCAM_FMT_MIPIRAW_8:
+      return "mipi8";
+    case QCARCAM_FMT_MIPIRAW_16:
+      return "mipi16";
+    default:
+      return "nv12";
   }
 }
 

@@ -186,7 +186,7 @@ void TestNode::handler_callback(
     if (fd == NULL) {
       RCLCPP_ERROR(this->get_logger(),
           "can't open this file: %s, please check whether diectory exist!", fname);
-     
+
       return;
     }
     fwrite(bufData, size, 1, fd);
