@@ -172,6 +172,7 @@ struct StreamParam
   std::string format;
   int32_t orientation;
   std::string name;
+  uint32_t bufferlist_id = 0;
 };
 
 struct CameraParam

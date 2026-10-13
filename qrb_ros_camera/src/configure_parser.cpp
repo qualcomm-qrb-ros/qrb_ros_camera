@@ -44,6 +44,9 @@ bool ConfigureParser::init()
     uint32_t fps = node_handler_->declare_parameter(stream_name[i] + ".fps", 30);
     std::string format = node_handler_->declare_parameter(stream_name[i] + ".format",
                                                           std::string("nv12"));
+
+    uint32_t bufferlist_id = node_handler_->declare_parameter(
+        stream_name[i] + ".bufferlist_id", 0);
     std::string stream_camera_info = node_handler_->declare_parameter(
         stream_name[i] + ".camera_info_path", std::string(""));
 
@@ -53,6 +56,7 @@ bool ConfigureParser::init()
     camera_.stream_heights.push_back(height);
     camera_.stream_fps.push_back(fps);
     camera_.stream_type.push_back(qrb_camera::StreamType::Track);
+    camera_.stream_bufferlist_ids.push_back(bufferlist_id);
 
     qrb_camera::CameraIntrinsicParam param;
     if (!load_camera_info_param(stream_camera_info, param)) {
