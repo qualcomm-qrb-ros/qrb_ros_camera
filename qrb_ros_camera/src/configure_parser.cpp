@@ -44,7 +44,9 @@ bool ConfigureParser::init()
     std::string format =
         node_handler_->declare_parameter(stream_name[i] + ".format", std::string("nv12"));
 
-    uint32_t bufferlist_id = node_handler_->declare_parameter(stream_name[i] + ".bufferlist_id", 0);
+    int bufferlist_id_raw = node_handler_->declare_parameter(stream_name[i] + ".bufferlist_id", 0);
+    uint32_t bufferlist_id = static_cast<uint32_t>(bufferlist_id_raw);
+
     std::string stream_camera_info =
         node_handler_->declare_parameter(stream_name[i] + ".camera_info_path", std::string(""));
 
@@ -70,6 +72,7 @@ bool ConfigureParser::init()
   camera_.stream_size = stream_size;
 
   camera_.isp_usecase = static_cast<uint32_t>(node_handler_->declare_parameter("isp_usecase", 0));
+  camera_.input_mode = static_cast<uint32_t>(node_handler_->declare_parameter("input_mode", 0));
 
   init_ = true;
   return true;
@@ -95,7 +98,7 @@ bool ConfigureParser::get_camera_info(const uint32_t width,
                 stream_index < static_cast<int>(camera_.camera_intrinsic_params.size())) ?
                 stream_index :
                 0;
-  auto param = camera_.camera_intrinsic_params[idx];
+  const auto & param = camera_.camera_intrinsic_params[idx];
 
   camera_info.width = width;
   camera_info.height = height;

@@ -90,6 +90,7 @@ void QCarCamCamera::set_param(std::vector<CameraParam> & param)
   isp_config_.id = 0;
   isp_config_.cameraId = 0;
   isp_config_.usecaseId = static_cast<QCarCamIspUsecase_e>(param[0].isp_usecase);
+  input_mode_ = param[0].input_mode;
 
   std::cout << "[INFO] [" << logger_ << "]: set_param: " << stream_params_.size() << " stream(s)"
             << std::endl;
@@ -177,7 +178,7 @@ int QCarCamCamera::start_camera()
   for (uint32_t i = 0; i < num_contexts && i < QCARCAM_MAX_INPUT_STREAMS; ++i) {
     open_params.inputs[i].inputId = camera_id_;
     open_params.inputs[i].srcId = 0;
-    open_params.inputs[i].inputMode = i;
+    open_params.inputs[i].inputMode = input_mode_;
   }
 
   for (uint32_t i = 0; i < QCARCAM_MAX_OPEN_RETRY; ++i) {

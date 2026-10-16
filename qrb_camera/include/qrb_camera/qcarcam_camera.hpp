@@ -87,6 +87,7 @@ private:
   // ---- QCarCam handle / config ----
   QCarCamHndl_t handle_ = QCARCAM_HNDL_INVALID;
   QCarCamIspUsecaseConfig_t isp_config_ = {};
+  uint32_t input_mode_ = 0;
   // request_ is reused for every QCarCamSubmitRequest call.
   // request_mtx_ serialises concurrent resubmits from multiple streams.
   QCarCamRequest_t request_ = {};
