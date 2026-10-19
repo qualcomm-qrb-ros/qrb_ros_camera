@@ -10,7 +10,10 @@ namespace qrb_ros
 {
 namespace camera
 {
-ConfigureParser::ConfigureParser(rclcpp::Node * node_handler) : node_handler_(node_handler) {}
+ConfigureParser::ConfigureParser(rclcpp_lifecycle::LifecycleNode * node_handler)
+  : node_handler_(node_handler)
+{
+}
 
 bool ConfigureParser::init()
 {

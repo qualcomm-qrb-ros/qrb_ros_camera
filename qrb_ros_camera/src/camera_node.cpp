@@ -1,5 +1,5 @@
 /*
- *​​​​ Copyright (c) Qualcomm Technologies, Inc. and/or its subsidiaries.
+ * Copyright (c) Qualcomm Technologies, Inc. and/or its subsidiaries.
  * SPDX-License-Identifier: BSD-3-Clause-Clear
  */
 #include "qrb_ros_camera/camera_node.hpp"
@@ -10,67 +10,47 @@ namespace qrb_ros
 {
 namespace camera
 {
-CameraNode::CameraNode(const rclcpp::NodeOptions & options) : rclcpp::Node("camera_node", options)
+
+using CallbackReturn = rclcpp_lifecycle::node_interfaces::LifecycleNodeInterface::CallbackReturn;
+
+CameraNode::CameraNode(const rclcpp::NodeOptions & options)
+  : rclcpp_lifecycle::LifecycleNode("camera_node", options), camera_index_(-1), time_offset_(0)
 {
-  RCLCPP_INFO(this->get_logger(), "QRB Camera Node start");
-
-  camera_index_ = -1;
-
-  if (!init()) {
-    throw std::runtime_error("QRB Camera Node: configuration failed");
-  }
-
-  calculate_offset();
-
-  // configure_->get_camera_id() from launch config
-
-  camera_index_ =
-      manager_.create_camera(qrb_camera::CameraType::QCarCam, configure_->get_camera_id());
-
-  if (camera_index_ < 0) {
-    throw std::runtime_error("QRB Camera Node: create_camera failed");
-  }
-
-  auto configure = configure_->get_camera_param();
-  if (!manager_.set_camera_parameter(camera_index_, configure)) {
-    throw std::runtime_error("QRB Camera Node: set_camera_parameter failed");
-  }
-
-  RCLCPP_INFO(this->get_logger(), "QRB Camera Node init success");
-
-  start_camera();
-}
-
-void CameraNode::start_camera()
-{
-  using namespace std::placeholders;
-  auto image_cb = std::bind(&CameraNode::publish_image, this, _1);
-
-  if (!manager_.register_callback(camera_index_, image_cb)) {
-    RCLCPP_ERROR(this->get_logger(), "QRB Camera Node: register_callback failed.");
-    return;
-  }
-
-  if (!manager_.start_camera(camera_index_)) {
-    RCLCPP_ERROR(this->get_logger(), "QRB Camera Node start failed.");
-    return;
-  }
+  RCLCPP_INFO(get_logger(), "QRB Camera Node created (Unconfigured)");
 }
 
 CameraNode::~CameraNode()
 {
-  manager_.stop_camera(camera_index_);
+  if (camera_index_ >= 0) {
+    manager_.stop_camera(camera_index_);
+    manager_.destroy_camera(camera_index_);
+  }
 }
 
-bool CameraNode::init()
+CallbackReturn CameraNode::on_configure(const rclcpp_lifecycle::State &)
 {
+  RCLCPP_INFO(get_logger(), "on_configure");
+
   configure_ = std::make_shared<ConfigureParser>(this);
   if (!configure_->init()) {
-    RCLCPP_ERROR(this->get_logger(), "QRB Camera Node configure fail...");
-    return false;
+    RCLCPP_ERROR(get_logger(), "configure_parser init failed");
+    return CallbackReturn::FAILURE;
   }
 
-  const auto & configure = configure_->get_camera_param();
+  calculate_offset();
+
+  camera_index_ =
+      manager_.create_camera(qrb_camera::CameraType::QCarCam, configure_->get_camera_id());
+  if (camera_index_ < 0) {
+    RCLCPP_ERROR(get_logger(), "create_camera failed");
+    return CallbackReturn::FAILURE;
+  }
+
+  auto configure = configure_->get_camera_param();
+  if (!manager_.set_camera_parameter(camera_index_, configure)) {
+    RCLCPP_ERROR(get_logger(), "set_camera_parameter failed");
+    return CallbackReturn::FAILURE;
+  }
 
   rclcpp::PublisherOptions pub_options;
   pub_options.use_intra_process_comm = rclcpp::IntraProcessSetting::Enable;
@@ -78,17 +58,16 @@ bool CameraNode::init()
   stream_ts_.resize(configure.stream_size);
   camera_infos_.resize(configure.stream_size);
 
-  std::string name = "cam" + std::to_string(configure.camera_id) + "_";
+  std::string prefix = "cam" + std::to_string(configure.camera_id) + "_";
 
   for (int i = 0; i < configure.stream_size; i++) {
-    auto img_publisher =
-        this->create_publisher<IMAGE_TOPIC_TYPE>(name + configure.stream_names[i], 50, pub_options);
+    auto img_pub =
+        create_publisher<IMAGE_TOPIC_TYPE>(prefix + configure.stream_names[i], 50, pub_options);
+    auto info_pub = create_publisher<CAMERA_INFO_TOPIC_TYPE>(
+        prefix + configure.stream_names[i] + "_camera_info", 50, pub_options);
 
-    auto info_publisher = this->create_publisher<CAMERA_INFO_TOPIC_TYPE>(
-        name + configure.stream_names[i] + "_camera_info", 50, pub_options);
-
-    color_image_pub_vector_.push_back(img_publisher);
-    color_camera_info_pub_vector_.push_back(info_publisher);
+    color_image_pub_vector_.push_back(img_pub);
+    color_camera_info_pub_vector_.push_back(info_pub);
 
     stream_ts_[i].stream_name = configure.stream_names[i];
 
@@ -96,7 +75,86 @@ bool CameraNode::init()
         configure.stream_widths[i], configure.stream_heights[i], i, camera_infos_[i]);
   }
 
-  return true;
+  RCLCPP_INFO(get_logger(), "QRB Camera Node configured (Inactive)");
+  return CallbackReturn::SUCCESS;
+}
+
+CallbackReturn CameraNode::on_activate(const rclcpp_lifecycle::State &)
+{
+  RCLCPP_INFO(get_logger(), "on_activate");
+
+  for (auto & pub : color_image_pub_vector_) {
+    pub->on_activate();
+  }
+  for (auto & pub : color_camera_info_pub_vector_) {
+    pub->on_activate();
+  }
+
+  using namespace std::placeholders;
+  auto image_cb = std::bind(&CameraNode::publish_image, this, _1);
+
+  if (!manager_.register_callback(camera_index_, image_cb)) {
+    RCLCPP_ERROR(get_logger(), "register_callback failed");
+    return CallbackReturn::FAILURE;
+  }
+
+  if (!manager_.start_camera(camera_index_)) {
+    RCLCPP_ERROR(get_logger(), "start_camera failed");
+    return CallbackReturn::FAILURE;
+  }
+
+  RCLCPP_INFO(get_logger(), "QRB Camera Node active, streaming");
+  return CallbackReturn::SUCCESS;
+}
+
+CallbackReturn CameraNode::on_deactivate(const rclcpp_lifecycle::State &)
+{
+  RCLCPP_INFO(get_logger(), "on_deactivate");
+
+  manager_.stop_camera(camera_index_);
+
+  for (auto & pub : color_image_pub_vector_) {
+    pub->on_deactivate();
+  }
+  for (auto & pub : color_camera_info_pub_vector_) {
+    pub->on_deactivate();
+  }
+
+  RCLCPP_INFO(get_logger(), "QRB Camera Node inactive, streaming stopped");
+  return CallbackReturn::SUCCESS;
+}
+
+CallbackReturn CameraNode::on_cleanup(const rclcpp_lifecycle::State &)
+{
+  RCLCPP_INFO(get_logger(), "on_cleanup");
+
+  manager_.destroy_camera(camera_index_);
+  camera_index_ = -1;
+
+  color_image_pub_vector_.clear();
+  color_camera_info_pub_vector_.clear();
+  stream_ts_.clear();
+  camera_infos_.clear();
+  configure_.reset();
+
+  RCLCPP_INFO(get_logger(), "QRB Camera Node cleaned up (Unconfigured)");
+  return CallbackReturn::SUCCESS;
+}
+
+CallbackReturn CameraNode::on_shutdown(const rclcpp_lifecycle::State & state)
+{
+  RCLCPP_INFO(get_logger(), "on_shutdown from state: %s", state.label().c_str());
+
+  if (camera_index_ >= 0) {
+    manager_.stop_camera(camera_index_);
+    manager_.destroy_camera(camera_index_);
+    camera_index_ = -1;
+  }
+
+  color_image_pub_vector_.clear();
+  color_camera_info_pub_vector_.clear();
+
+  return CallbackReturn::SUCCESS;
 }
 
 void CameraNode::show_fps(const std::string & name,
@@ -189,6 +247,10 @@ void CameraNode::publish_image(std::unique_ptr<qrb_camera::CameraFrame> frame)
 void CameraNode::publish_color_image(int stream_index,
     std::unique_ptr<qrb_camera::CameraFrame> frame)
 {
+  if (!color_image_pub_vector_[stream_index]->is_activated()) {
+    return;
+  }
+
   auto info = std::make_unique<CAMERA_INFO_TOPIC_TYPE>(camera_infos_[stream_index]);
 
   show_fps(frame->stream_name, frame->format, stream_ts_[stream_index].latency,
