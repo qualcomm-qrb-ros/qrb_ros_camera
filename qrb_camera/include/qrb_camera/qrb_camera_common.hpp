@@ -64,6 +64,7 @@ struct CameraConfigure
   std::vector<uint32_t> stream_bufferlist_ids;
 
   uint32_t isp_usecase = 0;
+  uint32_t input_mode = 0;
 
   std::vector<CameraIntrinsicParam> camera_intrinsic_params;
   CameraExtrinsicParam camera_extrinsic_param;
