@@ -14,7 +14,10 @@ namespace camera
 using CallbackReturn = rclcpp_lifecycle::node_interfaces::LifecycleNodeInterface::CallbackReturn;
 
 CameraNode::CameraNode(const rclcpp::NodeOptions & options)
-  : rclcpp_lifecycle::LifecycleNode("camera_node", options), camera_index_(-1), time_offset_(0)
+  : rclcpp_lifecycle::LifecycleNode("camera_node", options)
+  , camera_index_(-1)
+  , time_offset_(0)
+  , diag_updater_(this)
 {
   RCLCPP_INFO(get_logger(), "QRB Camera Node created (Unconfigured)");
 }
@@ -73,7 +76,13 @@ CallbackReturn CameraNode::on_configure(const rclcpp_lifecycle::State &)
 
     configure_->get_camera_info(
         configure.stream_widths[i], configure.stream_heights[i], i, camera_infos_[i]);
+
+    diag_updater_.add("cam" + std::to_string(configure.camera_id) + "_" + configure.stream_names[i],
+        [this, i](
+            diagnostic_updater::DiagnosticStatusWrapper & stat) { produce_diagnostics(i, stat); });
   }
+
+  diag_updater_.setHardwareID("camera_id=" + std::to_string(configure.camera_id));
 
   RCLCPP_INFO(get_logger(), "QRB Camera Node configured (Inactive)");
   return CallbackReturn::SUCCESS;
@@ -197,6 +206,14 @@ void CameraNode::show_fps(const std::string & name,
         name.c_str(), format.c_str(), width, height, stride, slice, frame_id, frame_count, fps,
         current_frame_timestamp, average_latency);
 
+    for (auto & ts : stream_ts_) {
+      if (ts.stream_name == name) {
+        ts.actual_fps = fps;
+        ts.avg_latency_us = average_latency;
+        break;
+      }
+    }
+
     frame_count = 0;
   }
 }
@@ -317,6 +334,35 @@ uint64_t CameraNode::getQtimerTime()
   qTimerNanosNSec *= 1000000000;
   qTimerNanosNSec /= qTimerFreq;
   return (qTimerSec * 1000000000 + qTimerNanosNSec);
+}
+
+void CameraNode::produce_diagnostics(int stream_index,
+    diagnostic_updater::DiagnosticStatusWrapper & stat)
+{
+  const auto & configure = configure_->get_camera_param();
+  const auto & ts = stream_ts_[stream_index];
+  const std::string & stream_name = configure.stream_names[stream_index];
+  const std::string & fmt = configure.stream_formats[stream_index];
+  uint32_t width = configure.stream_widths[stream_index];
+  uint32_t height = configure.stream_heights[stream_index];
+
+  bool is_active = color_image_pub_vector_[stream_index]->is_activated();
+
+  stat.add("stream", stream_name);
+  stat.add("format", fmt);
+  stat.add("resolution", std::to_string(width) + "x" + std::to_string(height));
+  stat.add("actual_fps", std::to_string(ts.actual_fps));
+  stat.add("avg_latency_us", std::to_string(ts.avg_latency_us));
+  stat.add("dropped_frames", std::to_string(ts.dropped_frames));
+  stat.add("connection_state", is_active ? "streaming" : "inactive");
+
+  if (!is_active) {
+    stat.summary(diagnostic_msgs::msg::DiagnosticStatus::WARN, "stream not active");
+  } else if (ts.actual_fps < 1.0 && ts.frame_count > 0) {
+    stat.summary(diagnostic_msgs::msg::DiagnosticStatus::ERROR, "fps too low");
+  } else {
+    stat.summary(diagnostic_msgs::msg::DiagnosticStatus::OK, "OK");
+  }
 }
 
 }  // namespace camera

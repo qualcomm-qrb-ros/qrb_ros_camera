@@ -7,6 +7,7 @@
 
 #include <sensor_msgs/msg/camera_info.hpp>
 
+#include "diagnostic_updater/diagnostic_updater.hpp"
 #include "qrb_camera/camera_manager.hpp"
 #include "qrb_ros_camera/configure_parser.hpp"
 #include "qrb_ros_transport_image_type/image.hpp"
@@ -27,6 +28,9 @@ struct StreamTimeStamp
   uint64_t timestamp = 0;
   int64_t frame_count = 0;
   int64_t latency = 0;
+  double actual_fps = 0.0;
+  int64_t avg_latency_us = 0;
+  int64_t dropped_frames = 0;
 };
 
 class CameraNode : public rclcpp_lifecycle::LifecycleNode
@@ -67,6 +71,8 @@ private:
 
   uint64_t getQtimerTime();
 
+  void produce_diagnostics(int stream_index, diagnostic_updater::DiagnosticStatusWrapper & stat);
+
   using ImagePub = rclcpp_lifecycle::LifecyclePublisher<IMAGE_TOPIC_TYPE>;
   using InfoPub = rclcpp_lifecycle::LifecyclePublisher<CAMERA_INFO_TOPIC_TYPE>;
 
@@ -82,6 +88,8 @@ private:
 
   std::vector<StreamTimeStamp> stream_ts_;
   std::vector<CAMERA_INFO_TOPIC_TYPE> camera_infos_;
+
+  diagnostic_updater::Updater diag_updater_;
 };
 }  // namespace camera
 }  // namespace qrb_ros

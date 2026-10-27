@@ -13,6 +13,8 @@
   <depend>rclcpp_lifecycle</depend>
   <depend>sensor_msgs</depend>
   <depend>lifecycle_msgs</depend>
+  <depend>diagnostic_updater</depend>
+  <depend>diagnostic_msgs</depend>
 
   <depend>qrb_camera</depend>
   <depend>qrb_ros_transport_image_type</depend>
