@@ -9,10 +9,10 @@
 
 #include <sensor_msgs/msg/camera_info.hpp>
 #include <string>
-#include <vector>
 
 #include "qrb_camera/qrb_camera_common.hpp"
 #include "rclcpp/rclcpp.hpp"
+#include "rclcpp_lifecycle/lifecycle_node.hpp"
 
 #define CAMERAINFO_DIR "/var/cache/camera"
 
@@ -23,7 +23,7 @@ namespace camera
 class ConfigureParser
 {
 public:
-  explicit ConfigureParser(rclcpp::Node * node_handler);
+  explicit ConfigureParser(rclcpp_lifecycle::LifecycleNode * node_handler);
 
   uint32_t get_camera_id();
 
@@ -41,7 +41,7 @@ private:
 
   bool init_{false};
   qrb_camera::CameraConfigure camera_;
-  rclcpp::Node * node_handler_;
+  rclcpp_lifecycle::LifecycleNode * node_handler_;
 };
 }  // namespace camera
 }  // namespace qrb_ros
