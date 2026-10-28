@@ -77,9 +77,11 @@ CallbackReturn CameraNode::on_configure(const rclcpp_lifecycle::State &)
     configure_->get_camera_info(
         configure.stream_widths[i], configure.stream_heights[i], i, camera_infos_[i]);
 
-    diag_updater_.add("cam" + std::to_string(configure.camera_id) + "_" + configure.stream_names[i],
-        [this, i](
-            diagnostic_updater::DiagnosticStatusWrapper & stat) { produce_diagnostics(i, stat); });
+    std::string diag_name = prefix + configure.stream_names[i];
+    diag_task_names_.push_back(diag_name);
+    diag_updater_.add(diag_name, [this, i](diagnostic_updater::DiagnosticStatusWrapper & stat) {
+      produce_diagnostics(i, stat);
+    });
   }
 
   diag_updater_.setHardwareID("camera_id=" + std::to_string(configure.camera_id));
@@ -137,6 +139,8 @@ CallbackReturn CameraNode::on_cleanup(const rclcpp_lifecycle::State &)
 {
   RCLCPP_INFO(get_logger(), "on_cleanup");
 
+  remove_diagnostics();
+
   manager_.destroy_camera(camera_index_);
   camera_index_ = -1;
 
@@ -153,6 +157,8 @@ CallbackReturn CameraNode::on_cleanup(const rclcpp_lifecycle::State &)
 CallbackReturn CameraNode::on_shutdown(const rclcpp_lifecycle::State & state)
 {
   RCLCPP_INFO(get_logger(), "on_shutdown from state: %s", state.label().c_str());
+
+  remove_diagnostics();
 
   if (camera_index_ >= 0) {
     manager_.stop_camera(camera_index_);
@@ -334,6 +340,14 @@ uint64_t CameraNode::getQtimerTime()
   qTimerNanosNSec *= 1000000000;
   qTimerNanosNSec /= qTimerFreq;
   return (qTimerSec * 1000000000 + qTimerNanosNSec);
+}
+
+void CameraNode::remove_diagnostics()
+{
+  for (const auto & name : diag_task_names_) {
+    diag_updater_.removeByName(name);
+  }
+  diag_task_names_.clear();
 }
 
 void CameraNode::produce_diagnostics(int stream_index,
