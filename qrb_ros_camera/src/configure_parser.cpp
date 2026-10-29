@@ -10,6 +10,17 @@ namespace qrb_ros
 {
 namespace camera
 {
+template <typename T>
+static T declare_or_get(rclcpp_lifecycle::LifecycleNode * node,
+    const std::string & name,
+    const T & value)
+{
+  if (!node->has_parameter(name)) {
+    return node->declare_parameter(name, value);
+  }
+  return node->get_parameter(name).get_value<T>();
+}
+
 ConfigureParser::ConfigureParser(rclcpp_lifecycle::LifecycleNode * node_handler)
   : node_handler_(node_handler)
 {
@@ -17,16 +28,17 @@ ConfigureParser::ConfigureParser(rclcpp_lifecycle::LifecycleNode * node_handler)
 
 bool ConfigureParser::init()
 {
-  int camera_id = node_handler_->declare_parameter("camera_id", -1);
+  int camera_id = declare_or_get<int>(node_handler_, "camera_id", -1);
   if (camera_id == -1) {
     RCLCPP_ERROR(node_handler_->get_logger(), "camera id is error param");
     init_ = false;
     return false;
   }
 
-  int stream_size = node_handler_->declare_parameter("stream_size", 1);
+  int stream_size = declare_or_get<int>(node_handler_, "stream_size", 1);
 
-  auto stream_name = node_handler_->declare_parameter("stream_name", std::vector<std::string>());
+  auto stream_name = declare_or_get<std::vector<std::string>>(
+      node_handler_, "stream_name", std::vector<std::string>());
 
   if (stream_name.size() != stream_size) {
     RCLCPP_ERROR(node_handler_->get_logger(), "stream_name's size not equal stream_size");
@@ -41,17 +53,18 @@ bool ConfigureParser::init()
   camera_.stream_type.reserve(stream_size);
 
   for (int i = 0; i < stream_size; i++) {
-    uint32_t height = node_handler_->declare_parameter(stream_name[i] + ".height", 1080);
-    uint32_t width = node_handler_->declare_parameter(stream_name[i] + ".width", 1920);
-    uint32_t fps = node_handler_->declare_parameter(stream_name[i] + ".fps", 30);
+    uint32_t height = declare_or_get<int>(node_handler_, stream_name[i] + ".height", 1080);
+    uint32_t width = declare_or_get<int>(node_handler_, stream_name[i] + ".width", 1920);
+    uint32_t fps = declare_or_get<int>(node_handler_, stream_name[i] + ".fps", 30);
     std::string format =
-        node_handler_->declare_parameter(stream_name[i] + ".format", std::string("nv12"));
+        declare_or_get<std::string>(node_handler_, stream_name[i] + ".format", "nv12");
 
-    int bufferlist_id_raw = node_handler_->declare_parameter(stream_name[i] + ".bufferlist_id", 0);
+    int bufferlist_id_raw =
+        declare_or_get<int>(node_handler_, stream_name[i] + ".bufferlist_id", 0);
     uint32_t bufferlist_id = static_cast<uint32_t>(bufferlist_id_raw);
 
     std::string stream_camera_info =
-        node_handler_->declare_parameter(stream_name[i] + ".camera_info_path", std::string(""));
+        declare_or_get<std::string>(node_handler_, stream_name[i] + ".camera_info_path", "");
 
     camera_.stream_names.push_back(stream_name[i]);
     camera_.stream_formats.push_back(format);
@@ -74,8 +87,8 @@ bool ConfigureParser::init()
   camera_.camera_id = camera_id;
   camera_.stream_size = stream_size;
 
-  camera_.isp_usecase = static_cast<uint32_t>(node_handler_->declare_parameter("isp_usecase", 0));
-  camera_.input_mode = static_cast<uint32_t>(node_handler_->declare_parameter("input_mode", 0));
+  camera_.isp_usecase = static_cast<uint32_t>(declare_or_get<int>(node_handler_, "isp_usecase", 0));
+  camera_.input_mode = static_cast<uint32_t>(declare_or_get<int>(node_handler_, "input_mode", 0));
 
   init_ = true;
   return true;
