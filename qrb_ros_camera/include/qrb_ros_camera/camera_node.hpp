@@ -73,6 +73,8 @@ private:
 
   void produce_diagnostics(int stream_index, diagnostic_updater::DiagnosticStatusWrapper & stat);
 
+  void remove_diagnostics();
+
   using ImagePub = rclcpp_lifecycle::LifecyclePublisher<IMAGE_TOPIC_TYPE>;
   using InfoPub = rclcpp_lifecycle::LifecyclePublisher<CAMERA_INFO_TOPIC_TYPE>;
 
@@ -90,6 +92,7 @@ private:
   std::vector<CAMERA_INFO_TOPIC_TYPE> camera_infos_;
 
   diagnostic_updater::Updater diag_updater_;
+  std::vector<std::string> diag_task_names_;
 };
 }  // namespace camera
 }  // namespace qrb_ros
