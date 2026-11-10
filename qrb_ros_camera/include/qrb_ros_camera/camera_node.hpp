@@ -1,6 +1,5 @@
 /*
- * Copyright (c) Qualcomm Technologies, Inc. and/or its subsidiaries.
- * All Rights Reserved.
+ *​​​​ Copyright (c) Qualcomm Technologies, Inc. and/or its subsidiaries.
  * SPDX-License-Identifier: BSD-3-Clause-Clear
  */
 #ifndef QRB_ROS_CAMERA__CAMERA_NODE_HPP_
@@ -26,7 +25,7 @@ struct StreamTimeStamp
 {
   std::string stream_name;
   uint64_t timestamp = 0;
-  uint64_t frame_count = 0;
+  int64_t frame_count = 0;
   int64_t latency = 0;
 };
 
@@ -44,12 +43,14 @@ private:
 
   void publish_color_image(int stream_index, std::unique_ptr<qrb_camera::CameraFrame> frame);
 
-  void show_fps(std::string & name,
-      std::string format,
+  bool init();
+
+  void show_fps(const std::string & name,
+      const std::string & format,
       int64_t & latency,
       uint64_t & last_record_timestamp,
       uint64_t current_frame_timestamp,
-      uint64_t & frame_count,
+      int64_t & frame_count,
       int height,
       int width,
       int stride,
@@ -59,9 +60,9 @@ private:
   std::unique_ptr<qrb_ros::transport::type::Image> convert_camera_frame_to_msg(
       std::unique_ptr<qrb_camera::CameraFrame> frame);
 
-  void init();
-
   void start_camera();
+
+  uint64_t getQtimerTime();
 
   std::vector<std::shared_ptr<rclcpp::Publisher<IMAGE_TOPIC_TYPE>>> color_image_pub_vector_;
   std::vector<std::shared_ptr<rclcpp::Publisher<CAMERA_INFO_TOPIC_TYPE>>>

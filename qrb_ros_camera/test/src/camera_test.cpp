@@ -1,5 +1,7 @@
-// Copyright (c) 2024 Qualcomm Innovation Center, Inc. All rights reserved.
-// SPDX-License-Identifier: BSD-3-Clause-Clear
+/*
+ *​​​​ Copyright (c) Qualcomm Technologies, Inc. and/or its subsidiaries.
+ * SPDX-License-Identifier: BSD-3-Clause-Clear
+ */
 #include <sensor_msgs/msg/camera_info.hpp>
 
 #include "qrb_ros_transport_image_type/image.hpp"
@@ -96,12 +98,12 @@ void TestNode::show_fps(std::string & name,
   uint64_t cur_system_time = get_clock()->now().nanoseconds();
   if (g_receive_frame_count[type] == 0) {
     g_receive_frame_count[type] = 1;
-    g_receive_total_latency[type] = cur_system_time - current_frame_timestamp;
+    g_receive_total_latency[type] = static_cast<int64_t>(cur_system_time - current_frame_timestamp);
     g_receive_last_fpstime[type] = cur_system_time;
     return;
   }
   g_receive_frame_count[type]++;
-  g_receive_total_latency[type] += cur_system_time - current_frame_timestamp;
+  g_receive_total_latency[type] += static_cast<int64_t>(cur_system_time - current_frame_timestamp);
   uint64_t diff = cur_system_time - g_receive_last_fpstime[type];
   uint64_t period = 5ULL * 1000000000ULL;
   if (diff > period) {
@@ -167,7 +169,13 @@ void TestNode::handler_callback(
     buffer->map();
     buffer->sync_start();
     int size = buffer->size();
-    uint8_t * bufData = (uint8_t *)buffer->addr();
+    uint8_t * addr = (uint8_t *)buffer->addr();
+
+    std::vector<uint8_t> local_buf(addr, addr + size);
+    uint8_t * bufData = local_buf.data();
+    buffer->sync_end();
+    buffer->unmap();
+
     char fname[256];
     const char * prefix_name = "test";
     std::string node_name = this->get_name();
@@ -178,13 +186,12 @@ void TestNode::handler_callback(
     if (fd == NULL) {
       RCLCPP_ERROR(this->get_logger(),
           "can't open this file: %s, please check whether diectory exist!", fname);
+     
       return;
     }
     fwrite(bufData, size, 1, fd);
     fclose(fd);
     fd = NULL;
-    buffer->unmap();
-    buffer->sync_end();
   }
 }
 
