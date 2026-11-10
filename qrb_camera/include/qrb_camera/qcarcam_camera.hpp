@@ -15,8 +15,8 @@
 #include <vector>
 
 #include "qrb_camera/camera_interface.hpp"
-#include "qrb_camera/qrb_camera_common.hpp"
 #include "qrb_camera/qcarcam_stream.hpp"
+#include "qrb_camera/qrb_camera_common.hpp"
 
 namespace qrb_camera
 {
@@ -24,15 +24,15 @@ namespace qrb_camera
 // ---------------------------------------------------------------------------
 // Constants (stream constants are in qcarcam_stream.hpp)
 // ---------------------------------------------------------------------------
-static constexpr uint32_t QCARCAM_MAX_OPEN_RETRY   = 100U;
-static constexpr uint32_t QCARCAM_MAX_QUERY_RETRY   = 500U;
-static constexpr uint32_t QCARCAM_SENSOR_WAIT_US    = 10000U;
+static constexpr uint32_t QCARCAM_MAX_OPEN_RETRY = 100U;
+static constexpr uint32_t QCARCAM_MAX_QUERY_RETRY = 500U;
+static constexpr uint32_t QCARCAM_SENSOR_WAIT_US = 10000U;
 static constexpr const char * QCARCAM_QCX_MQUEUE_PATH = "/dev/mqueue/QCX_debfcadf";
 
 // ISP usecase 138: full ISP pipeline including IPE (Image Processing Engine)
-static constexpr uint32_t QCARCAM_ISP_USECASE    = 138U;
+static constexpr uint32_t QCARCAM_ISP_USECASE = 138U;
 // Buffer list type 5: NV12 output format
-static constexpr uint32_t QCARCAM_BUFFERLIST_TYPE =   5U;
+static constexpr uint32_t QCARCAM_BUFFERLIST_TYPE = 5U;
 
 // ---------------------------------------------------------------------------
 // QCarCamCamera – ICameraDevice implementation using QCarCam submit-request
@@ -71,8 +71,8 @@ public:
   // ICameraDevice interface
   void set_param(std::vector<CameraParam> & param) override;
   bool init() override;
-  int  start_camera() override;
-  int  stop_camera() override;
+  int start_camera() override;
+  int stop_camera() override;
   void add_listener(ICameraListener * listener) override;
   void remove_listener(ICameraListener * listener) override;
 
@@ -92,23 +92,23 @@ private:
   bool query_and_verify_input();
 
   // ---- QCarCam handle / config ----
-  QCarCamHndl_t             handle_     = QCARCAM_HNDL_INVALID;
+  QCarCamHndl_t handle_ = QCARCAM_HNDL_INVALID;
   QCarCamIspUsecaseConfig_t isp_config_ = {};
   // request_ is reused for every QCarCamSubmitRequest call.
   // request_mtx_ serialises concurrent resubmits from multiple streams.
-  QCarCamRequest_t request_    = {};
-  std::mutex       request_mtx_;
+  QCarCamRequest_t request_ = {};
+  std::mutex request_mtx_;
 
   // ---- Per-stream state ----
-  std::vector<StreamParam>                       stream_params_;
-  std::vector<std::unique_ptr<QCarCamStream>>    streams_;
+  std::vector<StreamParam> stream_params_;
+  std::vector<std::unique_ptr<QCarCamStream>> streams_;
 
   // ---- Listener list (shared across all streams) ----
-  std::mutex                     listener_mtx_;
+  std::mutex listener_mtx_;
   std::vector<ICameraListener *> listeners_;
 
   // ---- Lifecycle ----
-  std::atomic<bool> running_{ false };
+  std::atomic<bool> running_{false};
   bool is_initialized_ = false;
 
   std::string logger_ = "QCarCamCamera";

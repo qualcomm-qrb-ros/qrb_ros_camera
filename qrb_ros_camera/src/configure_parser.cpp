@@ -10,8 +10,7 @@ namespace qrb_ros
 {
 namespace camera
 {
-ConfigureParser::ConfigureParser(rclcpp::Node * node_handler)
-  : node_handler_(node_handler) {}
+ConfigureParser::ConfigureParser(rclcpp::Node * node_handler) : node_handler_(node_handler) {}
 
 bool ConfigureParser::init()
 {
@@ -58,7 +57,6 @@ bool ConfigureParser::init()
 
   camera_.camera_type = "qcarcam";
 
-
   camera_.camera_id = camera_id;
   camera_.stream_size = stream_size;
 
@@ -80,8 +78,7 @@ qrb_camera::CameraConfigure & ConfigureParser::get_camera_param()
   return camera_;
 }
 
-bool ConfigureParser::get_camera_info(
-    const uint32_t width,
+bool ConfigureParser::get_camera_info(const uint32_t width,
     const uint32_t height,
     sensor_msgs::msg::CameraInfo & camera_info)
 {
@@ -95,7 +92,7 @@ bool ConfigureParser::get_camera_info(
   camera_info.width = width;
   camera_info.height = height;
 
-  double scale_x = static_cast<double>(camera_info.width)  / static_cast<double>(param.width);
+  double scale_x = static_cast<double>(camera_info.width) / static_cast<double>(param.width);
   double scale_y = static_cast<double>(camera_info.height) / static_cast<double>(param.height);
 
   camera_info.distortion_model = param.distortion_model;
@@ -110,10 +107,10 @@ bool ConfigureParser::get_camera_info(
   camera_info.k[5] = camera_info.height / 2;
   camera_info.k[8] = 1.0;
 
-  camera_info.p[0]  = param.projection_matrix[0] * scale_x;
-  camera_info.p[2]  = camera_info.width / 2;
-  camera_info.p[5]  = param.projection_matrix[5] * scale_y;
-  camera_info.p[6]  = camera_info.height / 2;
+  camera_info.p[0] = param.projection_matrix[0] * scale_x;
+  camera_info.p[2] = camera_info.width / 2;
+  camera_info.p[5] = param.projection_matrix[5] * scale_y;
+  camera_info.p[6] = camera_info.height / 2;
   camera_info.p[10] = 1.0;
 
   camera_info.r[0] = 1.0;
@@ -123,8 +120,7 @@ bool ConfigureParser::get_camera_info(
   return true;
 }
 
-bool ConfigureParser::load_camera_info_param(
-    std::string & path,
+bool ConfigureParser::load_camera_info_param(std::string & path,
     qrb_camera::CameraIntrinsicParam & param)
 {
   RCLCPP_INFO(node_handler_->get_logger(), "load camera intrinsic param");
@@ -138,8 +134,8 @@ bool ConfigureParser::load_camera_info_param(
   try {
     node = YAML::LoadFile(path);
   } catch (const YAML::Exception & e) {
-    RCLCPP_ERROR(node_handler_->get_logger(),
-        "failed to load camera info yaml '%s': %s", path.c_str(), e.what());
+    RCLCPP_ERROR(node_handler_->get_logger(), "failed to load camera info yaml '%s': %s",
+        path.c_str(), e.what());
     return false;
   }
 

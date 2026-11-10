@@ -26,6 +26,8 @@
  *   QCarCamStop → QCarCamRelease → QCarCamClose → QCarCamUninitialize
  */
 
+#include <jpeglib.h>
+
 #include <atomic>
 #include <chrono>
 #include <csignal>
@@ -35,8 +37,6 @@
 #include <thread>
 #include <vector>
 
-#include <jpeglib.h>
-
 #include "qrb_camera/camera_manager.hpp"
 #include "qrb_camera/qrb_camera_common.hpp"
 
@@ -44,11 +44,11 @@ using namespace qrb_camera;
 
 // ─── Adjust to match your board / use case ────────────────────────────────
 // IMX728
-static constexpr uint32_t CAMERA_ID   = 11;     // QCarCam inputId (check QCarCamQueryInputs)
-static constexpr uint32_t IMG_WIDTH   = 3840;
-static constexpr uint32_t IMG_HEIGHT  = 2160;
-static constexpr uint32_t IMG_FPS     = 30;
-static constexpr int      RUN_SECONDS = 10;
+static constexpr uint32_t CAMERA_ID = 11;  // QCarCam inputId (check QCarCamQueryInputs)
+static constexpr uint32_t IMG_WIDTH = 3840;
+static constexpr uint32_t IMG_HEIGHT = 2160;
+static constexpr uint32_t IMG_FPS = 30;
+static constexpr int RUN_SECONDS = 10;
 static constexpr uint32_t SAVE_FRAMES = 20;
 static constexpr const char * SAVE_DIR = "/tmp/";
 
@@ -65,10 +65,9 @@ static constexpr const char * SAVE_DIR = "/tmp/";
 static std::atomic<bool> g_running{true};
 
 // NV12 (semi-planar YUV 4:2:0) → packed RGB24
-static void nv12_to_rgb(const uint8_t * src, uint8_t * dst,
-                         uint32_t w, uint32_t h, uint32_t stride)
+static void nv12_to_rgb(const uint8_t * src, uint8_t * dst, uint32_t w, uint32_t h, uint32_t stride)
 {
-  const uint8_t * y_plane  = src;
+  const uint8_t * y_plane = src;
   const uint8_t * uv_plane = src + static_cast<size_t>(stride) * h;
   for (uint32_t row = 0; row < h; ++row) {
     for (uint32_t col = 0; col < w; ++col) {
@@ -87,7 +86,8 @@ static void nv12_to_rgb(const uint8_t * src, uint8_t * dst,
 static bool save_jpeg(const char * path, const uint8_t * rgb, int w, int h, int quality)
 {
   FILE * f = fopen(path, "wb");
-  if (!f) return false;
+  if (!f)
+    return false;
 
   struct jpeg_compress_struct cinfo;
   struct jpeg_error_mgr jerr;
@@ -95,10 +95,10 @@ static bool save_jpeg(const char * path, const uint8_t * rgb, int w, int h, int 
   jpeg_create_compress(&cinfo);
   jpeg_stdio_dest(&cinfo, f);
 
-  cinfo.image_width      = w;
-  cinfo.image_height     = h;
+  cinfo.image_width = w;
+  cinfo.image_height = h;
   cinfo.input_components = 3;
-  cinfo.in_color_space   = JCS_RGB;
+  cinfo.in_color_space = JCS_RGB;
   jpeg_set_defaults(&cinfo);
   jpeg_set_quality(&cinfo, quality, TRUE);
   jpeg_start_compress(&cinfo, TRUE);
@@ -123,7 +123,7 @@ static void signal_handler(int)
 
 int main()
 {
-  std::signal(SIGINT,  signal_handler);
+  std::signal(SIGINT, signal_handler);
   std::signal(SIGTERM, signal_handler);
 
   CameraManager manager;
@@ -141,7 +141,7 @@ int main()
   // otherwise CameraManager::convert_detail_to_param() will access
   // stream_type[] out-of-bounds and crash.
   CameraConfigure detail;
-  detail.camera_id   = static_cast<int>(CAMERA_ID);
+  detail.camera_id = static_cast<int>(CAMERA_ID);
   detail.camera_type = "single";
   detail.stream_size = 1;
 
@@ -167,25 +167,20 @@ int main()
   auto image_cb = [&frame_count, &save_count](std::unique_ptr<CameraFrame> frame) {
     uint64_t n = ++frame_count;
 
-    if (/*n > 3 && */n < 20 && frame->data) {
-        printf("[DATA] frame %lu first 16 bytes:", n);
-        for (int i = 0; i < 16; i++) {
-            printf(" %02X", frame->data[i]);
-        }
-        printf("\n");
+    if (/*n > 3 && */ n < 20 && frame->data) {
+      printf("[DATA] frame %lu first 16 bytes:", n);
+      for (int i = 0; i < 16; i++) {
+        printf(" %02X", frame->data[i]);
+      }
+      printf("\n");
     }
 
     // if (n % 30 == 0) {
-      std::cout << "[FRAME]"
-                << "  stream="  << frame->stream_name
-                << "  id="      << frame->frame_id
-                << "  res="     << frame->width << "x" << frame->height
-                << "  fmt="     << frame->format
-                << "  stride="  << frame->stride
-                << "  fd="      << frame->fd
-                << "  ts_ns="   << frame->timestamp
-                << "  total="   << n
-                << std::endl;
+    std::cout << "[FRAME]"
+              << "  stream=" << frame->stream_name << "  id=" << frame->frame_id
+              << "  res=" << frame->width << "x" << frame->height << "  fmt=" << frame->format
+              << "  stride=" << frame->stride << "  fd=" << frame->fd
+              << "  ts_ns=" << frame->timestamp << "  total=" << n << std::endl;
     // }
 
     if (n > 3 && n < 20 && frame->data) {
@@ -196,7 +191,7 @@ int main()
         nv12_to_rgb(frame->data, rgb.data(), frame->width, frame->height, frame->stride);
         std::string path = std::string(SAVE_DIR) + "frame_" + std::to_string(idx + 1) + ".jpg";
         if (save_jpeg(path.c_str(), rgb.data(), (int)frame->width, (int)frame->height, 90)) {
-            std::cout << "[SAVE] " << path << std::endl;
+          std::cout << "[SAVE] " << path << std::endl;
         }
       }
     }
@@ -217,10 +212,9 @@ int main()
     return -1;
   }
 
-  std::cout << "[INFO] Camera " << CAMERA_ID << " started ("
-            << IMG_WIDTH << "x" << IMG_HEIGHT << " @" << IMG_FPS << "fps nv12)."
-            << "  Running for up to " << RUN_SECONDS << "s – Ctrl-C to stop early."
-            << std::endl;
+  std::cout << "[INFO] Camera " << CAMERA_ID << " started (" << IMG_WIDTH << "x" << IMG_HEIGHT
+            << " @" << IMG_FPS << "fps nv12)."
+            << "  Running for up to " << RUN_SECONDS << "s – Ctrl-C to stop early." << std::endl;
 
   // ── 5. Run until deadline or signal ──────────────────────────────────
   auto deadline = std::chrono::steady_clock::now() + std::chrono::seconds(RUN_SECONDS);

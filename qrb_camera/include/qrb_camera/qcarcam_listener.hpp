@@ -34,7 +34,7 @@ private:
   std::unique_ptr<CameraFrame> convert(ICameraFrame * frame);
 
   ImageCallback image_cb_;
-  std::string   logger_ = "QCarCamListener";
+  std::string logger_ = "QCarCamListener";
 };
 
 }  // namespace qrb_camera
