@@ -1,6 +1,5 @@
 /*
- * Copyright (c) Qualcomm Technologies, Inc. and/or its subsidiaries.
- * All Rights Reserved.
+ *​​​​ Copyright (c) Qualcomm Technologies, Inc. and/or its subsidiaries.
  * SPDX-License-Identifier: BSD-3-Clause-Clear
  */
 #ifndef QRB_CAMERA__CAMERA_MANAGER_HPP_
@@ -10,7 +9,7 @@
 #include <mutex>
 
 #include "qrb_camera/camera_interface.hpp"
-#include "qrb_camera/qmmf_camera.hpp"
+#include "qrb_camera/qcarcam_camera.hpp"
 #include "qrb_camera/qrb_camera_common.hpp"
 
 namespace qrb_camera

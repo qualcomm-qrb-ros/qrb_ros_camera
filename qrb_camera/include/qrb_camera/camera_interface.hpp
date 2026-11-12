@@ -32,9 +32,11 @@
  * under the following license: Copyright (c) 2023 Qualcomm Innovation Center,
  * Inc. All rights reserved. SPDX-License-Identifier: BSD-3-Clause-Clear
  */
+
 #ifndef QRB_CAMERA__CAMERA_INTERFACE_HPP_
 #define QRB_CAMERA__CAMERA_INTERFACE_HPP_
 
+#include <cstdint>
 #include <string>
 #include <vector>
 
@@ -51,7 +53,8 @@ class ICameraFrame
 
 protected:
   uint32_t refs_;
-  ICameraFrame() : refs_(0), timestamp(0), data(nullptr), fd(0) {}
+  // before: ICameraFrame() : refs_(0), timestamp(0), data(nullptr), fd(0) {}
+  ICameraFrame() : refs_(0), timestamp(0), data(nullptr), fd(-1) {}
   virtual ~ICameraFrame() {}
 
 public:
@@ -181,7 +184,7 @@ struct CameraParam
 
 enum class CameraType
 {
-  QMMF
+  QCarCam
 };
 
 /**
