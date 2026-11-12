@@ -36,6 +36,7 @@
 #ifndef QRB_CAMERA__CAMERA_INTERFACE_HPP_
 #define QRB_CAMERA__CAMERA_INTERFACE_HPP_
 
+#include <cstdint>
 #include <string>
 #include <vector>
 
