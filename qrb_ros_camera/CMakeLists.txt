@@ -23,9 +23,11 @@ ament_auto_find_build_dependencies()
 
 find_package(PkgConfig REQUIRED)
 pkg_check_modules(YAML_CPP REQUIRED yaml-cpp)
+# qrb_camera's public headers include <qmmf-sdk/...> and <system/camera_metadata.h>
+pkg_check_modules(QMMF REQUIRED qmmf_camera_metadata)
 
 include_directories(include)
-include_directories(${YAML_CPP_INCLUDE_DIRS})
+include_directories(${YAML_CPP_INCLUDE_DIRS} ${QMMF_INCLUDE_DIRS})
 
 ament_auto_add_library(camera_node SHARED
   src/camera_node.cpp
