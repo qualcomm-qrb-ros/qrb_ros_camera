@@ -11,6 +11,7 @@
   <buildtool_depend>pkg-config</buildtool_depend>
 
   <build_depend>libqmmf-dev</build_depend>
+  <build_export_depend>libqmmf-dev</build_export_depend>
   <build_depend>syslog-plumber-dev</build_depend>
 
   <exec_depend>libqmmf1</exec_depend>
