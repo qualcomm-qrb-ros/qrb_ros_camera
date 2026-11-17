@@ -8,6 +8,13 @@
   <license>BSD-3-Clause-Clear</license>
 
   <buildtool_depend>ament_cmake_auto</buildtool_depend>
+  <buildtool_depend>pkg-config</buildtool_depend>
+
+  <build_depend>libqmmf-dev</build_depend>
+  <build_depend>syslog-plumber-dev</build_depend>
+
+  <exec_depend>libqmmf1</exec_depend>
+  <exec_depend>camera-server</exec_depend>
 
   <test_depend>ament_lint_auto</test_depend>
   <test_depend>ament_lint_common</test_depend>
