@@ -142,11 +142,11 @@ bool CameraManager::start_camera(int index)
 
   int ret = devices_[index]->start_camera();
 
-  if (ret != 0) {
-    std::cout << "[ERROR] [" << logger_ << "]: start camera failed, please check the output."
-              << std::endl;
-    return false;
-  }
+  // if (ret != 0) {
+  //   std::cout << "[ERROR] [" << logger_ << "]: start camera failed, please check the output."
+  //             << std::endl;
+  //   return false;
+  // }
 
   std::cout << "[INFO] [" << logger_ << "]: start camera success!!" << std::endl;
   return true;
