@@ -1,6 +1,5 @@
 /*
- * Copyright (c) Qualcomm Technologies, Inc. and/or its subsidiaries.
- * All Rights Reserved.
+ *​​​​ Copyright (c) Qualcomm Technologies, Inc. and/or its subsidiaries.
  * SPDX-License-Identifier: BSD-3-Clause-Clear
  */
 #ifndef QRB_ROS_CAMERA__CONFIGURE_PARSER_HPP_
@@ -39,7 +38,7 @@ public:
 private:
   bool load_camera_info_param(std::string & path, qrb_camera::CameraIntrinsicParam & param);
 
-  bool init_{ false };
+  bool init_{false};
   qrb_camera::CameraConfigure camera_;
   rclcpp::Node * node_handler_;
 };
