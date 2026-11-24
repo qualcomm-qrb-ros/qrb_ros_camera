@@ -172,7 +172,7 @@ void CameraManager::stop_camera(int index)
   devices_[index]->stop_camera();
 }
 
-bool CameraManager::register_callback(int index, ImageCallback image_cb)
+bool CameraManager::register_callback(int index, ImageCallback image_cb, EventCallback event_cb)
 {
   if (index < 0 || static_cast<size_t>(index) >= devices_.size()) {
     std::cout << "[WARNING] [" << logger_ << "]: please create the camera at first." << std::endl;
@@ -189,7 +189,7 @@ bool CameraManager::register_callback(int index, ImageCallback image_cb)
   ICameraListener * listener = nullptr;
   if (type == CameraType::QCarCam) {
     std::cout << "[INFO] [" << logger_ << "]: create qcarcam listener!!" << std::endl;
-    listener = new QCarCamListener(image_cb);
+    listener = new QCarCamListener(image_cb, event_cb);
   }
 
   if (listener == nullptr) {

@@ -4,12 +4,23 @@
  */
 #include "qrb_ros_camera/camera_node.hpp"
 
+#include <chrono>
 #include <cstdint>
 
 namespace qrb_ros
 {
 namespace camera
 {
+
+// Stream is reported as stalled if no frame arrives within this time
+static constexpr int64_t FRAME_TIMEOUT_NS = 1000000000LL;
+
+static int64_t steady_now_ns()
+{
+  return std::chrono::duration_cast<std::chrono::nanoseconds>(
+      std::chrono::steady_clock::now().time_since_epoch())
+      .count();
+}
 
 using CallbackReturn = rclcpp_lifecycle::node_interfaces::LifecycleNodeInterface::CallbackReturn;
 
@@ -101,10 +112,23 @@ CallbackReturn CameraNode::on_activate(const rclcpp_lifecycle::State &)
     pub->on_activate();
   }
 
+  {
+    // Clear stale state from a previous session; start the frame timeout now
+    std::lock_guard<std::mutex> lk(diag_mtx_);
+    int64_t now = steady_now_ns();
+    for (auto & ts : stream_ts_) {
+      ts.actual_fps = 0.0;
+      ts.last_frame_ns = now;
+      ts.driver_level = qrb_camera::CameraEventLevel::Ok;
+      ts.driver_message.clear();
+    }
+  }
+
   using namespace std::placeholders;
   auto image_cb = std::bind(&CameraNode::publish_image, this, _1);
+  auto event_cb = std::bind(&CameraNode::on_driver_event, this, _1);
 
-  if (!manager_.register_callback(camera_index_, image_cb)) {
+  if (!manager_.register_callback(camera_index_, image_cb, event_cb)) {
     RCLCPP_ERROR(get_logger(), "register_callback failed");
     return CallbackReturn::FAILURE;
   }
@@ -212,6 +236,7 @@ void CameraNode::show_fps(const std::string & name,
         name.c_str(), format.c_str(), width, height, stride, slice, frame_id, frame_count, fps,
         current_frame_timestamp, average_latency);
 
+    std::lock_guard<std::mutex> lk(diag_mtx_);
     for (auto & ts : stream_ts_) {
       if (ts.stream_name == name) {
         ts.actual_fps = fps;
@@ -272,6 +297,11 @@ void CameraNode::publish_color_image(int stream_index,
 {
   if (!color_image_pub_vector_[stream_index]->is_activated()) {
     return;
+  }
+
+  {
+    std::lock_guard<std::mutex> lk(diag_mtx_);
+    stream_ts_[stream_index].last_frame_ns = steady_now_ns();
   }
 
   auto info = std::make_unique<CAMERA_INFO_TOPIC_TYPE>(camera_infos_[stream_index]);
@@ -350,32 +380,84 @@ void CameraNode::remove_diagnostics()
   diag_task_names_.clear();
 }
 
+void CameraNode::on_driver_event(const qrb_camera::CameraEvent & event)
+{
+  RCLCPP_WARN(get_logger(), "driver event: %s, stream: %s", event.message.c_str(),
+      event.stream_name.empty() ? "all" : event.stream_name.c_str());
+
+  std::lock_guard<std::mutex> lk(diag_mtx_);
+  for (auto & ts : stream_ts_) {
+    if (!event.stream_name.empty() && ts.stream_name != event.stream_name) {
+      continue;
+    }
+    if (event.level != qrb_camera::CameraEventLevel::Ok) {
+      ts.driver_error_count++;
+    }
+    // Transient errors clear by themselves with no follow-up event, so only count them
+    if (event.level == qrb_camera::CameraEventLevel::Transient) {
+      continue;
+    }
+    ts.driver_level = event.level;
+    ts.driver_message = event.message;
+  }
+}
+
 void CameraNode::produce_diagnostics(int stream_index,
     diagnostic_updater::DiagnosticStatusWrapper & stat)
 {
   const auto & configure = configure_->get_camera_param();
-  const auto & ts = stream_ts_[stream_index];
+  double actual_fps;
+  int64_t avg_latency_us, dropped_frames, last_frame_ns, driver_error_count;
+  qrb_camera::CameraEventLevel driver_level;
+  std::string driver_message;
+  {
+    std::lock_guard<std::mutex> lk(diag_mtx_);
+    const auto & ts = stream_ts_[stream_index];
+    actual_fps = ts.actual_fps;
+    avg_latency_us = ts.avg_latency_us;
+    dropped_frames = ts.dropped_frames;
+    last_frame_ns = ts.last_frame_ns;
+    driver_error_count = ts.driver_error_count;
+    driver_level = ts.driver_level;
+    driver_message = ts.driver_message;
+  }
   const std::string & stream_name = configure.stream_names[stream_index];
   const std::string & fmt = configure.stream_formats[stream_index];
   uint32_t width = configure.stream_widths[stream_index];
   uint32_t height = configure.stream_heights[stream_index];
 
+  using Status = diagnostic_msgs::msg::DiagnosticStatus;
+  using Level = qrb_camera::CameraEventLevel;
+
   bool is_active = color_image_pub_vector_[stream_index]->is_activated();
+  bool stalled = is_active && (steady_now_ns() - last_frame_ns) > FRAME_TIMEOUT_NS;
+  double fps = stalled ? 0.0 : actual_fps;
+
+  std::string state = "inactive";
+  if (is_active) {
+    state = stalled ? "no_frames" : "streaming";
+  }
 
   stat.add("stream", stream_name);
   stat.add("format", fmt);
   stat.add("resolution", std::to_string(width) + "x" + std::to_string(height));
-  stat.add("actual_fps", std::to_string(ts.actual_fps));
-  stat.add("avg_latency_us", std::to_string(ts.avg_latency_us));
-  stat.add("dropped_frames", std::to_string(ts.dropped_frames));
-  stat.add("connection_state", is_active ? "streaming" : "inactive");
+  stat.add("actual_fps", std::to_string(fps));
+  stat.add("avg_latency_us", std::to_string(avg_latency_us));
+  stat.add("dropped_frames", std::to_string(dropped_frames));
+  stat.add("connection_state", state);
+  stat.add("driver_status", driver_message.empty() ? "OK" : driver_message);
+  stat.add("driver_error_count", std::to_string(driver_error_count));
 
   if (!is_active) {
-    stat.summary(diagnostic_msgs::msg::DiagnosticStatus::WARN, "stream not active");
-  } else if (ts.actual_fps < 1.0 && ts.frame_count > 0) {
-    stat.summary(diagnostic_msgs::msg::DiagnosticStatus::ERROR, "fps too low");
+    stat.summary(Status::WARN, "stream not active");
+  } else if (driver_level == Level::Error) {
+    stat.summary(Status::ERROR, driver_message);
+  } else if (stalled) {
+    stat.summary(Status::ERROR, "no frames received");
+  } else if (driver_level != Level::Ok) {
+    stat.summary(Status::WARN, driver_message);
   } else {
-    stat.summary(diagnostic_msgs::msg::DiagnosticStatus::OK, "OK");
+    stat.summary(Status::OK, "OK");
   }
 }
 

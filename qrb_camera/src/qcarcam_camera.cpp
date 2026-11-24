@@ -49,7 +49,10 @@ static QCarCamRet_e qcarcam_event_cb(const QCarCamHndl_t hndl,
       self->on_error(payload);
       break;
     case QCARCAM_EVENT_INPUT_SIGNAL:
-      std::cout << "[INFO] [QCarCamCamera]: INPUT_SIGNAL event" << std::endl;
+      self->on_input_signal(payload);
+      break;
+    case QCARCAM_EVENT_RECOVERY:
+      self->on_recovery(payload);
       break;
     default:
       std::cout << "[WARN] [QCarCamCamera]: unhandled event " << event_id << std::endl;
@@ -223,7 +226,8 @@ int QCarCamCamera::start_camera()
   // Step 4: SetParam – EVENT_MASK
   // ------------------------------------------------------------------
   {
-    uint32_t mask = QCARCAM_EVENT_FRAME_READY | QCARCAM_EVENT_INPUT_SIGNAL | QCARCAM_EVENT_ERROR;
+    uint32_t mask = QCARCAM_EVENT_FRAME_READY | QCARCAM_EVENT_INPUT_SIGNAL | QCARCAM_EVENT_ERROR |
+                    QCARCAM_EVENT_RECOVERY;
     ret = QCarCamSetParam(handle_, QCARCAM_STREAM_CONFIG_PARAM_EVENT_MASK, &mask, sizeof(mask));
     if (ret != QCARCAM_RET_OK) {
       std::cout << "[ERROR] [" << logger_ << "]: SetParam EVENT_MASK failed: " << ret << std::endl;
@@ -444,15 +448,113 @@ void QCarCamCamera::on_frame_ready(const QCarCamEventPayload_t * payload)
 // ---------------------------------------------------------------------------
 void QCarCamCamera::on_error(const QCarCamEventPayload_t * payload)
 {
-  if (payload && payload->errInfo.errorId == QCARCAM_ERROR_FATAL) {
-    std::cout << "[ERROR] [" << logger_ << "]: FATAL error, stopping" << std::endl;
-    running_.store(false);
-  } else {
-    uint32_t err_id = payload ? payload->errInfo.errorId : 0;
-    uint32_t err_code = payload ? payload->errInfo.errorCode : 0;
-    std::cout << "[ERROR] [" << logger_ << "]: error id=" << err_id << " code=" << err_code
-              << std::endl;
+  if (!payload) {
+    return;
   }
+
+  const QCarCamErrorInfo_t & err = payload->errInfo;
+  std::cout << "[ERROR] [" << logger_ << "]: error id=" << err.errorId << " code=" << err.errorCode
+            << " bufferlist_id=" << err.bufferlistId << std::endl;
+
+  CameraEvent event;
+  event.stream_name = stream_name_of(err.bufferlistId);
+  switch (err.errorId) {
+    case QCARCAM_ERROR_BROKEN_CONN:
+      event.level = CameraEventLevel::Error;
+      event.message = "camera server disconnected";
+      event.stream_name.clear();
+      break;
+    case QCARCAM_ERROR_SUBSYSTEM_FATAL:
+      event.level = CameraEventLevel::Error;
+      event.message = "camera subsystem fatal error";
+      event.stream_name.clear();
+      break;
+    case QCARCAM_ERROR_FATAL:
+      std::cout << "[ERROR] [" << logger_ << "]: FATAL error, stopping" << std::endl;
+      running_.store(false);
+      event.level = CameraEventLevel::Error;
+      event.message = "stream fatal error";
+      break;
+    case QCARCAM_ERROR_RECOVERABLE:
+      event.level = CameraEventLevel::Warn;
+      event.message = "driver recovery in progress";
+      break;
+    default:
+      event.level = CameraEventLevel::Transient;
+      event.message = "transient error";
+      break;
+  }
+  event.message +=
+      " (id=" + std::to_string(err.errorId) + " code=" + std::to_string(err.errorCode) + ")";
+  notify_listeners(event);
+}
+
+void QCarCamCamera::on_input_signal(const QCarCamEventPayload_t * payload)
+{
+  if (!payload) {
+    return;
+  }
+
+  std::cout << "[INFO] [" << logger_ << "]: INPUT_SIGNAL event " << payload->u32Data << std::endl;
+
+  CameraEvent event;
+  if (payload->u32Data == QCARCAM_INPUT_SIGNAL_LOST) {
+    event.level = CameraEventLevel::Warn;
+    event.message = "input signal lost";
+  } else if (payload->u32Data == QCARCAM_INPUT_SIGNAL_VALID) {
+    event.level = CameraEventLevel::Ok;
+    event.message = "input signal valid";
+  } else {
+    return;
+  }
+  notify_listeners(event);
+}
+
+void QCarCamCamera::on_recovery(const QCarCamEventPayload_t * payload)
+{
+  if (!payload) {
+    return;
+  }
+
+  const QCarCamRecovery_t & rec = payload->recovery;
+  std::cout << "[INFO] [" << logger_ << "]: RECOVERY event msg=" << rec.msg
+            << " bufferlist_id=" << rec.error.bufferlistId << std::endl;
+
+  CameraEvent event;
+  event.stream_name = stream_name_of(rec.error.bufferlistId);
+  if (rec.msg == QCARCAM_RECOVERY_SUCCESS) {
+    event.level = CameraEventLevel::Ok;
+    event.message = "driver recovery succeeded";
+  } else if (rec.msg == QCARCAM_RECOVERY_FAILED) {
+    event.level = CameraEventLevel::Error;
+    event.message = "driver recovery failed";
+  } else {
+    event.level = CameraEventLevel::Warn;
+    event.message = "driver recovery in progress";
+  }
+  notify_listeners(event);
+}
+
+void QCarCamCamera::notify_listeners(const CameraEvent & event)
+{
+  std::vector<ICameraListener *> snapshot;
+  {
+    std::lock_guard<std::mutex> lk(listener_mtx_);
+    snapshot = listeners_;
+  }
+  for (auto * listener : snapshot) {
+    listener->on_event(event);
+  }
+}
+
+std::string QCarCamCamera::stream_name_of(uint32_t bufferlist_id) const
+{
+  for (const auto & p : stream_params_) {
+    if (bufferlist_id != 0 && p.bufferlist_id == bufferlist_id) {
+      return p.name;
+    }
+  }
+  return "";
 }
 
 // ---------------------------------------------------------------------------

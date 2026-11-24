@@ -15,6 +15,7 @@
 namespace qrb_camera
 {
 using ImageCallback = std::function<void(std::unique_ptr<CameraFrame> frame)>;
+using EventCallback = std::function<void(const CameraEvent & event)>;
 
 class CameraManager
 {
@@ -27,7 +28,7 @@ public:
   bool start_camera(int index);
   void stop_camera(int index);
 
-  bool register_callback(int index, ImageCallback image_cb);
+  bool register_callback(int index, ImageCallback image_cb, EventCallback event_cb = nullptr);
 
   bool destroy_camera(int index);
 

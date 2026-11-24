@@ -5,6 +5,7 @@
 #ifndef QRB_ROS_CAMERA__CAMERA_NODE_HPP_
 #define QRB_ROS_CAMERA__CAMERA_NODE_HPP_
 
+#include <mutex>
 #include <sensor_msgs/msg/camera_info.hpp>
 
 #include "diagnostic_updater/diagnostic_updater.hpp"
@@ -28,9 +29,14 @@ struct StreamTimeStamp
   uint64_t timestamp = 0;
   int64_t frame_count = 0;
   int64_t latency = 0;
+  // Fields below are shared with the diagnostics thread, guarded by diag_mtx_
   double actual_fps = 0.0;
   int64_t avg_latency_us = 0;
   int64_t dropped_frames = 0;
+  int64_t last_frame_ns = 0;
+  qrb_camera::CameraEventLevel driver_level = qrb_camera::CameraEventLevel::Ok;
+  std::string driver_message;
+  int64_t driver_error_count = 0;
 };
 
 class CameraNode : public rclcpp_lifecycle::LifecycleNode
@@ -51,6 +57,8 @@ private:
   void calculate_offset();
 
   void publish_image(std::unique_ptr<qrb_camera::CameraFrame> frame);
+
+  void on_driver_event(const qrb_camera::CameraEvent & event);
 
   void publish_color_image(int stream_index, std::unique_ptr<qrb_camera::CameraFrame> frame);
 
@@ -89,6 +97,7 @@ private:
   int64_t time_offset_;
 
   std::vector<StreamTimeStamp> stream_ts_;
+  std::mutex diag_mtx_;
   std::vector<CAMERA_INFO_TOPIC_TYPE> camera_infos_;
 
   diagnostic_updater::Updater diag_updater_;
