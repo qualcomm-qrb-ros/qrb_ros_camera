@@ -1,5 +1,5 @@
 /*
- *​​​​ Copyright (c) Qualcomm Technologies, Inc. and/or its subsidiaries.
+ * Copyright (c) Qualcomm Technologies, Inc. and/or its subsidiaries.
  * SPDX-License-Identifier: BSD-3-Clause-Clear
  */
 
@@ -19,7 +19,7 @@
 //   drain_release_queue → release_queue_→driver (via resubmit_fn_)
 // =============================================================================
 
-#include "qrb_camera/qcarcam_stream.hpp"
+#include "qcarcam_stream.hpp"
 
 #include <fcntl.h>
 #include <linux/dma-heap.h>
@@ -31,7 +31,7 @@
 #include <cerrno>
 #include <iostream>
 
-#include "qrb_camera/qcarcam_frame.hpp"
+#include "qcarcam_frame.hpp"
 
 // ---------------------------------------------------------------------------
 // open_dma_heap – open the first usable DMA heap device node.
@@ -57,7 +57,8 @@ namespace qrb_camera
 // ---------------------------------------------------------------------------
 // compute_plane_layout – stride / size for each YUV plane without GBM.
 //
-// Qualcomm alignment convention (SA8775P / IQ10):
+// Qualcomm alignment convention (values taken from SA8775P and verified there; another SoC
+// with QCarCam may need different ones):
 //   stride     : round up to nearest 128 bytes  (QCARCAM_STRIDE_ALIGN)
 //   height     : round up to nearest 32 lines   (QCARCAM_HEIGHT_ALIGN)
 //
@@ -128,8 +129,7 @@ bool QCarCamStream::init(const StreamParam & sp, uint32_t camera_id, ResubmitFn 
   }
 
   std::cout << "[INFO] [" << logger_ << "]: init stream '" << stream_name_ << "' " << width_ << "x"
-            << height_ << " @" << fps_ << "fps"
-            << " fmt=" << sp.format << std::endl;
+            << height_ << " @" << fps_ << "fps" << " fmt=" << sp.format << std::endl;
   return true;
 }
 

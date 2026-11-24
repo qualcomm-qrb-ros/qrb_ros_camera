@@ -1,15 +1,31 @@
 /*
- *​​​​ Copyright (c) Qualcomm Technologies, Inc. and/or its subsidiaries.
+ * Copyright (c) Qualcomm Technologies, Inc. and/or its subsidiaries.
  * SPDX-License-Identifier: BSD-3-Clause-Clear
  */
 #include "qrb_ros_camera/configure_parser.hpp"
 
 #include <yaml-cpp/yaml.h>
 
+#include <algorithm>
+#include <cctype>
+
 namespace qrb_ros
 {
 namespace camera
 {
+namespace
+{
+std::string trim_lower(std::string s)
+{
+  auto not_space = [](unsigned char c) { return !std::isspace(c); };
+  s.erase(s.begin(), std::find_if(s.begin(), s.end(), not_space));
+  s.erase(std::find_if(s.rbegin(), s.rend(), not_space).base(), s.end());
+  std::transform(s.begin(), s.end(), s.begin(),
+      [](unsigned char c) { return static_cast<char>(std::tolower(c)); });
+  return s;
+}
+}  // namespace
+
 ConfigureParser::ConfigureParser(rclcpp::Node * node_handler) : node_handler_(node_handler) {}
 
 bool ConfigureParser::init()
@@ -20,6 +36,11 @@ bool ConfigureParser::init()
     init_ = false;
     return false;
   }
+
+  // Which camera backend to use, e.g. "qmmf" or "qcarcam". Empty (the default): the
+  // first backend of the plugin_discovery configuration. The node does not know the valid
+  // names; an unknown one fails in create_camera() with the list of loaded backends.
+  camera_backend_ = trim_lower(node_handler_->declare_parameter("camera_backend", std::string()));
 
   int stream_size = node_handler_->declare_parameter("stream_size", 1);
 
@@ -55,7 +76,8 @@ bool ConfigureParser::init()
     camera_.stream_type.push_back(qrb_camera::StreamType::Track);
   }
 
-  camera_.camera_type = "qcarcam";
+  // Filled in by CameraNode with the backend actually used, after create_camera().
+  camera_.camera_type = camera_backend_;
 
   camera_.camera_id = camera_id;
   camera_.stream_size = stream_size;
