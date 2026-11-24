@@ -33,6 +33,22 @@ struct CameraFrame
   int32_t orientation;
 };
 
+enum class CameraEventLevel : uint32_t
+{
+  Ok,         // fault cleared: input signal back or driver recovery succeeded
+  Transient,  // self-recovering error, no follow-up event is sent
+  Warn,       // stream degraded, driver recovery in progress
+  Error,      // stream down until the camera is restarted
+};
+
+// Driver status change reported to the camera client
+struct CameraEvent
+{
+  CameraEventLevel level;
+  std::string message;
+  std::string stream_name;  // empty means the event applies to all streams
+};
+
 struct CameraIntrinsicParam
 {
   uint32_t width;

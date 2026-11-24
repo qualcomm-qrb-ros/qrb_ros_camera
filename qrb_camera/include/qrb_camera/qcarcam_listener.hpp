@@ -15,6 +15,7 @@
 namespace qrb_camera
 {
 using ImageCallback = std::function<void(std::unique_ptr<CameraFrame> frame)>;
+using EventCallback = std::function<void(const CameraEvent & event)>;
 
 // QCarCamListener: ICameraListener implementation for the QCarCam backend.
 // Receives on_preview_frame() calls from QCarCamCamera and converts the
@@ -23,17 +24,18 @@ using ImageCallback = std::function<void(std::unique_ptr<CameraFrame> frame)>;
 class QCarCamListener : public ICameraListener
 {
 public:
-  explicit QCarCamListener(ImageCallback image_cb);
+  explicit QCarCamListener(ImageCallback image_cb, EventCallback event_cb = nullptr);
 
   // Called by QCarCamCamera::dispatch_frame() for every new frame
   void on_preview_frame(ICameraFrame * frame) override;
 
-  void on_error() override;
+  void on_event(const CameraEvent & event) override;
 
 private:
   std::unique_ptr<CameraFrame> convert(ICameraFrame * frame);
 
   ImageCallback image_cb_;
+  EventCallback event_cb_;
   std::string logger_ = "QCarCamListener";
 };
 

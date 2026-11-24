@@ -72,6 +72,8 @@ public:
   // Called by the static QCarCam event callback
   void on_frame_ready(const QCarCamEventPayload_t * payload);
   void on_error(const QCarCamEventPayload_t * payload);
+  void on_input_signal(const QCarCamEventPayload_t * payload);
+  void on_recovery(const QCarCamEventPayload_t * payload);
 
   // Called by QCarCamStream objects (via ResubmitFn lambda) to resubmit a
   // buffer back to the driver.  Thread-safe (protected by request_mtx_).
@@ -83,6 +85,10 @@ private:
   // ---- Initialisation helpers ----
   bool wait_for_qcx();
   bool query_and_verify_input();
+
+  void notify_listeners(const CameraEvent & event);
+  // Empty string if bufferlist_id matches no stream (event applies to all)
+  std::string stream_name_of(uint32_t bufferlist_id) const;
 
   // ---- QCarCam handle / config ----
   QCarCamHndl_t handle_ = QCARCAM_HNDL_INVALID;

@@ -9,7 +9,10 @@
 namespace qrb_camera
 {
 
-QCarCamListener::QCarCamListener(ImageCallback image_cb) : image_cb_(image_cb) {}
+QCarCamListener::QCarCamListener(ImageCallback image_cb, EventCallback event_cb)
+  : image_cb_(image_cb), event_cb_(event_cb)
+{
+}
 
 void QCarCamListener::on_preview_frame(ICameraFrame * frame)
 {
@@ -21,9 +24,11 @@ void QCarCamListener::on_preview_frame(ICameraFrame * frame)
   image_cb_(std::move(camera_frame));
 }
 
-void QCarCamListener::on_error()
+void QCarCamListener::on_event(const CameraEvent & event)
 {
-  std::cout << "[ERROR] [" << logger_ << "]: camera error reported" << std::endl;
+  if (event_cb_) {
+    event_cb_(event);
+  }
 }
 
 std::unique_ptr<CameraFrame> QCarCamListener::convert(ICameraFrame * frame)
