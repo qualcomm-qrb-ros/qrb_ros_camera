@@ -1,5 +1,5 @@
 /*
- *​​​​ Copyright (c) Qualcomm Technologies, Inc. and/or its subsidiaries.
+ * Copyright (c) Qualcomm Technologies, Inc. and/or its subsidiaries.
  * SPDX-License-Identifier: BSD-3-Clause-Clear
  */
 
@@ -16,9 +16,15 @@
 //     of success (matches qcarcam_test.cpp, fixes the original qcc.cpp bug).
 //   - Buffers are allocated via Linux DMA heap (/dev/dma_heap/system).
 //     No GBM or DRM dependency required.
+//
+// Ported from qrb_ros_camera (IQ10, 2.0.3) qrb_camera/src/qcarcam_camera.cpp. Changes:
+//   - QCarCamInitialize / QCarCamUninitialize moved to QCarCamBackend (one SDK session per
+//     process, held by the backend); init() only checks the stream parameters.
+//   - wait_for_qcx() removed (it was disabled: the QCX mqueue cannot be relied on).
+//   - now_ns(): QTimer, moved here from the IQ10 CameraNode.
 // =============================================================================
 
-#include "qrb_camera/qcarcam_camera.hpp"
+#include "qcarcam_camera.hpp"
 
 #include <fcntl.h>
 #include <unistd.h>
@@ -27,6 +33,8 @@
 #include <chrono>
 #include <iostream>
 #include <thread>
+
+#include "qtimer.hpp"
 
 namespace qrb_camera
 {
@@ -64,7 +72,6 @@ static QCarCamRet_e qcarcam_event_cb(const QCarCamHndl_t hndl,
 // ---------------------------------------------------------------------------
 QCarCamCamera::QCarCamCamera(uint32_t camera_id) : ICameraDevice(camera_id)
 {
-  type_ = CameraType::QCarCam;
   is_working_ = false;
 }
 
@@ -73,6 +80,11 @@ QCarCamCamera::~QCarCamCamera()
   if (is_working_) {
     stop_camera();
   }
+}
+
+int64_t QCarCamCamera::now_ns() const
+{
+  return static_cast<int64_t>(qtimer_now_ns());
 }
 
 // ---------------------------------------------------------------------------
@@ -94,32 +106,26 @@ void QCarCamCamera::set_param(std::vector<CameraParam> & param)
   for (size_t i = 0; i < stream_params_.size(); ++i) {
     std::cout << "[INFO] [" << logger_ << "]:   stream[" << i << "] '" << stream_params_[i].name
               << "' " << stream_params_[i].width << "x" << stream_params_[i].height << " @"
-              << stream_params_[i].frame_rate << "fps"
-              << " fmt=" << stream_params_[i].format << std::endl;
+              << stream_params_[i].frame_rate << "fps" << " fmt=" << stream_params_[i].format
+              << std::endl;
   }
 }
 
 // ---------------------------------------------------------------------------
-// init – QCarCamInitialize (called once before start_camera)
+// init – called before every start_camera(). The SDK itself is already initialized by
+// QCarCamBackend::probe(); nothing to do but check that set_param() gave us streams.
 // ---------------------------------------------------------------------------
 bool QCarCamCamera::init()
 {
-  if (!wait_for_qcx()) {
-    std::cout << "[ERROR] [" << logger_ << "]: QCX server not ready" << std::endl;
+  if (is_working_) {
+    std::cout << "[WARN] [" << logger_ << "]: init while the camera is running" << std::endl;
     return false;
   }
-
-  QCarCamInit_t init_params = {};
-  init_params.apiVersion = QCARCAM_VERSION;
-
-  QCarCamRet_e ret = QCarCamInitialize(&init_params);
-  if (ret != QCARCAM_RET_OK) {
-    std::cout << "[ERROR] [" << logger_ << "]: QCarCamInitialize failed: " << ret << std::endl;
+  if (stream_params_.empty()) {
+    std::cout << "[ERROR] [" << logger_ << "]: init: no stream params – call set_param() first"
+              << std::endl;
     return false;
   }
-
-  std::cout << "[INFO] [" << logger_ << "]: QCarCamInitialize OK" << std::endl;
-  is_initialized_ = true;
   return true;
 }
 
@@ -354,10 +360,7 @@ int QCarCamCamera::stop_camera()
   }
   handle_ = QCARCAM_HNDL_INVALID;
 
-  if (is_initialized_) {
-    QCarCamUninitialize();
-    is_initialized_ = false;
-  }
+  // No QCarCamUninitialize here: the SDK session belongs to QCarCamBackend.
 
   for (auto & s : streams_) {
     if (s) {
@@ -467,29 +470,6 @@ void QCarCamCamera::resubmit_buffer(uint32_t bufferlist_id, uint32_t buf_idx)
 // ===========================================================================
 // Private helpers
 // ===========================================================================
-
-// ---------------------------------------------------------------------------
-// wait_for_qcx – poll for QCX server mqueue (mirrors qcc.cpp WaitForQCX)
-// ---------------------------------------------------------------------------
-bool QCarCamCamera::wait_for_qcx()
-{
-  const int poll_ms = 10;
-  const int limit_ms = 4000;
-  int elapsed = 0;
-
-  while (elapsed < limit_ms) {
-    if (access(QCARCAM_QCX_MQUEUE_PATH, F_OK) == 0) {
-      std::cout << "[INFO] [" << logger_ << "]: QCX mqueue found" << std::endl;
-      return true;
-    }
-    std::this_thread::sleep_for(std::chrono::milliseconds(poll_ms));
-    elapsed += poll_ms;
-  }
-
-  std::cout << "[ERROR] [" << logger_ << "]: QCX mqueue not found after " << limit_ms << " ms"
-            << std::endl;
-  return false;
-}
 
 // ---------------------------------------------------------------------------
 // query_and_verify_input – two-step QueryInputs (matches qcarcam_test.cpp)

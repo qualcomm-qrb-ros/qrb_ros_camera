@@ -1,9 +1,9 @@
 /*
- *​​​​ Copyright (c) Qualcomm Technologies, Inc. and/or its subsidiaries.
+ * Copyright (c) Qualcomm Technologies, Inc. and/or its subsidiaries.
  * SPDX-License-Identifier: BSD-3-Clause-Clear
  */
-#ifndef QRB_CAMERA__QCARCAM_STREAM_HPP_
-#define QRB_CAMERA__QCARCAM_STREAM_HPP_
+#ifndef CAMERA_BACKEND_QCARCAM__QCARCAM_STREAM_HPP_
+#define CAMERA_BACKEND_QCARCAM__QCARCAM_STREAM_HPP_
 
 // =============================================================================
 // QCarCamStream – per-stream state for the QCarCam submit-request backend.
@@ -35,8 +35,7 @@
 #include <string>
 #include <vector>
 
-#include "qrb_camera/camera_interface.hpp"
-#include "qrb_camera/qrb_camera_common.hpp"
+#include "camera_interface/camera_interface.hpp"
 
 namespace qrb_camera
 {
@@ -148,4 +147,4 @@ private:
 };
 
 }  // namespace qrb_camera
-#endif  // QRB_CAMERA__QCARCAM_STREAM_HPP_
+#endif  // CAMERA_BACKEND_QCARCAM__QCARCAM_STREAM_HPP_

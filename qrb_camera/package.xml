@@ -2,15 +2,21 @@
 <?xml-model href="http://download.ros.org/schema/package_format3.xsd" schematypens="http://www.w3.org/2001/XMLSchema"?>
 <package format="3">
   <name>qrb_camera</name>
-  <version>2.0.3</version>
-  <description>Qualcomm Robotics Camera Interface</description>
-  <maintainer email="quic_zhanlin@quicinc.com">Zhanye Lin</maintainer>
+  <version>3.0.0</version>
+  <description>Qualcomm Robotics camera domain for plugin_discovery: the camera interface, CameraManager, and the QMMF and QCarCam backends. Built with ament_cmake; the libraries link no ROS library.</description>
+  <maintainer email="danwa@qti.qualcomm.com">Dan Wang</maintainer>
   <license>BSD-3-Clause-Clear</license>
 
   <buildtool_depend>ament_cmake_auto</buildtool_depend>
 
-  <test_depend>ament_lint_auto</test_depend>
-  <test_depend>ament_lint_common</test_depend>
+  <!-- plugin_discovery: https://github.com/qualcomm-qrb-ros/plugin_discovery (deb / recipe: plugin-discovery) -->
+  <depend>plugin_discovery</depend>
+
+  <!-- The vendor SDKs are optional: each backend is built when its SDK is found
+       (QRB_CAMERA_BACKEND_QMMF / QRB_CAMERA_BACKEND_QCARCAM = AUTO|ON|OFF), so they are not
+       listed as dependencies here. A package that ships one backend depends on its SDK:
+         qmmf:    QMMF / CamX SDK (Ubuntu: libqmmf-dev, camxapi-dev; Qualcomm Linux: camera-service)
+         qcarcam: QCarCam SDK (Ubuntu: camera-qcx-dev; Qualcomm Linux: camera-qcx) -->
 
   <export>
     <build_type>ament_cmake</build_type>

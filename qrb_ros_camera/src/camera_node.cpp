@@ -1,11 +1,23 @@
 /*
- *​​​​ Copyright (c) Qualcomm Technologies, Inc. and/or its subsidiaries.
+ * Copyright (c) Qualcomm Technologies, Inc. and/or its subsidiaries.
  * SPDX-License-Identifier: BSD-3-Clause-Clear
  */
+
+// Merged from the IQ9 and IQ10 qrb_ros_camera nodes (IQ10 2.0.3 as the base). Changes:
+//   - no CameraType: the backend comes from plugin_discovery (`camera_backend` parameter,
+//     empty = configured default) and the node never names one;
+//   - the time offset uses the camera's own clock (CameraManager::device_now_ns()) instead
+//     of CLOCK_BOOTTIME (IQ9) or QTimer (IQ10) chosen at build time, and is computed after
+//     create_camera(), when the camera (and so its clock) is known;
+//   - register_callback / start_camera failures throw, like the other construction steps.
+
 #include "qrb_ros_camera/camera_node.hpp"
 
+#include <chrono>
 #include <cstdint>
+#include <cstdlib>
 #include <stdexcept>
+#include <utility>
 
 namespace qrb_ros
 {
@@ -15,52 +27,59 @@ CameraNode::CameraNode(const rclcpp::NodeOptions & options) : rclcpp::Node("came
 {
   RCLCPP_INFO(this->get_logger(), "QRB Camera Node start");
 
-  camera_index_ = -1;
-
   if (!init()) {
     throw std::runtime_error("QRB Camera Node: configuration failed");
   }
 
-  calculate_offset();
+  // A named backend replaces the configuration: only that one is loaded.
+  const std::string & backend = configure_->get_camera_backend();
+  std::vector<std::string> manual;
+  if (!backend.empty()) {
+    manual.push_back(backend);
+  }
+  manager_ = std::make_unique<qrb_camera::CameraManager>(manual);
 
-  // configure_->get_camera_id() from launch config
-
-  camera_index_ =
-      manager_.create_camera(qrb_camera::CameraType::QCarCam, configure_->get_camera_id());
-
+  camera_index_ = manager_->create_camera(configure_->get_camera_id(), backend);
   if (camera_index_ < 0) {
-    throw std::runtime_error("QRB Camera Node: create_camera failed");
+    throw std::runtime_error(
+        "QRB Camera Node: create_camera failed (see the CameraManager "
+        "messages above; pluginlib-detect -d camera shows the configuration)");
   }
 
-  auto configure = configure_->get_camera_param();
-  if (!manager_.set_camera_parameter(camera_index_, configure)) {
+  auto & configure = configure_->get_camera_param();
+  configure.camera_type = manager_->camera_backend(camera_index_);
+  RCLCPP_INFO(this->get_logger(), "camera %d on backend '%s'", configure.camera_id,
+      configure.camera_type.c_str());
+
+  calculate_offset();
+  // Keep following the camera clock: see time_offset_ in camera_node.hpp.
+  offset_timer_ =
+      this->create_wall_timer(std::chrono::seconds(1), [this]() { calculate_offset(); });
+
+  if (!manager_->set_camera_parameter(camera_index_, configure)) {
     throw std::runtime_error("QRB Camera Node: set_camera_parameter failed");
   }
 
-  RCLCPP_INFO(this->get_logger(), "QRB Camera Node init success");
-
-  start_camera();
-}
-
-void CameraNode::start_camera()
-{
   using namespace std::placeholders;
   auto image_cb = std::bind(&CameraNode::publish_image, this, _1);
-
-  if (!manager_.register_callback(camera_index_, image_cb)) {
-    RCLCPP_ERROR(this->get_logger(), "QRB Camera Node: register_callback failed.");
-    return;
+  if (!manager_->register_callback(camera_index_, image_cb)) {
+    throw std::runtime_error("QRB Camera Node: register_callback failed");
   }
 
-  if (!manager_.start_camera(camera_index_)) {
-    RCLCPP_ERROR(this->get_logger(), "QRB Camera Node start failed.");
-    return;
+  if (!manager_->start_camera(camera_index_)) {
+    throw std::runtime_error("QRB Camera Node: start_camera failed");
   }
+
+  RCLCPP_INFO(this->get_logger(), "QRB Camera Node init success");
 }
 
 CameraNode::~CameraNode()
 {
-  manager_.stop_camera(camera_index_);
+  if (offset_timer_) {
+    offset_timer_->cancel();  // it calls into manager_
+  }
+  // Stops and destroys the camera (and unloads the backends) while the publishers still exist.
+  manager_.reset();
 }
 
 bool CameraNode::init()
@@ -100,6 +119,44 @@ bool CameraNode::init()
   return true;
 }
 
+// offset = ROS now - camera clock now. The camera's clock is whatever its frame timestamps
+// use (QMMF: CLOCK_BOOTTIME, QCarCam: QTimer); the backend reports it, the node does not
+// need to know which one it is.
+//
+// Called once at start and then every second. The offset is not constant: time
+// synchronization slews the system clock (tens of ppm; 33 ppm measured on IQ10, i.e.
+// ~120 ms per hour against the QTimer) and may step it (first sync after boot). A change of
+// more than 1 ms between two calls means the system clock was stepped: logged as a warning.
+void CameraNode::calculate_offset()
+{
+  const int64_t device_time = manager_->device_now_ns(camera_index_);
+  if (device_time < 0) {
+    if (!time_offset_valid_) {
+      RCLCPP_ERROR(this->get_logger(),
+          "invalid camera clock time %ld, skip offset calculation (timestamps are not converted)",
+          device_time);
+    }
+    return;  // keep the last valid offset
+  }
+
+  const int64_t cur_ros_time = (this->get_clock()->now()).nanoseconds();
+  const int64_t offset = cur_ros_time - device_time;
+  const int64_t previous = time_offset_.exchange(offset);
+
+  if (!time_offset_valid_) {
+    time_offset_valid_ = true;
+    RCLCPP_INFO(this->get_logger(), "camera clock: %ld ros time: %ld time offset: %ld ns",
+        device_time, cur_ros_time, offset);
+  } else if (std::llabs(offset - previous) > 1000000) {
+    RCLCPP_WARN(this->get_logger(),
+        "time offset changed by %ld us (system clock stepped?): %ld -> %ld ns",
+        (offset - previous) / 1000, previous, offset);
+  } else {
+    RCLCPP_DEBUG(
+        this->get_logger(), "time offset %ld ns (drift %ld ns/s)", offset, offset - previous);
+  }
+}
+
 void CameraNode::show_fps(const std::string & name,
     const std::string & format,
     int64_t & latency,
@@ -116,13 +173,13 @@ void CameraNode::show_fps(const std::string & name,
 
   if (frame_count == 0) {
     frame_count = 1;
-    latency = cur_system_time - static_cast<int64_t>(current_frame_timestamp) - time_offset_;
+    latency = cur_system_time - static_cast<int64_t>(current_frame_timestamp) - time_offset_.load();
     last_record_timestamp = current_frame_timestamp;
     return;
   }
 
   frame_count++;
-  latency += cur_system_time - static_cast<int64_t>(current_frame_timestamp) - time_offset_;
+  latency += cur_system_time - static_cast<int64_t>(current_frame_timestamp) - time_offset_.load();
 
   uint64_t diff = current_frame_timestamp - last_record_timestamp;
 
@@ -144,33 +201,12 @@ void CameraNode::show_fps(const std::string & name,
   }
 }
 
-void CameraNode::calculate_offset()
-{
-  uint64_t qtimer_time = getQtimerTime();
-
-  if (qtimer_time > static_cast<uint64_t>(INT64_MAX)) {
-    RCLCPP_ERROR(this->get_logger(),
-        "invalid qtimer time %lu exceeds INT64_MAX, skip offset calculation", qtimer_time);
-    return;
-  }
-
-  int64_t cur_system_time = static_cast<int64_t>(qtimer_time);
-
-  int64_t cur_ros_time = (this->get_clock()->now()).nanoseconds();
-
-  time_offset_ = cur_ros_time - cur_system_time;
-
-  RCLCPP_INFO(this->get_logger(), "system time: %ld ros time: %ld time offset: %ld ns",
-      cur_system_time, cur_ros_time, time_offset_);
-}
-
 void CameraNode::publish_image(std::unique_ptr<qrb_camera::CameraFrame> frame)
 {
   RCLCPP_DEBUG(
       this->get_logger(), "camera node publish image call: %s", frame->stream_name.c_str());
 
   int stream_index = -1;
-  auto format = frame->format;
   const auto & configure = configure_->get_camera_param();
 
   for (int i = 0; i < configure.stream_size; i++) {
@@ -193,7 +229,7 @@ void CameraNode::publish_color_image(int stream_index,
 {
   auto info = std::make_unique<CAMERA_INFO_TOPIC_TYPE>(camera_infos_[stream_index]);
 
-  show_fps(frame->stream_name, "nv12", stream_ts_[stream_index].latency,
+  show_fps(frame->stream_name, frame->format, stream_ts_[stream_index].latency,
       stream_ts_[stream_index].timestamp, frame->timestamp, stream_ts_[stream_index].frame_count,
       frame->height, frame->width, frame->stride, frame->slice, frame->frame_id);
 
@@ -210,7 +246,7 @@ std::unique_ptr<qrb_ros::transport::type::Image> CameraNode::convert_camera_fram
 {
   auto image_handler = std::make_unique<qrb_ros::transport::type::Image>();
 
-  int64_t raw_ts = frame->timestamp + time_offset_;
+  int64_t raw_ts = frame->timestamp + time_offset_.load();
   if (raw_ts < 0) {
     RCLCPP_WARN_ONCE(this->get_logger(), "timestamp underflow, clamping to 0");
     raw_ts = 0;
@@ -233,23 +269,6 @@ std::unique_ptr<qrb_ros::transport::type::Image> CameraNode::convert_camera_fram
   image_handler->dmabuf = dma_buf;
 
   return image_handler;
-}
-
-uint64_t CameraNode::getQtimerTime()
-{
-  uint64_t qTimerCount = 0, qTimerFreq = 0, qTimerSec = 0, qTimerNanosNSec = 0;
-#if __aarch64__
-  asm volatile("mrs %0, cntvct_el0" : "=r"(qTimerCount));
-  asm volatile("mrs %0, cntfrq_el0" : "=r"(qTimerFreq));
-#else
-  asm volatile("mrrc p15, 1, %Q0, %R0, c14" : "=r"(qTimerCount));
-  qTimerFreq = 19200000;  // 19.2 MHz TBD: find right asm instruction
-#endif
-  qTimerSec = (qTimerCount / qTimerFreq);
-  qTimerNanosNSec = (qTimerCount % qTimerFreq);
-  qTimerNanosNSec *= 1000000000;
-  qTimerNanosNSec /= qTimerFreq;
-  return (qTimerSec * 1000000000 + qTimerNanosNSec);
 }
 
 }  // namespace camera
